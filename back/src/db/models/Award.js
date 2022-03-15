@@ -47,13 +47,20 @@ class Award {
         return award;
     }
 
-    /** Find awards if its name contains the search keyword.
+    /** Find awards whose name contains the search keyword.
      *
      * @static
      * @async
-     * @param {String} name
+     * @param {RegExp-like} name - As RegExp literal or compiled RegExp Object.
      *
-     * @todo Implement optional regex match.
+     * @hack Apparently, it's not possible to query like `text.includes(pattern)`
+     * in mongodb. Also apparently there is no such thing as RegEx.escape in js
+     * which is a big bummer.
+     * So, optional regex is not (quite) possible, and auto-escape is somewhat
+     * hackish.
+     * Will probably have to make our own escape funciton.
+     * Tried $indexOfCP aggregation; atlas says the operator is not availble
+     * for free clusters.
      */
     static async searchByName({ name }) {
         const award = await AwardModel.find({ $regex: "" });
