@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
  *
  * @class
  * @method static async addAward({ title, description, awardee })
- * @method static async getAward({ title })
+ * @method static async getAward({ id, title })
  * @method static async getAllAwards()
  * @method static async getUserAwards({ user })
  * @method static async searchAwards({ title, description })
@@ -38,12 +38,22 @@ class awardService {
      * @static
      * @async
      * @param {Object} payload
-     * @param {String} payload.title - Must be an exact match.
+     * @param {uuid} [payload.id]
+     * @param {String} [payload.title] - Must be an exact match.
      * @returns {award|null} found - If not found, just null.
      *  It will not emit error message.
+     *
+     * Both `id` and `title` are optional, but one of them must be provided.
+     * Or we're oh so confused that we bail out.
      */
-    static async getAward({ title }) {
-        const found = await Award.findByName({ title });
+    static async getAward({ id, title }) {
+        if (id) {
+            const found = await Award.findById({ award_id: id });
+        } else if (title) {
+            const found = await Award.findByName({ title });
+        } else {
+            return null;
+        }
         return found;
     }
 
