@@ -65,12 +65,29 @@ certificateRouter.get(
         try {
             //get id of user from req.params
             const user_id = req.params.user_id;
-            console.log(user_id);
             //get user's certificates with id of user
             const certificates = await certificateService.getCertificates({
                 user_id,
             });
             res.status(200).send(certificates);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+certificateRouter.delete(
+    '/certificates/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            //get id of certificate from req.params
+            const id = req.params.id;
+            //get user's certificates with id of user
+            const result = await certificateService.deleteCertificate({
+                id,
+            });
+            res.status(200).send(result);
         } catch (error) {
             next(error);
         }

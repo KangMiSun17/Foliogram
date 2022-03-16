@@ -41,6 +41,22 @@ class certificateService {
     }
 
     /**
+     * delete one Certificate in DB using method of Certificate class
+     *
+     * @param {string} id id of certificate
+     * @return {object} return result of delete process
+     */
+    static async deleteCertificate({ id }) {
+        const { deletedCount } = await Certificate.delete({ id });
+        //if failed with delete process,return error message
+        if (deletedCount === 0) {
+            return { result: false };
+        } else {
+            return { result: true };
+        }
+    }
+
+    /**
      * find and get Certificates of user in DB using method of Certificate class
      *
      * @param {string} user_id id of user

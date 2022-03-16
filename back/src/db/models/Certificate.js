@@ -56,6 +56,17 @@ class Certificate {
         );
         return updatedCertificate;
     }
+
+    /**
+     * delete Certificate with id in DB
+     *
+     * @param {string} newCertificate new certificate to create
+     * @return {object} return result of delete process
+     */
+    static async delete({ id }) {
+        const result = await CertificateModel.deleteOne({ id });
+        return result;
+    }
 }
 
 export { Certificate };
