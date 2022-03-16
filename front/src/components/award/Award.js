@@ -12,6 +12,7 @@ import Awards from "./Awards";
 function Award({ isEditable }) {
   const [id, setId] = useState(2);
 
+  //수상 이력 객체
   const [awards, setAwards] = useState([
     {
       name: "개근상",
@@ -27,13 +28,26 @@ function Award({ isEditable }) {
 
   useEffect(() => {}, [awards]);
 
-  const submitHandler = (award) => {
+  /**
+   * Awards add function
+   *
+   * @param {object} award - //AwardAddForm 에서 넘어온 추가된 award
+   *
+   */
+  const addHandler = (award) => {
     const newAwards = [...awards, award];
     setAwards(newAwards);
     console.log(newAwards);
     setId((cur) => cur + 1);
   };
 
+  /**
+   * Awards add function
+   *
+   * @param {number} id - 편집된 award's id
+   * @param {object} award - //AwardEditForm 에서 넘어온 편집된 award
+   *
+   */
   const editHandler = (id, award) => {
     const newAwards = [...awards];
     newAwards[id] = { ...award };
@@ -55,7 +69,7 @@ function Award({ isEditable }) {
           ))}
         </Card.Text>
         {isEditable && (
-          <AwardAddForm submitHandler={submitHandler} id={id} setId={setId} />
+          <AwardAddForm addHandler={addHandler} id={id} setId={setId} />
         )}
       </Card.Body>
     </Card>

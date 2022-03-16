@@ -4,8 +4,9 @@ import { Button, Container, Col, Row } from "react-bootstrap";
 /**
  * 수상 이력 목록 컴포넌트입니다.
  *
+ * @param {boolean} setIsEditing - 편집중 상태 변경 state
  * @param {boolean} isEditable - 편집 가능 여부
- * @param {boolean} isEditing - 편집중 여부
+ * @param {object} award - award.map으로 넘어온 각각의 award
  *
  */
 function AwardCard({ setIsEditing, isEditable, award }) {

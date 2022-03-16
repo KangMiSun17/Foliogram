@@ -4,22 +4,25 @@ import { Button, Form, Row } from "react-bootstrap";
 /**
  * 수상 이력 추가 컴포넌트입니다.
  *
- * @param {boolean} isEditable - 편집 가능 여부
+ * @param {function} addHandler - 확인 버튼 누를 시 상 추가 되는 함수
+ * @param {number} id - 새롭게 추가 되는 상의 아이디
  *
  */
-function AwardAddForm({ submitHandler, id }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [addName, setAddName] = useState("");
-  const [addContent, setAddContent] = useState("");
+function AwardAddForm({ addHandler, id }) {
+  const [isEditing, setIsEditing] = useState(false); //편집중인지 아닌지
+  const [addName, setAddName] = useState(""); //추가된 상 이름
+  const [addContent, setAddContent] = useState(""); //추가된 상 내용
 
   const startEditing = () => {
     setIsEditing((cur) => !cur);
   };
 
+  //확인 버튼 누를 시 수상 내역 추가
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsEditing((cur) => !cur);
-    submitHandler({ name: addName, content: addContent, id: id });
+    //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
+    addHandler({ name: addName, content: addContent, id: id });
     setAddName("");
     setAddContent("");
   };
@@ -52,7 +55,7 @@ function AwardAddForm({ submitHandler, id }) {
             <Button type="submit" className="me-3">
               확인
             </Button>
-            <Button variant="secondary" onClick={() => setIsEditing(false)}>
+            <Button variant="secondary" onClick={startEditing}>
               취소
             </Button>
           </Row>
