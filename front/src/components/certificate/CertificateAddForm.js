@@ -1,32 +1,17 @@
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import { UserStateContext } from "../../App";
-// import * as Api from "../../api";
 import axios from "axios";
 
-function CertificateAddForm({ setAdding }) {
+import { StringDate } from "./common/StringDate";
+import { UserStateContext } from "../../App";
+// import * as Api from "../../api";
+
+function CertificateAddForm({ setIsAdding }) {
   const userState = useContext(UserStateContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-
-  /**
-   * POST 요청 양식 "YYYY-MM-DD"
-   * 날짜를 YYYY-MM-DD 포맷으로 변경
-   * @param { number } year
-   * @param { number } month
-   * @param { number } day
-   **/
-  const getStringDate = () => {
-    const year = startDate.getFullYear();
-    const month = startDate.getMonth() + 1;
-    const day = startDate.getDate();
-
-    return `${year}-${month >= 10 ? month : "0" + month}-${
-      day >= 10 ? day : "0" + day
-    }`;
-  };
 
   /**
    * Submit - POST요청
@@ -38,7 +23,7 @@ function CertificateAddForm({ setAdding }) {
    **/
   const onSubmit = async (e) => {
     e.preventDefault();
-    const date = getStringDate();
+    const date = StringDate(startDate);
 
     try {
       await axios.post("http://localhost:3001/certificate", {
@@ -55,7 +40,7 @@ function CertificateAddForm({ setAdding }) {
       console.log("error", e);
     }
 
-    setAdding(false);
+    setIsAdding(false);
   };
 
   return (
@@ -87,7 +72,7 @@ function CertificateAddForm({ setAdding }) {
         variant="secondary"
         type="button"
         onClick={() => {
-          setAdding(false);
+          setIsAdding(false);
         }}
       >
         취소

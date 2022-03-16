@@ -3,10 +3,11 @@ import { Card, Button } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
+import { EditContext, OwnerContext } from "./common/Context";
 
 function CertificateCard({ portfolioOwnerId }) {
   const [isOwner, setIsOwner] = useState(false);
-  const [isAddingg, setAdding] = useState(false);
+  const [isAddingg, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const userState = useContext(UserStateContext);
 
@@ -27,13 +28,17 @@ function CertificateCard({ portfolioOwnerId }) {
     <Card>
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <Certificates portfolioOwnerId={portfolioOwnerId} />
+        <OwnerContext.Provider value={{ isOwner }}>
+          <EditContext.Provider value={{ isEditing, setIsEditing }}>
+            <Certificates />
+          </EditContext.Provider>
+        </OwnerContext.Provider>
         {isOwner && (
-          <Button variant="primary" onClick={() => setAdding(true)}>
+          <Button variant="primary" onClick={() => setIsAdding(true)}>
             +
           </Button>
         )}
-        {isAddingg && <CertificateAddForm setIsEditing={setAdding} />}
+        {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
       </Card.Body>
     </Card>
   );

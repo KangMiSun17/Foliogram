@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-import { UserStateContext } from "../../App";
 import CertificateEditForm from "./CertificateEditForm";
+import { OwnerContext, EditContext } from "./common/Context";
 
-function Certificates({ portfolioOwnerId }) {
+function Certificates() {
   const [certificateList, setCertificateList] = useState([]);
-  const [isOwner, setIsOwner] = useState(false);
-  const userState = useContext(UserStateContext);
-  const [isEditing, setIsEditing] = useState(false);
+  const { isEditing, setIsEditing } = useContext(EditContext);
+  const { isOwner } = useContext(OwnerContext);
 
   useEffect(() => {
     const getCertificateList = async () => {
@@ -19,20 +18,12 @@ function Certificates({ portfolioOwnerId }) {
     getCertificateList();
   }, []);
 
-  useEffect(() => {
-    if (userState.user.id === portfolioOwnerId) {
-      setIsOwner(true);
-      return;
-    }
-    setIsOwner(false);
-  }, [userState.user.id, portfolioOwnerId]);
-
   console.log(certificateList);
 
   return (
     <>
       {isEditing ? (
-        <CertificateEditForm setIsEditing={setIsEditing} />
+        <CertificateEditForm />
       ) : (
         certificateList.map((item, index) => {
           return (
