@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-} from "@mui/material";
-import AwardCard from "./AwardCard";
+import { Card, CardContent, CardActions, Typography } from "@mui/material";
 import AwardAddForm from "./AwardAddForm";
-import AwardEditForm from "./AwardEditForm";
 import Awards from "./Awards";
 
 /**
@@ -19,15 +11,13 @@ import Awards from "./Awards";
  */
 function Award({ isEditable }) {
   return (
-    <Card sx={{ minWidth: 30 }}>
+    <Card sx={{ minWidth: 30, maxWidth: 500 }}>
       <CardContent>
         <Typography variant="h5" component="div">
           수상 이력
         </Typography>
         <Typography variant="h5" component="div">
-          <Awards />
-          하이
-          {isEditable && <AwardEditForm />}
+          <Awards isEditable={isEditable} />
         </Typography>
       </CardContent>
       <CardActions>{isEditable && <AwardAddForm />}</CardActions>

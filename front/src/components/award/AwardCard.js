@@ -8,8 +8,8 @@ import { Button } from "@mui/material";
  * @param {boolean} isEditing - 편집중 여부
  *
  */
-function AwardCard() {
-  return <div></div>;
+function AwardCard({ award }) {
+  return <div>{award}</div>;
 }
 
 export default AwardCard;

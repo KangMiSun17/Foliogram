@@ -59,7 +59,7 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" exact element={<Award />} />
+            <Route path="/" exact element={<Portfolio />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/users/:userId" element={<Portfolio />} />

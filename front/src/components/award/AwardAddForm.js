@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 /**
  * 수상 이력 추가 컴포넌트입니다.
@@ -7,9 +7,8 @@ import { Button } from "@mui/material";
  * @param {boolean} isEditable - 편집 가능 여부
  *
  */
-function AwardAddForm({ awards }) {
+function AwardAddForm() {
   const [isEditing, setIsEditing] = useState(false);
-  const [award, setAward] = useState("");
 
   const startEditing = () => {
     setIsEditing((cur) => !cur);
@@ -35,16 +34,16 @@ function AwardAddForm({ awards }) {
       ) : (
         <div>
           <form onSubmit={handleSubmit}>
-            <label>
-              상 이름:
-              <input
-                type="text"
-                name="name"
-                value={award}
-                onChange={(e) => setAward(e.target.value)}
-              />
-            </label>
-            <input type="submit" value="Submit" />
+            <TextField
+              id="standard-multiline-flexible"
+              label="Multiline"
+              multiline
+              maxRows={4}
+              variant="standard"
+            />
+            <Button type="submit" variant="outlined">
+              확인
+            </Button>
           </form>
         </div>
       )}
