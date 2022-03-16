@@ -42,7 +42,7 @@ class Award {
      * @param {String} payload.title - must be exact.
      * @returns {award|null} award
      */
-    static async findByName({ title }) {
+    static async findByTitle({ title }) {
         const award = await AwardModel.findOne({ title });
         return award;
     }
