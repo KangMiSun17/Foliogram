@@ -2,7 +2,7 @@ import { Card, CardText, Row, Button, Col } from "react-bootstrap";
 
 function EducationCard({ val, isEditable, setIsEditing }) {
   return (
-    <Card.Text>
+    <div>
       <Row>
         <Col xs={11}>
           {val.title}
@@ -25,7 +25,7 @@ function EducationCard({ val, isEditable, setIsEditing }) {
           )}
         </Col>
       </Row>
-    </Card.Text>
+    </div>
   );
 }
 
