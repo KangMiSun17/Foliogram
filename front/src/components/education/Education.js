@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, CardTitle, Row, Button, Col } from "react-bootstrap";
+import { Row, Button, Col } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import * as Api from "../../api";
 import Educations from "./Educations";
 
@@ -14,17 +15,21 @@ function Education({ portfolioOwnerId, isEditable }) {
   return (
     <>
       <Card>
-        <CardBody>
-          <CardTitle>학력</CardTitle>
-          {setEduList.map((val) => {
-            <Educations
-              key={val.id}
-              title={val.title}
-              desc={val.desc}
-              isEditable={isEditable}
-            />;
-          })}
-        </CardBody>
+        <Card.Body style={{ textAlign: "left" }}>
+          <Card.Title>학력</Card.Title>
+          <Card.Subtitle>여기에 이제 목록을 넣어야 하지요</Card.Subtitle>
+          <Card.Text>
+            데이터를 가져와 뿌려야 하는데 여기서부터 다시 시작입니다
+          </Card.Text>
+          {/* {setEduList.map((val) => {
+          <Educations
+            key={val.id}
+            title={val.title}
+            desc={val.desc}
+            isEditable={isEditable}
+          />;
+        })} */}
+        </Card.Body>
       </Card>
     </>
   );
