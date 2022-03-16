@@ -4,14 +4,14 @@ import * as Api from "../../api";
 import Educations from "./Educations";
 
 function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [school, setSchool] = useState("");
+  const [major, setMajor] = useState("");
   const [position, setPosition] = useState("재학중");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newEdu = { title, desc, position };
+    const newEdu = { school, major, position };
     const createNewEduList = [...eduList, newEdu];
     setEduList(createNewEduList);
     setShowAddForm(false);
@@ -23,8 +23,8 @@ function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
         <Form.Control
           type="text"
           placeholder="학교"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={school}
+          onChange={(e) => setSchool(e.target.value)}
         />
       </Form.Group>
 
@@ -32,8 +32,8 @@ function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
         <Form.Control
           type="text"
           placeholder="학과"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
+          value={major}
+          onChange={(e) => setMajor(e.target.value)}
         />
       </Form.Group>
 

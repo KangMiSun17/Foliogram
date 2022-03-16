@@ -5,9 +5,9 @@ function EducationCard({ val, isEditable, setIsEditing }) {
     <div>
       <Row>
         <Col xs={11}>
-          {val.title}
+          {val.school}
           <Card.Subtitle className="mb-2 text-muted">
-            {val.desc}
+            {val.major}
             <span style={{ display: "inline-block", margin: 3 }}>
               ({val.position})
             </span>

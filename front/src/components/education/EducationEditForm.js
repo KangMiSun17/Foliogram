@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
 
 function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
-  const [title, setTitle] = useState(val.title);
-  const [desc, setDesc] = useState(val.desc);
+  const [school, setSchool] = useState(val.school);
+  const [major, setMajor] = useState(val.major);
   const [position, setPosition] = useState(val.position);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     const newEduList = eduList.map((elem) => {
-      if (elem.title === val.title) {
-        const newEdu = { title, desc, position };
+      if (elem.school === val.school) {
+        const newEdu = { school, major, position };
         return newEdu;
       } else {
         return elem;
@@ -40,8 +40,8 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
           <Form.Control
             type="text"
             placeholder="학교"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={school}
+            onChange={(e) => setSchool(e.target.value)}
           />
         </Form.Group>
 
@@ -49,8 +49,8 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
           <Form.Control
             type="text"
             placeholder="학과"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            value={major}
+            onChange={(e) => setMajor(e.target.value)}
           />
         </Form.Group>
 
