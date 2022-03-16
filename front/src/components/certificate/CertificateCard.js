@@ -3,10 +3,11 @@ import { Card, Button } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
-import { OwnerContext } from "./common/Context";
+import { OwnerContext, FecthContext } from "./common/Context";
 
 function CertificateCard({ portfolioOwnerId }) {
   const [isOwner, setIsOwner] = useState(false);
+  const [isFetching, setIsFetching] = useState(new Date());
   const [isAddingg, setIsAdding] = useState(false);
   const userState = useContext(UserStateContext);
 
@@ -27,15 +28,17 @@ function CertificateCard({ portfolioOwnerId }) {
     <Card>
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <OwnerContext.Provider value={{ isOwner }}>
-          <Certificates />
-        </OwnerContext.Provider>
-        {isOwner && (
-          <Button variant="primary" onClick={() => setIsAdding(true)}>
-            +
-          </Button>
-        )}
-        {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
+        <FecthContext.Provider value={{ isFetching, setIsFetching }}>
+          <OwnerContext.Provider value={{ isOwner }}>
+            <Certificates />
+          </OwnerContext.Provider>
+          {isOwner && (
+            <Button variant="primary" onClick={() => setIsAdding(true)}>
+              +
+            </Button>
+          )}
+          {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
+        </FecthContext.Provider>
       </Card.Body>
     </Card>
   );

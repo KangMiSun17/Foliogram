@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Certificate from "./Certificate";
+import { FecthContext } from "./common/Context";
 
 function Certificates() {
+  const { isFetching } = useContext(FecthContext);
   const [certificateList, setCertificateList] = useState([]);
 
   useEffect(() => {
@@ -12,7 +14,7 @@ function Certificates() {
     };
 
     getCertificateList();
-  }, []);
+  }, [isFetching]);
 
   return (
     <>

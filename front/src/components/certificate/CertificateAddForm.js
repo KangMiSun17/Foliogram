@@ -5,10 +5,12 @@ import axios from "axios";
 
 import { StringDate } from "./common/StringDate";
 import { UserStateContext } from "../../App";
+import { FecthContext } from "./common/Context";
 // import * as Api from "../../api";
 
 function CertificateAddForm({ setIsAdding }) {
   const userState = useContext(UserStateContext);
+  const { setIsFetching } = useContext(FecthContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -40,6 +42,7 @@ function CertificateAddForm({ setIsAdding }) {
       console.log("error", e);
     }
 
+    setIsFetching(new Date());
     setIsAdding(false);
   };
 
