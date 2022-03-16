@@ -9,6 +9,7 @@ const awardRouter = Router();
 /** /award/create post router
  *
  * @implements POST /award/create
+ * @returns {award} created
  *
  * headers = { "authorization": bearer }
  * body = {
@@ -65,6 +66,7 @@ awardRouter.post(
 /** /awards/:id get router
  *
  * @implements GET /awards/:id
+ * @returns {award} award
  */
 awardRouter.get("/awards/:id", login_required, async function (req, res, next) {
     // Here we get the id of an award and give back a single award.
@@ -82,6 +84,7 @@ awardRouter.get("/awards/:id", login_required, async function (req, res, next) {
 /** /awards/:id put router
  *
  * @implements PUT /awards/:id
+ * @returns {award} updated
  *
  * Sample body = {
  *  "title": "행복한 상",
@@ -108,6 +111,7 @@ awardRouter.put("/awards/:id", login_required, async function (req, res, next) {
 /** /awardlist/:user_id get router
  *
  * @implements GET /awardlist/:user_id
+ * @returns {[award]} awards
  */
 awardRouter.get(
     "/awardlist/:user_id",
@@ -127,6 +131,8 @@ awardRouter.get(
 /** /awards/:id delete router
  *
  * @implements DELETE /awards/:id
+ * @returns {Object} payload
+ * @returns {Boolean} payload.result
  *
  * @todo The control layer must respond as {result: true/false}.
  */
