@@ -1,49 +1,114 @@
-import {
-  Card,
-  CardText,
-  Row,
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  FormControl,
-  FormCheck,
-} from "react-bootstrap";
+import { useState } from "react";
+import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
 import context from "react-bootstrap/esm/AccordionContext";
-import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
-import FormCheckLabel from "react-bootstrap/esm/FormCheckLabel";
 
-function EducationEditForm() {
+function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
+  const [title, setTitle] = useState(val.title);
+  const [desc, setDesc] = useState(val.desc);
+  const [position, setPosition] = useState(val.position);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newEduList = eduList.map((elem) => {
+      if (elem.id === val.id) {
+        const newEdu = { id: val.id, title, desc, position };
+        return newEdu;
+      } else {
+        return elem;
+      }
+    });
+
+    setEduList(newEduList);
+    setIsEditing(false);
+  }
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const res = await Api.put(`users/${user.id}`, {
+  //     title,
+  //     desc
+  //   });
+
+  //   const updateData = res.data
+  //   setEduList(updateData)
+  // };
+
   return (
     <context.Provider>
-      <Form>
-        <FormGroup>
-          <FormControl></FormControl>
-        </FormGroup>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="EudEditTitle" className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="학교"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </Form.Group>
 
-        <FormGroup>
-          <FormControl></FormControl>
-        </FormGroup>
+        <Form.Group controlId="EduEditDesc" className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="학과"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+        </Form.Group>
 
-        <FormCheck>
-          <FormCheckInput></FormCheckInput>
-          <FormCheckLabel></FormCheckLabel>
-        </FormCheck>
+        <Form.Group>
+          <FormCheck
+            inline
+            label="재학중"
+            id="radio1"
+            type="radio"
+            name="position"
+            value="재학중"
+            checked={position === "재학중"}
+            onChange={(e) => setPosition(e.target.value)}
+          ></FormCheck>
+          <FormCheck
+            inline
+            label="학사졸업"
+            id="radio2"
+            type="radio"
+            name="position"
+            value="학사졸업"
+            checked={position === "학사졸업"}
+            onChange={(e) => setPosition(e.target.value)}
+          ></FormCheck>
+          <FormCheck
+            inline
+            label="석사졸업"
+            id="radio3"
+            type="radio"
+            name="position"
+            value="석사졸업"
+            checked={position === "석사졸업"}
+            onChange={(e) => setPosition(e.target.value)}
+          ></FormCheck>
+          <FormCheck
+            inline
+            label="박사졸업"
+            id="radio4"
+            type="radio"
+            name="position"
+            value="박사졸업"
+            checked={position === "박사졸업"}
+            onChange={(e) => setPosition(e.target.value)}
+          ></FormCheck>
+        </Form.Group>
 
-        <FormCheck>
-          <FormCheckInput></FormCheckInput>
-          <FormCheckLabel></FormCheckLabel>
-        </FormCheck>
-
-        <FormCheck>
-          <FormCheckInput></FormCheckInput>
-          <FormCheckLabel></FormCheckLabel>
-        </FormCheck>
-
-        <FormCheck>
-          <FormCheckInput></FormCheckInput>
-          <FormCheckLabel></FormCheckLabel>
-        </FormCheck>
+        <Form.Group as={Row} className="mt-3 text-center">
+          <Col sm={{ span: 20 }}>
+            <Button variant="primary" type="submit" className="me-3">
+              확인
+            </Button>
+            <Button variant="secondary" onClick={() => setIsEditing(false)}>
+              취소
+            </Button>
+          </Col>
+        </Form.Group>
       </Form>
     </context.Provider>
   );

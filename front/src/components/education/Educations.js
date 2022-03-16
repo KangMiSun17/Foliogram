@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import EducationEditForm from "./EducationEditForm";
 import EducationCard from "./EducationCard";
-import Card from "react-bootstrap/Card";
 
-function Educations({ title, desc, isEditable }) {
-  const [isEditding, setIsEditing] = useState(false);
-  const [user, setUser] = useState(null);
+function Educations({ val, eduList, setEduList, isEditable }) {
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <>
-      {isEditding ? (
-        <EducationEditForm></EducationEditForm>
+      {isEditing ? (
+        <EducationEditForm
+          val={val}
+          eduList={eduList}
+          setEduList={setEduList}
+          setIsEditing={setIsEditing}
+        ></EducationEditForm>
       ) : (
         <EducationCard
-          title={title}
-          desc={desc}
+          val={val}
           isEditable={isEditable}
-          setEditding={setIsEditing}
+          setIsEditing={setIsEditing}
         ></EducationCard>
       )}
     </>

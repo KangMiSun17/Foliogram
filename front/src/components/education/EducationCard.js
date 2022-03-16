@@ -1,16 +1,25 @@
-import { useNavigate } from "react-router-dom";
 import { Card, CardText, Row, Button, Col } from "react-bootstrap";
 
-function EducationCard({ title, desc, isEditable }) {
-  const navigate = useNavigate();
+function EducationCard({ val, isEditable, setIsEditing }) {
   return (
     <Card.Text>
-      {title}
       <Row>
-        <Col xs={11}>{desc}</Col>
-        <Col>
+        <Col xs={11}>
+          {val.title}
+          <Card.Subtitle className="mb-2 text-muted">
+            {val.desc}
+            <span style={{ display: "inline-block", margin: 3 }}>
+              ({val.position})
+            </span>
+          </Card.Subtitle>
+        </Col>
+        <Col className="mt-3">
           {isEditable && (
-            <Button variant="outline-info" size="sm">
+            <Button
+              variant="outline-info"
+              size="sm"
+              onClick={() => setIsEditing(true)}
+            >
               편집
             </Button>
           )}
