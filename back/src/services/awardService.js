@@ -37,7 +37,7 @@ class awardService {
      * @static
      * @async
      * @param {Object} payload
-     * @param {uuid} [payload.id]
+     * @param {uuid} [payload.award_id]
      * @param {String} [payload.title] - Must be an exact match.
      * @returns {award|null} found - If not found, just null.
      *  It will not emit error message.
@@ -45,9 +45,9 @@ class awardService {
      * Both `id` and `title` are optional, but one of them must be provided.
      * Or we'll be oh so confused that we'll bail out.
      */
-    static async getAward({ id, title }) {
-        if (id) {
-            const found = await Award.findById({ award_id: id });
+    static async getAward({ award_id, title }) {
+        if (award_id) {
+            const found = await Award.findById({ award_id });
         } else if (title) {
             const found = await Award.findByName({ title });
         } else {
@@ -77,7 +77,6 @@ class awardService {
      * @returns {[award]} found - If none, return an empty Array.
      *  It will not emit error message.
      */
-    // Not implemented because this will be done by populating user.
     static async getUserAwards({ awardee_id }) {
         // ???
         const found = await Award.searchByAwardee({ user_id });
