@@ -9,28 +9,25 @@ class Award {
      *
      * @static
      * @async
-     * @param {award} {newAward} - Award schema fields.
-     *  newAward = {
-     *      {uuid} id,
-     *      {String} title,
-     *      {user} awardee,
-     *      [
-     *          {String} description
-     *      ]
-     *  }
-     * @returns {award} award
+     * @param {Object} newAward
+     * @param {uuid} newAward.id
+     * @param {String} newAward.title
+     * @param {user} newAward.awardee
+     * @param {String} [newAward.description]
+     * @returns {award|null} created
      */
     static async create({ newAward }) {
-        const award = await AwardModel.create(newAward);
-        return award;
+        const created = await AwardModel.create(newAward);
+        return created;
     }
 
     /** Find an award by id.
      *
      * @static
      * @async
-     * @param {uuid} award_id
-     * @returns {award} award
+     * @param {Object} payload
+     * @param {uuid} payload.award_id
+     * @returns {award|null} award
      */
     static async findById({ award_id }) {
         const award = await AwardModel.findOne({ id: award_id });
@@ -41,8 +38,9 @@ class Award {
      *
      * @static
      * @async
-     * @param {String} title - must be exact.
-     * @returns {award} award
+     * @param {Object} payload
+     * @param {String} payload.title - must be exact.
+     * @returns {award|null} award
      */
     static async findByName({ title }) {
         const award = await AwardModel.findOne({ title });
@@ -67,13 +65,12 @@ class Award {
      *
      * @static
      * @async
-     * @param {Object} = {
-     *      @param {RegExp-like} title: title keyword.
-     *      @param {RegExp-like} description: description keyword.
-     * }
+     * @param {Object} payload
+     * @param {RegExp|String} payload.title
+     * @param {RegExp|String} payload.description
      * @returns {[award]} awards
      *
-     * RegExp-like means either RegExp literal or compiled RegExp object.
+     * Query keysords may either be RegExp literal or compiled RegExp object.
      * Regex options, if any, will have to be added inline.
      * Because I feel too lazy at the moment.
      * You can omit either, or both of them, in which case it will fetch just
@@ -104,7 +101,8 @@ class Award {
      *
      * @static
      * @async
-     * @param {uuid} user_id - As RegExp literal or compiled RegExp Object.
+     * @param {Object} payload
+     * @param {uuid} payload.user_id - As RegExp literal or compiled RegExp Object.
      * @returns {[award]} awards
      */
     static async searchByAwardee({ user_id }) {
@@ -117,7 +115,9 @@ class Award {
      * @static
      * @async
      * @param {Object} payload - An Object containing award id and data.
-     *  payload = {award_id, filedToUpdate, newValue}
+     * @param {uuid} payload.award_id
+     * @param {field} payload.fieldToUpdate
+     * @param {any} payload.newValue
      * @returns {award} updated
      */
     static async update({ award_id, fieldToUpdate, newValue }) {
@@ -136,7 +136,8 @@ class Award {
      *
      * @static
      * @async
-     * @param {uuid} award_id
+     * @param {Object} payload
+     * @param {uuid} payload.award_id
      * @returns {award} deleted
      *
      * @todo The control layer must respond as {result: true/false}.
