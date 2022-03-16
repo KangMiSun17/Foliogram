@@ -2,7 +2,6 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
-import { awardRouter } from "./awardRouter";
 
 const userAuthRouter = Router();
 
@@ -150,7 +149,5 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
         `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
     );
 });
-
-userAuthRouter.use("/users/:id/awards", awardRouter);
 
 export { userAuthRouter };
