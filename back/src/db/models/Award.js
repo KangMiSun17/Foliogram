@@ -84,17 +84,30 @@ class Award {
      * hackish.
      * Will probably have to make our own escape funciton.
      * Tried $indexOfCP aggregation; atlas says the operator is not allowed
-     * for us lowly free cluster users.
+     * for us lowly free cluster plebs.
      */
     static async search({ title, description }) {
-        const query = {};
+        /* const query = {};
         if (title) {
             query["title"] = { $regex: title };
         }
         if (description) {
             query["description"] = { $regex: description };
+        } */
+
+        // To think about it, this is and operation by default.
+        // or operation seems to make more sense here.
+
+        const query = { $or: [] };
+        if (title) {
+            query.$or.push({ title: { $regex: title } });
         }
+        if (description) {
+            query.$or.push({ description: { $regex: description } });
+        }
+
         const awards = await AwardModel.find(query);
+
         return awards;
     }
 
