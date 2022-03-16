@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { UserStateContext } from "../../App";
-import * as Api from "../../api";
+// import * as Api from "../../api";
+import axios from "axios";
 
 function CertificateAddForm({ setIsEditing }) {
   const userState = useContext(UserStateContext);
@@ -40,7 +41,7 @@ function CertificateAddForm({ setIsEditing }) {
     const date = getStringDate();
 
     try {
-      await Api.post("certificate/create", {
+      await axios.post("http://localhost:3001/certificate", {
         user_id: userState.user.id,
         title,
         description,

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 import CertificateAddForm from "./CertificateAddForm";
+import Certificates from "./Certificates";
 
 function CertificateCard({ portfolioOwnerId }) {
   const [isOwner, setIsOwner] = useState(false);
@@ -26,10 +27,7 @@ function CertificateCard({ portfolioOwnerId }) {
       <Card.Body>
         <Card.Title>자격증</Card.Title>
         <Card.Text>
-          <h3>1234</h3>
-          1234
-          <br />
-          날짜
+          <Certificates />
         </Card.Text>
         {isOwner && (
           <Button variant="primary" onClick={() => setIsEditing(true)}>
