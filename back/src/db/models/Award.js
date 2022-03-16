@@ -67,8 +67,17 @@ class Award {
      *
      * @static
      * @async
-     * @param {RegExp-like} title - As RegExp literal or compiled RegExp Object.
+     * @param {Object} = {
+     *      @param {RegExp-like} title: title keyword.
+     *      @param {RegExp-like} description: description keyword.
+     * }
      * @returns {[award]} awards
+     *
+     * RegExp-like means either RegExp literal or compiled RegExp object.
+     * Regex options, if any, will have to be added inline.
+     * Because I feel too lazy at the moment.
+     * You can omit either, or both of them, in which case it will fetch just
+     * all of them.
      *
      * @hack Apparently, it's not possible to query like `text.includes(pattern)`
      * in mongodb. Also apparently there is no such thing as RegEx.escape in js
@@ -79,22 +88,15 @@ class Award {
      * Tried $indexOfCP aggregation; atlas says the operator is not availble
      * for free clusters.
      */
-    static async searchByName({ title }) {
-        const awards = await AwardModel.find({ title: { $regex: title } });
-        return awards;
-    }
-
-    /** Find awards whose description contains the search keyword.
-     *
-     * @static
-     * @async
-     * @param {RegExp-like} keyword - As RegExp literal or compiled RegExp Object.
-     * @returns {[award]} awards
-     */
-    static async searchByDescription({ keyword }) {
-        const awards = await AwardModel.find({
-            description: { $regex: keyword },
-        });
+    static async search({ title, description }) {
+        const query = {};
+        if (title) {
+            query["title"] = { $regex: title };
+        }
+        if (description) {
+            query["description"] = { $regex: description };
+        }
+        const awards = await AwardModel.find(query);
         return awards;
     }
 
@@ -136,6 +138,8 @@ class Award {
      * @async
      * @param {uuid} award_id
      * @returns {award} deleted
+     *
+     * @todo The control layer must respond as {result: true/false}.
      */
     static async delete({ awrad_id }) {
         const deleted = await Award.findOneAndDelete({ id: award_id });
