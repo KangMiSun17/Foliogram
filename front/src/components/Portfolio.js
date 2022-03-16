@@ -62,7 +62,7 @@ function Portfolio() {
           />
         </Col>
         <Col>
-          <CertificateCard />
+          <CertificateCard portfolioOwnerId={portfolioOwner.id} />
         </Col>
       </Row>
     </Container>
