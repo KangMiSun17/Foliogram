@@ -1,30 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import axios from "axios";
+import { UserStateContext } from "../../App";
 
-function Certificates() {
+function Certificates({ portfolioOwnerId }) {
   const [certificateList, setCertificateList] = useState([]);
+  const [isOwner, setIsOwner] = useState(false);
+  const userState = useContext(UserStateContext);
 
   useEffect(() => {
     const getCertificateList = async () => {
       const res = await axios.get("http://localhost:3001/certificate");
-      return res.data;
+      setCertificateList(res.data);
     };
 
-    getCertificateList().then((data) => {
-      setCertificateList(data);
-    });
+    getCertificateList();
   }, []);
+
+  useEffect(() => {
+    if (userState.user.id === portfolioOwnerId) {
+      setIsOwner(true);
+      return;
+    }
+    setIsOwner(false);
+  }, [userState.user.id, portfolioOwnerId]);
+
   console.log(certificateList);
   return (
     <>
-      {certificateList.map((item) => {
+      {certificateList.map((item, index) => {
         return (
-          <>
-            <h5>{item.title}</h5>
-            {item.description}
-            <br />
-            {item.when_date}
-          </>
+          <div key={index}>
+            <p className="mb-0">{item.title}</p>
+            <p className="mb-0">{item.description}</p>
+            <p>{item.when_date}</p>
+            {isOwner && <Button variant="outline-info">편집</Button>}
+          </div>
         );
       })}
     </>

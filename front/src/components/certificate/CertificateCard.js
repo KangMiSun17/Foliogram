@@ -26,9 +26,7 @@ function CertificateCard({ portfolioOwnerId }) {
     <Card>
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <Card.Text>
-          <Certificates />
-        </Card.Text>
+        <Certificates portfolioOwnerId={portfolioOwnerId} />
         {isOwner && (
           <Button variant="primary" onClick={() => setIsEditing(true)}>
             +
