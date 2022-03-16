@@ -19,7 +19,7 @@ function CertificateAddForm({ setIsAdding }) {
    * @param { string } title - 자격증 제목
    * @param { string } description - 자격증 상세 내역
    * @param { object } userState - 로그인된 유저의 정보
-   * @param { function } setIsEditing - 요청 완료 후 setIsEditing 상태를 변경하여 폼 닫기
+   * @param { function } setIsAdding - 요청 완료 후 setIsAdding 상태를 변경하여 폼 닫기
    **/
   const onSubmit = async (e) => {
     e.preventDefault();

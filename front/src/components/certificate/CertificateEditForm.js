@@ -1,6 +1,6 @@
 import React from "react";
 
-function CertificateEditForm({ setIsEditing }) {
+function CertificateEditForm() {
   return <div>편집창</div>;
 }
 
