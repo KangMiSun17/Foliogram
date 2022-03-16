@@ -10,8 +10,8 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
     e.preventDefault();
 
     const newEduList = eduList.map((elem) => {
-      if (elem.id === val.id) {
-        const newEdu = { id: val.id, title, desc, position };
+      if (elem.title === val.title) {
+        const newEdu = { title, desc, position };
         return newEdu;
       } else {
         return elem;

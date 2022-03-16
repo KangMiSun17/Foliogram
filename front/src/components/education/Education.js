@@ -7,9 +7,9 @@ import Educations from "./Educations";
 
 function Education({ portfolioOwnerId, isEditable }) {
   const [eduList, setEduList] = useState([
-    { id: 1, title: "서울대학교", desc: "컴퓨터", position: "박사졸업" },
-    { id: 2, title: "서울고등학교", desc: "이공계", position: "재학중" },
-    { id: 3, title: "서울중학교", desc: "학생", position: "재학중" },
+    { title: "서울대학교", desc: "컴퓨터", position: "박사졸업" },
+    { title: "서울고등학교", desc: "이공계", position: "재학중" },
+    { title: "서울중학교", desc: "학생", position: "재학중" },
   ]);
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -23,10 +23,10 @@ function Education({ portfolioOwnerId, isEditable }) {
       <Card>
         <Card.Body>
           <Card.Title>학력</Card.Title>
-          {eduList.map((val) => {
+          {eduList.map((val, index) => {
             return (
               <Educations
-                key={val.id}
+                key={index}
                 val={val}
                 eduList={eduList}
                 setEduList={setEduList}
@@ -34,12 +34,15 @@ function Education({ portfolioOwnerId, isEditable }) {
               />
             );
           })}
-          <Row style={{ textAlign: "center" }}>
-            <Col className="mb-4">
-              <Button onClick={() => setShowAddForm(true)}>+</Button>
-            </Col>
-          </Row>
-          {/* <Row>
+          {isEditable && (
+            <Row style={{ textAlign: "center" }}>
+              <Col className="mb-4">
+                <Button onClick={() => setShowAddForm(true)}>+</Button>
+              </Col>
+            </Row>
+          )}
+
+          <Row>
             {showAddForm && (
               <EducationAddForm
                 eduList={eduList}
@@ -47,7 +50,7 @@ function Education({ portfolioOwnerId, isEditable }) {
                 setShowAddForm={setShowAddForm}
               ></EducationAddForm>
             )}
-          </Row> */}
+          </Row>
         </Card.Body>
       </Card>
     </>

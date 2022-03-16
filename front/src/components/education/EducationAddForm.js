@@ -11,8 +11,7 @@ function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newId = Number(eduList.length) + 1;
-    const newEdu = { id: newId, title, desc, position };
+    const newEdu = { title, desc, position };
     const createNewEduList = [...eduList, newEdu];
     setEduList(createNewEduList);
     setShowAddForm(false);
