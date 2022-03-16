@@ -16,8 +16,8 @@ function Certificates() {
 
   return (
     <>
-      {certificateList.map((value) => (
-        <Certificate certificate={value} />
+      {certificateList.map((value, index) => (
+        <Certificate key={index} certificate={value} />
       ))}
     </>
   );
