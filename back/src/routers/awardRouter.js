@@ -44,6 +44,8 @@ awardRouter.post(
             const user_id = req.body.user_id ?? null;
             if (!user_id) {
                 throw new Error("user_id is required in the request body");
+            } else if (user_id !== req.currentUserId) {
+                throw new Error("Trying to create different user's award");
             }
 
             const description = req.body.description ?? null;
