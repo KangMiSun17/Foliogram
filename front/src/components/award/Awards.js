@@ -2,30 +2,25 @@ import React, { useState, useEffect } from "react";
 import AwardCard from "./AwardCard";
 import AwardEditForm from "./AwardEditForm";
 
-function Awards({ isEditable }) {
-  const [awards, setAwards] = useState([
-    {
-      content: "개근상",
-      id: 0,
-    },
-    {
-      content: "상상",
-      id: 1,
-    },
-  ]);
+function Awards({ isEditable, award, editHandler }) {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <div>
-      {awards.map((award) => (
-        <>
-          <AwardCard award={award.content} />
-          <AwardEditForm
-            award={award.content}
-            id={award.id}
-            isEditable={isEditable}
-            setAwards={setAwards}
-          />
-        </>
-      ))}
+      {isEditing ? (
+        <AwardEditForm
+          award={award}
+          setIsEditing={setIsEditing}
+          editHandler={editHandler}
+          id={award.id}
+        />
+      ) : (
+        <AwardCard
+          award={award}
+          isEditable={isEditable}
+          setIsEditing={setIsEditing}
+        />
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardActions, Typography } from "@mui/material";
+import { Card, Container, Col, Row } from "react-bootstrap";
 import AwardAddForm from "./AwardAddForm";
 import Awards from "./Awards";
 
@@ -10,17 +10,54 @@ import Awards from "./Awards";
  *
  */
 function Award({ isEditable }) {
+  const [id, setId] = useState(2);
+
+  const [awards, setAwards] = useState([
+    {
+      name: "개근상",
+      content: "18년 동안 개근함",
+      id: 0,
+    },
+    {
+      name: "상상",
+      content: "상상력이 풍부함",
+      id: 1,
+    },
+  ]);
+
+  useEffect(() => {}, [awards]);
+
+  const submitHandler = (award) => {
+    const newAwards = [...awards, award];
+    setAwards(newAwards);
+    console.log(newAwards);
+    setId((cur) => cur + 1);
+  };
+
+  const editHandler = (id, award) => {
+    const newAwards = [...awards];
+    newAwards[id] = { ...award };
+    setAwards(newAwards);
+  };
+
   return (
-    <Card sx={{ minWidth: 30, maxWidth: 500 }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          수상 이력
-        </Typography>
-        <Typography variant="h5" component="div">
-          <Awards isEditable={isEditable} />
-        </Typography>
-      </CardContent>
-      <CardActions>{isEditable && <AwardAddForm />}</CardActions>
+    <Card className="me-4">
+      <Card.Body>
+        <Card.Title className="mb-3">수상 이력</Card.Title>
+        <Card.Text>
+          {awards.map((award) => (
+            <Awards
+              isEditable={isEditable}
+              award={award}
+              editHandler={editHandler}
+              id={id}
+            />
+          ))}
+        </Card.Text>
+        {isEditable && (
+          <AwardAddForm submitHandler={submitHandler} id={id} setId={setId} />
+        )}
+      </Card.Body>
     </Card>
   );
 }
