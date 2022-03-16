@@ -49,6 +49,20 @@ class Award {
         return award;
     }
 
+    /** Fetch all the awards like there's no tomorrow.
+     *
+     * @static
+     * @async
+     * @returns {[award]} awards
+     *
+     * This method was named against the find/search convention for the sake of
+     * consistency with the existing User MVP.
+     */
+    static async findAll() {
+        const awards = await AwardModel.find({});
+        return awards;
+    }
+
     /** Find awards whose title contains the search keyword.
      *
      * @static
