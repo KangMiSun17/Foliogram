@@ -124,12 +124,12 @@ class Award {
         const filter = { id: award_id };
         const update = { [fieldToUpdate]: newValue };
         const option = { returnOriginal: false };
-        const updatedUser = await AwardModel.findOneAndUpdate(
+        const updated = await AwardModel.findOneAndUpdate(
             filter,
             update,
             option
         );
-        return updatedAward;
+        return updated;
     }
 
     /** Delete an award.
