@@ -77,6 +77,9 @@ class Award {
      * You can omit either, or both of them, in which case it will fetch just
      * all of them.
      *
+     * The search result is OR operation of title and description.
+     * If both are given, the result will be like a union of each query.
+     *
      * @hack Apparently, it's not possible to query like `text.includes(pattern)`
      * in mongodb. Also apparently there is no such thing as RegEx.escape in js
      * which is a big bummer.
