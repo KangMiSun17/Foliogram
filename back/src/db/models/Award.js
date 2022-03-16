@@ -9,11 +9,12 @@ class Award {
      *
      * @static
      * @async
-     * @param {Object} newAward
-     * @param {uuid} newAward.id
-     * @param {String} newAward.title
-     * @param {user} newAward.awardee
-     * @param {String} [newAward.description]
+     * @param {Object} payload
+     * @param {Object} payload.newAward
+     * @param {uuid} payload.newAward.id
+     * @param {uuid} payload.newAward.awardee_id
+     * @param {String} payload.newAward.title
+     * @param {String} [payload.newAward.description]
      * @returns {award|null} created
      */
     static async create({ newAward }) {
@@ -82,8 +83,8 @@ class Award {
      * So, optional regex is not (quite) possible, and auto-escape is somewhat
      * hackish.
      * Will probably have to make our own escape funciton.
-     * Tried $indexOfCP aggregation; atlas says the operator is not availble
-     * for free clusters.
+     * Tried $indexOfCP aggregation; atlas says the operator is not allowed
+     * for us lowly free cluster users.
      */
     static async search({ title, description }) {
         const query = {};
@@ -102,11 +103,13 @@ class Award {
      * @static
      * @async
      * @param {Object} payload
-     * @param {uuid} payload.user_id - As RegExp literal or compiled RegExp Object.
+     * @param {uuid} payload.awardee_id - As RegExp literal or compiled RegExp Object.
      * @returns {[award]} awards
+     *
+     * @todo I forgot to implement this one
      */
-    static async searchByAwardee({ user_id }) {
-        const awards = await AwardModel.find({});
+    static async searchByAwardee({ awardee_id }) {
+        const awards = await AwardModel.find({ award_id });
         return awards;
     }
 
@@ -139,8 +142,6 @@ class Award {
      * @param {Object} payload
      * @param {uuid} payload.award_id
      * @returns {award} deleted
-     *
-     * @todo The control layer must respond as {result: true/false}.
      */
     static async delete({ awrad_id }) {
         const deleted = await Award.findOneAndDelete({ id: award_id });

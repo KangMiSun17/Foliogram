@@ -2,13 +2,18 @@ import { Schema, model } from "mongoose";
 
 /** Schema representing an individual award.
  *
+ * @field {uuid} id
+ * @field {uuid} awardee_id
  * @field {String} title
- * @field {String} description
- * @field {user} awardee
+ * @field {String} [description]
  **/
 const AwardSchema = new Schema(
     {
         id: {
+            type: String,
+            required: true,
+        },
+        awardee_id: {
             type: String,
             required: true,
         },
@@ -20,10 +25,6 @@ const AwardSchema = new Schema(
             type: String,
             required: false,
             default: "설명이 아직 없습니다. 추가해 주세요.",
-        },
-        awardee: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
         },
     },
     {

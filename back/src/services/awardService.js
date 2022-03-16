@@ -4,10 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 /** Static container class for services related to awards.
  *
  * @class
- * @method static async addAward({ title, description, awardee })
+ * @method static async addAward({ title, description })
  * @method static async getAward({ id, title })
  * @method static async getAllAwards()
- * @method static async getUserAwards({ user })
  * @method static async searchAwards({ title, description })
  * @method static async setAward({ award_id, toUpdate })
  * @method static async removeAward({ award_id })
@@ -18,22 +17,22 @@ class awardService {
      * @static
      * @async
      * @param {Object} payload
+     * @param {uuid} payload.awardee_id
      * @param {String} payload.title
      * @param {String} [payload.description]
-     * @param {user} payload.awardee
      * @returns {award} added
      */
-    static async addAward({ title, description, awardee }) {
+    static async addAward({ awardee_id, title, description }) {
         // Unlike user email, awards MAY have same name.
 
         const id = uuidv4();
-        const newAward = { id, title, description, awardee };
+        const newAward = { id, awardee_id, title, description };
 
         const added = await Award.create(newAward);
         return added;
     }
 
-    /** Find the first award that exactly matches the title.
+    /** Find the first award that exactly matches id/title.
      *
      * @static
      * @async
@@ -44,7 +43,7 @@ class awardService {
      *  It will not emit error message.
      *
      * Both `id` and `title` are optional, but one of them must be provided.
-     * Or we're oh so confused that we bail out.
+     * Or we'll be oh so confused that we'll bail out.
      */
     static async getAward({ id, title }) {
         if (id) {
@@ -73,11 +72,15 @@ class awardService {
      *
      * @static
      * @async
+     * @param {Object} payload
+     * @param {uuid} payload.awardee_id
      * @returns {[award]} found - If none, return an empty Array.
      *  It will not emit error message.
      */
-    static async getUserAwards({ user }) {
-        const found = await Award.searchByAwardee({ user_id: user.id });
+    // Not implemented because this will be done by populating user.
+    static async getUserAwards({ awardee_id }) {
+        // ???
+        const found = await Award.searchByAwardee({ user_id });
         return found;
     }
 
