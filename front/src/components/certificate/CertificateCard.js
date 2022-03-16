@@ -6,6 +6,7 @@ import Certificates from "./Certificates";
 
 function CertificateCard({ portfolioOwnerId }) {
   const [isOwner, setIsOwner] = useState(false);
+  const [isAddingg, setAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const userState = useContext(UserStateContext);
 
@@ -28,11 +29,11 @@ function CertificateCard({ portfolioOwnerId }) {
         <Card.Title>자격증</Card.Title>
         <Certificates portfolioOwnerId={portfolioOwnerId} />
         {isOwner && (
-          <Button variant="primary" onClick={() => setIsEditing(true)}>
+          <Button variant="primary" onClick={() => setAdding(true)}>
             +
           </Button>
         )}
-        {isEditing && <CertificateAddForm setIsEditing={setIsEditing} />}
+        {isAddingg && <CertificateAddForm setIsEditing={setAdding} />}
       </Card.Body>
     </Card>
   );

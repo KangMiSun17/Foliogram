@@ -5,7 +5,7 @@ import { UserStateContext } from "../../App";
 // import * as Api from "../../api";
 import axios from "axios";
 
-function CertificateAddForm({ setIsEditing }) {
+function CertificateAddForm({ setAdding }) {
   const userState = useContext(UserStateContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -55,7 +55,7 @@ function CertificateAddForm({ setIsEditing }) {
       console.log("error", e);
     }
 
-    setIsEditing(false);
+    setAdding(false);
   };
 
   return (
@@ -87,7 +87,7 @@ function CertificateAddForm({ setIsEditing }) {
         variant="secondary"
         type="button"
         onClick={() => {
-          setIsEditing(false);
+          setAdding(false);
         }}
       >
         취소
