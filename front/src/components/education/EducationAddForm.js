@@ -1,58 +1,97 @@
 import React, { useState } from "react";
-import { Button, Form, Card, Col, Row } from "react-bootstrap";
+import { Button, Form, FormCheck, Col, Row } from "react-bootstrap";
 import * as Api from "../../api";
+import Educations from "./Educations";
 
-function EducationAddForm({ eduList, setEduList, isEditable, setIsEditing }) {
+function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [position, setPosition] = useState("재학중");
 
-  const handleSubmit = async (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
 
-    // const res = await Api.put(`users/${user.id}`, {
-    //   title,
-    //   desc
-    // });
-
-    // const updateData = res.data
-    // setEduList(updateData)
-  };
+    const newId = Number(eduList.length) + 1;
+    const newEdu = { id: newId, title, desc, position };
+    const createNewEduList = [...eduList, newEdu];
+    setEduList(createNewEduList);
+    setShowAddForm(false);
+  }
 
   return (
-    <Card className="mb-2">
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="useEditName" className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder="학교"
-              value={eduList.title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </Form.Group>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="EudEditTitle" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="학교"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </Form.Group>
 
-          <Form.Group controlId="userEditEmail" className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder="학과"
-              value={eduList.desc}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-          </Form.Group>
+      <Form.Group controlId="EduEditDesc" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="학과"
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        />
+      </Form.Group>
 
-          <Form.Group as={Row} className="mt-3 text-center">
-            <Col sm={{ span: 20 }}>
-              <Button variant="primary" type="submit" className="me-3">
-                확인
-              </Button>
-              <Button variant="secondary" onClick={() => setIsEditing(false)}>
-                취소
-              </Button>
-            </Col>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-    </Card>
+      <Form.Group>
+        <FormCheck
+          inline
+          label="재학중"
+          id="radio1"
+          type="radio"
+          name="position"
+          value="재학중"
+          checked={position === "재학중"}
+          onChange={(e) => setPosition(e.target.value)}
+        ></FormCheck>
+        <FormCheck
+          inline
+          label="학사졸업"
+          id="radio2"
+          type="radio"
+          name="position"
+          value="학사졸업"
+          checked={position === "학사졸업"}
+          onChange={(e) => setPosition(e.target.value)}
+        ></FormCheck>
+        <FormCheck
+          inline
+          label="석사졸업"
+          id="radio3"
+          type="radio"
+          name="position"
+          value="석사졸업"
+          checked={position === "석사졸업"}
+          onChange={(e) => setPosition(e.target.value)}
+        ></FormCheck>
+        <FormCheck
+          inline
+          label="박사졸업"
+          id="radio4"
+          type="radio"
+          name="position"
+          value="박사졸업"
+          checked={position === "박사졸업"}
+          onChange={(e) => setPosition(e.target.value)}
+        ></FormCheck>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mt-3 text-center">
+        <Col sm={{ span: 20 }}>
+          <Button variant="primary" type="submit" className="me-3">
+            확인
+          </Button>
+          <Button variant="secondary" onClick={() => setShowAddForm(false)}>
+            취소
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
   );
 }
 

@@ -6,7 +6,7 @@ function Educations({ val, eduList, setEduList, isEditable }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <>
+    <div>
       {isEditing ? (
         <EducationEditForm
           val={val}
@@ -21,7 +21,7 @@ function Educations({ val, eduList, setEduList, isEditable }) {
           setIsEditing={setIsEditing}
         ></EducationCard>
       )}
-    </>
+    </div>
   );
 }
 

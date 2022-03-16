@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
-import context from "react-bootstrap/esm/AccordionContext";
 
 function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
   const [title, setTitle] = useState(val.title);
@@ -18,7 +17,6 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
         return elem;
       }
     });
-
     setEduList(newEduList);
     setIsEditing(false);
   }
@@ -36,7 +34,7 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
   // };
 
   return (
-    <context.Provider>
+    <>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="EudEditTitle" className="mb-3">
           <Form.Control
@@ -110,7 +108,7 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
           </Col>
         </Form.Group>
       </Form>
-    </context.Provider>
+    </>
   );
 }
 
