@@ -38,9 +38,13 @@ function CertificateCard() {
             <Certificates />
           </OwnerContext.Provider>
           {isOwner && (
-            <Button variant="primary" onClick={() => setIsAdding(true)}>
-              +
-            </Button>
+            <div className="mt-3 text-center mb-4 row">
+              <div className="col-sm-20">
+                <Button variant="primary" onClick={() => setIsAdding(true)}>
+                  +
+                </Button>
+              </div>
+            </div>
           )}
           {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
         </FecthContext.Provider>

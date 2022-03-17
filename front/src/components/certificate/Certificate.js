@@ -14,20 +14,22 @@ function Certificate() {
   const { title, description, when_date } = certificate;
 
   return (
-    <div>
+    <div className="align-items-center row">
       {isEditing ? (
         <CertificateEditForm setIsEdit={setIsEditing} />
       ) : (
-        <>
+        <div className="col">
           <p className="mb-0">{title}</p>
           <p className="mb-0">{description}</p>
           <p>{when_date}</p>
-        </>
+        </div>
       )}
       {isOwner && !isEditing && (
-        <Button variant="outline-info" onClick={() => setIsEditing(true)}>
-          편집
-        </Button>
+        <div className="col-lg-1 col">
+          <Button variant="outline-info" onClick={() => setIsEditing(true)}>
+            편집
+          </Button>
+        </div>
       )}
     </div>
   );

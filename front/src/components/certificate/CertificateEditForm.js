@@ -80,18 +80,27 @@ function CertificateEditForm({ setIsEdit }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <Button variant="primary" type="submit" onClick={handleEditSubmit}>
-        확인
-      </Button>
-      <Button
-        variant="secondary"
-        type="button"
-        onClick={() => {
-          setIsEdit(false);
-        }}
-      >
-        취소
-      </Button>
+      <div className="mt-3 text-center row">
+        <div className="col-sm-20">
+          <Button
+            className="me-3"
+            variant="primary"
+            type="submit"
+            onClick={handleEditSubmit}
+          >
+            확인
+          </Button>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => {
+              setIsEdit(false);
+            }}
+          >
+            취소
+          </Button>
+        </div>
+      </div>
     </Form>
   );
 }
