@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, FormCheck, Col, Row } from "react-bootstrap";
 import * as Api from "../../api";
 import Educations from "./Educations";
@@ -26,16 +26,22 @@ function EducationAddForm({ eduList, setEduList, setShowAddForm }) {
    */
   const [position, setPosition] = useState("재학중");
   /**
-   * 아래 form이 제출되면 해당 함수로 와서 새로 추가된 정보를 setEduList에 넘겨주어 EduList를 새로 업데이트를함(api연결할 땐 사용하지 않음)
+   * 서버에게 post로 데이터 넘겨주는 작업
    * @param {Object} e - 이벤트 객체
    * @returns {void} 따로 리턴값이 없음
    */
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    const newEdu = { school, major, position };
-    const createNewEduList = [...eduList, newEdu];
-    setEduList(createNewEduList);
+    const res = await Api.post("education/create", {
+      school,
+      major,
+      position,
+    });
+    setEduList([...eduList, res.data]);
+    // const newEdu = { school, major, position };
+    // const createNewEduList = [...eduList, newEdu];
+    // setEduList(createNewEduList);
     setShowAddForm(false);
   }
 
