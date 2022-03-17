@@ -168,7 +168,7 @@ class projectService {
      * @returns {project} removed
      */
     static async removeProject({ project_id }) {
-        console.log(`service.removeAward > `, arguments[0]);
+        console.log(`service.removeProject > `, arguments[0]);
         const removed = await Project.delete({ project_id });
         console.log(`removed: `, removed);
         return removed;

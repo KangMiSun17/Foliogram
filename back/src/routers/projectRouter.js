@@ -162,8 +162,6 @@ projectRouter.get(
  * @implements DELETE /projects/:id
  * @returns {Object} payload
  * @returns {Boolean} payload.result
- *
- * @todo The control layer must respond as {result: true/false}.
  */
 projectRouter.delete(
     "/projects/:id",
@@ -176,7 +174,11 @@ projectRouter.delete(
 
             const deleted = await projectService.removeProject({ project_id });
 
-            res.status(deleted ? 200 : 500).json({ result: !!deleted });
+            if (!deleted) {
+                throw new Error(`Project id ${project_id} not found`);
+            }
+
+            res.status(200).json({ result: true });
         } catch (why) {
             next(why);
         }
