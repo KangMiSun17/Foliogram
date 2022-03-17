@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
 
 import { UserStateContext } from "../App";
+import { PortfolioOwnerContext } from "./certificate/common/Context";
 import * as Api from "../api";
 import User from "./user/User";
 import CertificateCard from "./certificate/CertificateCard";
@@ -55,15 +56,17 @@ function Portfolio() {
   return (
     <Container fluid>
       <Row>
-        <Col md="3" lg="3">
-          <User
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
-          />
-        </Col>
-        <Col>
-          <CertificateCard portfolioOwnerId={portfolioOwner.id} />
-        </Col>
+        <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+          <Col md="3" lg="3">
+            <User
+              portfolioOwnerId={portfolioOwner.id}
+              isEditable={portfolioOwner.id === userState.user?.id}
+            />
+          </Col>
+          <Col>
+            <CertificateCard />
+          </Col>
+        </PortfolioOwnerContext.Provider>
       </Row>
     </Container>
   );

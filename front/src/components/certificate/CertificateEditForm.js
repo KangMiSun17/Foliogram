@@ -1,47 +1,57 @@
-import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { CertificateContext, FecthContext } from "./common/Context";
-import { StringDate } from "./common/StringDate";
+import { toStringDate, toObjectDate } from "./common/DateUtil";
+import * as Api from "../../api";
 
+/**
+ * @description This component that shows certificate editing screen if isEditing state === true
+ * @param {Object} props
+ * @param {function} props.setIsEdit - This State is select show edit screen or not show edit screen
+ * @returns {component} Certificate edit Form
+ */
 function CertificateEditForm({ setIsEdit }) {
   const { setIsFetching } = useContext(FecthContext);
   const certificate = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
   const [title, setTitle] = useState(certificate.title);
   const [description, setDescription] = useState(certificate.description);
-  const [startDate, setStartDate] = useState(new Date(certificate.when_date));
+  const [startDate, setStartDate] = useState(
+    toObjectDate(certificate.when_date)
+  );
 
+  // Get certificate data only one
   useEffect(() => {
-    const getCertificate = async () => {
-      const res = await axios.get(
-        "http://localhost:3001/certificate/" + certificate.id
-      );
-      setIsCertificate(res.data);
-    };
+    try {
+      const getCertificate = async () => {
+        const res = await Api.get("certificates", certificate.id);
+        setIsCertificate(res.data);
+      };
 
-    getCertificate();
+      getCertificate();
+    } catch (err) {
+      console.log("Error: certificates get request fail", err);
+    }
   }, [certificate.id]);
 
-  console.log("자격증", isCertificate);
+  console.log("자격증 정보 API 테스트", isCertificate);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const date = StringDate(startDate);
-
+  /**
+   * Send certificate data - PUT request
+   * @param {object} event Event object
+   */
+  const handleEditSubmit = async (event) => {
+    event.preventDefault();
+    const data = { title, description, when_date: toStringDate(startDate) };
     try {
-      await axios.put("http://localhost:3001/certificate/" + certificate.id, {
-        title,
-        description,
-        when_date: date,
-      });
+      await Api.put("certificates/" + certificate.id, data);
 
-      // * 요청이 성공적으로 끝나면 상태 초기화
+      // Set state when success send request
       setTitle("");
       setDescription("");
-    } catch (e) {
-      console.log("error", e);
+    } catch (err) {
+      console.log("Error: certificates put request fail", err);
     }
 
     setIsFetching(new Date());
@@ -50,17 +60,17 @@ function CertificateEditForm({ setIsEdit }) {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="formBasicName">
+      <Form.Group className="mb-3" controlId="certificateEditName">
         <Form.Control
-          type="name"
+          type="editName"
           value={title}
           placeholder="자격증 제목"
           onChange={(e) => setTitle(e.target.value)}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicHistory">
+      <Form.Group className="mb-3" controlId="certificateEditDescription">
         <Form.Control
-          type="certificateHistory"
+          type="editDescription"
           value={description}
           placeholder="상세내역"
           onChange={(e) => setDescription(e.target.value)}
@@ -70,7 +80,7 @@ function CertificateEditForm({ setIsEdit }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <Button variant="primary" type="submit" onClick={onSubmit}>
+      <Button variant="primary" type="submit" onClick={handleEditSubmit}>
         확인
       </Button>
       <Button

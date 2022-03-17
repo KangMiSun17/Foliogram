@@ -1,20 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import {
+  FecthContext,
+  CertificateContext,
+  PortfolioOwnerContext,
+} from "./common/Context";
 import Certificate from "./Certificate";
-import { FecthContext, CertificateContext } from "./common/Context";
+import * as Api from "../../api";
 
+/**
+ * @description This component that get list of certifications and show screen
+ * @returns {component} List of certificate
+ */
 function Certificates() {
   const { isFetching } = useContext(FecthContext);
   const [certificateList, setCertificateList] = useState([]);
+  const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
+  // All certificate data get - get request
   useEffect(() => {
-    const getCertificateList = async () => {
-      const res = await axios.get("http://localhost:3001/certificate");
-      setCertificateList(res.data);
-    };
+    try {
+      const getCertificateList = async () => {
+        const res = await Api.get("certificatelist/" + portfolioOwnerId);
+        console.log(res);
+        setCertificateList(res.data);
+      };
 
-    getCertificateList();
-  }, [isFetching]);
+      getCertificateList();
+    } catch (err) {
+      console.log("Error: certificatelist get request fail", err);
+    }
+  }, [isFetching, portfolioOwnerId]);
 
   return (
     <>

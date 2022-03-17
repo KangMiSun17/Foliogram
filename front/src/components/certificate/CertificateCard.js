@@ -1,21 +1,26 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { UserStateContext } from "../../App";
+import {
+  OwnerContext,
+  FecthContext,
+  PortfolioOwnerContext,
+} from "./common/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
-import { OwnerContext, FecthContext } from "./common/Context";
 
-function CertificateCard({ portfolioOwnerId }) {
+/**
+ * @description root component related to certification
+ * @returns {component} Complete Certificate Card
+ */
+function CertificateCard() {
   const [isOwner, setIsOwner] = useState(false);
-  const [isFetching, setIsFetching] = useState(new Date());
   const [isAddingg, setIsAdding] = useState(false);
+  const [isFetching, setIsFetching] = useState(new Date());
   const userState = useContext(UserStateContext);
+  const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
-  /**
-   * 포트폴리오의 주인인지 확인하여 isOwner의 상태 변경
-   * @param { string } userState.user.id - 로그인 되어있는 유저의 id
-   * @param { string } portfolioOwnerId - 엔드포인트 params :id
-   * **/
+  // Checking login user id equals portfolio id
   useEffect(() => {
     if (userState.user.id === portfolioOwnerId) {
       setIsOwner(true);

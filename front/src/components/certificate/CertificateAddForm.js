@@ -1,13 +1,17 @@
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import axios from "axios";
-
-import { StringDate } from "./common/StringDate";
+import { toStringDate } from "./common/DateUtil";
 import { UserStateContext } from "../../App";
 import { FecthContext } from "./common/Context";
-// import * as Api from "../../api";
+import * as Api from "../../api";
 
+/**
+ * @description This component that shows certificate adding screen if isAdding state === true
+ * @param {Object} props
+ * @param {function} props.setIsAdding - This State is select show add screen or not show add screen
+ * @returns {component} Certificate add Form
+ */
 function CertificateAddForm({ setIsAdding }) {
   const userState = useContext(UserStateContext);
   const { setIsFetching } = useContext(FecthContext);
@@ -16,30 +20,26 @@ function CertificateAddForm({ setIsAdding }) {
   const [startDate, setStartDate] = useState(new Date());
 
   /**
-   * Submit - POST요청
-   * @param { string } date - "YYYY-MM-DD"
-   * @param { string } title - 자격증 제목
-   * @param { string } description - 자격증 상세 내역
-   * @param { object } userState - 로그인된 유저의 정보
-   * @param { function } setIsAdding - 요청 완료 후 setIsAdding 상태를 변경하여 폼 닫기
-   **/
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const date = StringDate(startDate);
+   * Certificate data send - post request
+   * @param {object} event Event object
+   */
+  const handleAddSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
+      user_id: userState.user.id,
+      title,
+      description,
+      when_date: toStringDate(startDate),
+    };
 
     try {
-      await axios.post("http://localhost:3001/certificate", {
-        user_id: userState.user.id,
-        title,
-        description,
-        when_date: date,
-      });
+      await Api.post("certificates/create", data);
 
-      // * 요청이 성공적으로 끝나면 상태 초기화
+      // Set state when success send request
       setTitle("");
       setDescription("");
-    } catch (e) {
-      console.log("error", e);
+    } catch (err) {
+      console.log("Error: certificates/create post request fail", err);
     }
 
     setIsFetching(new Date());
@@ -48,17 +48,17 @@ function CertificateAddForm({ setIsAdding }) {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="formBasicName">
+      <Form.Group className="mb-3" controlId="certificateAddName">
         <Form.Control
-          type="name"
+          type="addName"
           value={title}
           placeholder="자격증 제목"
           onChange={(e) => setTitle(e.target.value)}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicHistory">
+      <Form.Group className="mb-3" controlId="certificateAddDescription">
         <Form.Control
-          type="certificateHistory"
+          type="addDescription"
           value={description}
           placeholder="상세내역"
           onChange={(e) => setDescription(e.target.value)}
@@ -68,7 +68,7 @@ function CertificateAddForm({ setIsAdding }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <Button variant="primary" type="submit" onClick={onSubmit}>
+      <Button variant="primary" type="submit" onClick={handleAddSubmit}>
         확인
       </Button>
       <Button

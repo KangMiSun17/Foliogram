@@ -3,6 +3,10 @@ import { Button } from "react-bootstrap";
 import { CertificateContext, OwnerContext } from "./common/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
+/**
+ * @description This component that shows editing screen or certificate info depending on the isEditing state
+ * @returns {component} Certificate information
+ */
 function Certificate() {
   const { isOwner } = useContext(OwnerContext);
   const certificate = useContext(CertificateContext);
