@@ -80,7 +80,7 @@ function CertificateEditForm({ setIsEdit }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <div className="mt-3 text-center row">
+      <div className="mt-3 mb-4 text-center row">
         <div className="col-sm-20">
           <Button
             className="me-3"
