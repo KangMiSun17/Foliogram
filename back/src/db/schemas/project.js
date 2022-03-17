@@ -1,5 +1,14 @@
 import { Schema, model } from "mongoose";
 
+const dateValidator = {
+    // Needs to be YYYY-MM-DD format.
+    // date.toISOString().slice(0, 10) does that.
+    validator: (v) => {
+        return new Date(v).toString() !== "Invalid Date";
+    },
+    message: "Not a correct date format, should be YYYY-MM-DD",
+};
+
 /*
 {
     "user_id":"af4ff0af-2a5f-4eea-99f2-d18b42aba419",
@@ -18,6 +27,8 @@ import { Schema, model } from "mongoose";
  * @field {String} from_date
  * @field {String} to_date
  * @field {String} [description]
+ *
+ * @todo May have to modify to_date later.
  **/
 const ProjectSchema = new Schema(
     {
@@ -36,6 +47,7 @@ const ProjectSchema = new Schema(
         from_date: {
             type: String,
             required: true,
+            validate: dateValidator,
         },
         to_date: {
             type: String,
