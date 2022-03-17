@@ -1,4 +1,4 @@
-import { Card, CardText, Row, Button, Col } from "react-bootstrap";
+import { Card, Row, Button, Col } from "react-bootstrap";
 
 /**
  * @param {Object} val - eduList 배열 안에 있는 각각의 객체, 예시:{ school: "서울대학교", major: "컴퓨터", position: "박사졸업" }

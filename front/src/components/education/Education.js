@@ -15,22 +15,19 @@ function Education({ portfolioOwnerId, isEditable }) {
    * @param {Array} eduList - 각 사용자(아이디)에 맞는 학력 정보 리스트
    * @param {function} setEduList - eduList 상태를 변경할 수 있는 함수
    */
-  const [eduList, setEduList] = useState([
-    { school: "서울대학교", major: "컴퓨터", position: "박사졸업" },
-    { school: "서울고등학교", major: "이공계", position: "재학중" },
-    { school: "서울중학교", major: "학생", position: "재학중" },
-  ]);
+  const [eduList, setEduList] = useState([]);
   /**
    * @param {Boolean} showAddForm - +버튼 추가할지 안할지 여부
    * @param {function} setShowAddForm - showAddForm 상태를 변경할 수 있는 함수
    */
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // useEffect(() => {
-  //   Api.get("educationlist", portfolioOwnerId).then((res) =>
-  //     setEduList(res.data)
-  //   );
-  // }, []);
+  useEffect(() => {
+    Api.get("educationlist", portfolioOwnerId).then((res) =>
+      setEduList(res.data)
+    );
+  }, []);
+
   return (
     <>
       <Card>
@@ -45,6 +42,7 @@ function Education({ portfolioOwnerId, isEditable }) {
                 eduList={eduList}
                 setEduList={setEduList}
                 isEditable={isEditable}
+                portfolioOwnerId={portfolioOwnerId}
               />
             );
           })}

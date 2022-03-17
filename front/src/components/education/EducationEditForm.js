@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
+import * as Api from "../../api";
 
 /**
  * @param {Object} val - eduList 배열 안에 있는 각각의 객체, 예시:{ school: "서울대학교", major: "컴퓨터", position: "박사졸업" }
- * @param {Array} eduList - 학력 정보 리스트
  * @param {function} setEduList - eduList 상태를 바꿀 수 있는 함수(사용자의 학력 정보를 추가, 변경, 삭제를 eduList 상태값을 변경하여 바꾸는데 그때 사용)
  * @param {Boolean} setIsEditing - 편집 가능한지 여부(여기선 편집이 완료된 후 카드페이지로 다시 가기 위해props로 가져옴 (편집 완료 후 false값으로 바꾸어야 카드 페이지로 리렌더링됨)
  * @returns (\<Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable} />)
  */
-function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
+function EducationEditForm({
+  val,
+  // eduList,
+  setEduList,
+  setIsEditing,
+  portfolioOwnerId,
+}) {
   /**
    * @param {String} school - 학교 정보(초기값은 val객체 안에 school값으로 설정 되어있음)
    * @param {function} setSchool - school 상태를 바꿀 수 있는 함수(해당 기능을 통해 수정된 학교 정보를 가져와 상태를 변경할 수 있음 )
@@ -25,37 +31,36 @@ function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
    */
   const [position, setPosition] = useState(val.position);
   /**
-   * 아래 form이 제출되면 해당 함수로 와서 변경된 사항을 setEduList에 넘겨주어 업데이트를함(api연결할 땐 사용하지 않음)
+   * update로 서버에게 수정 요청 후 리렌더링
    * @param {Object} e - 이벤트 객체
    * @returns {void} 따로 리턴값이 없음
    */
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     // 변경사항을 업데이트 하는 과정(map을 돌려 변경하고자 하는 school의 값과 같은 객체를 newEdu로 변경하여 setEduList의 인자로 넘겨주는 것을 통해 update기능 구현)
-    const newEduList = eduList.map((elem) => {
-      if (elem.school === val.school) {
-        const newEdu = { school, major, position };
-        return newEdu;
-      } else {
-        return elem;
-      }
+
+    const res = await Api.put(`educations/${val.id}`, {
+      school,
+      major,
+      position,
     });
-    setEduList(newEduList);
+
+    console.log(res.data);
+
+    Api.get("educationlist", portfolioOwnerId).then((res) =>
+      setEduList(res.data)
+    );
+    // const newEduList = eduList.map((elem) => {
+    //   if (elem.school === val.school) {
+    //     const newEdu = { school, major, position };
+    //     return newEdu;
+    //   } else {
+    //     return elem;
+    //   }
+    // });
+    // setEduList(newEduList);
     setIsEditing(false);
   }
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const res = await Api.put(`users/${user.id}`, {
-  //     title,
-  //     desc
-  //   });
-
-  //   const updateData = res.data
-  //   setEduList(updateData)
-  // };
-
   return (
     <>
       <Form onSubmit={handleSubmit}>

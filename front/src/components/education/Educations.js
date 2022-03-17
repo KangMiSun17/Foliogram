@@ -9,7 +9,13 @@ import EducationCard from "./EducationCard";
  * @param {Boolean} isEditable - 편집 가능한지 여부(여기선 하위 컴포넌트에 props로 넘겨주기 위 가져옴)
  * @returns (\<Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable}/>)
  */
-function Educations({ val, eduList, setEduList, isEditable }) {
+function Educations({
+  val,
+  eduList,
+  setEduList,
+  isEditable,
+  portfolioOwnerId,
+}) {
   /**
    * @param {Boolean} isEditing - 편집페이지를 보여줄지 카드페이지로 보여줄지
    * @param {function} setIsEditing - isEditing 상태를 바꿀 수 있는 함수(해당 기능을 통해 편집버튼을 누르면 해당 값(상태)을 변경시켜 편집페이지와 카드페이지로 전환할 수 있음)
@@ -25,6 +31,7 @@ function Educations({ val, eduList, setEduList, isEditable }) {
           eduList={eduList}
           setEduList={setEduList}
           setIsEditing={setIsEditing}
+          portfolioOwnerId={portfolioOwnerId}
         ></EducationEditForm>
       ) : (
         <EducationCard
