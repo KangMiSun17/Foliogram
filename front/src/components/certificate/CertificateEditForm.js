@@ -14,19 +14,17 @@ import * as Api from "../../api";
  */
 function CertificateEditForm({ setIsEdit }) {
   const { setIsFetching } = useContext(FecthContext);
-  const certificate = useContext(CertificateContext);
+  const { id, title, description, when_date } = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
-  const [title, setTitle] = useState(certificate.title);
-  const [description, setDescription] = useState(certificate.description);
-  const [startDate, setStartDate] = useState(
-    toObjectDate(certificate.when_date)
-  );
+  const [modTitle, setModTitle] = useState(title);
+  const [modDescription, setModDescription] = useState(description);
+  const [startDate, setStartDate] = useState(toObjectDate(when_date));
 
   // Get certificate data only one
   useEffect(() => {
     try {
       const getCertificate = async () => {
-        const res = await Api.get("certificates", certificate.id);
+        const res = await Api.get("certificates", id);
         setIsCertificate(res.data);
       };
 
@@ -34,7 +32,7 @@ function CertificateEditForm({ setIsEdit }) {
     } catch (err) {
       console.log("Error: certificates get request fail", err);
     }
-  }, [certificate.id]);
+  }, [id]);
 
   console.log("자격증 정보 API 테스트", isCertificate);
 
@@ -44,13 +42,17 @@ function CertificateEditForm({ setIsEdit }) {
    */
   const handleEditSubmit = async (event) => {
     event.preventDefault();
-    const data = { title, description, when_date: toStringDate(startDate) };
+    const data = {
+      title: modTitle,
+      description: modDescription,
+      when_date: toStringDate(startDate),
+    };
     try {
-      await Api.put("certificates/" + certificate.id, data);
+      await Api.put("certificates/" + id, data);
 
       // Set state when success send request
-      setTitle("");
-      setDescription("");
+      setModTitle("");
+      setModDescription("");
     } catch (err) {
       console.log("Error: certificates put request fail", err);
     }
@@ -64,17 +66,17 @@ function CertificateEditForm({ setIsEdit }) {
       <Form.Group className="mb-3" controlId="certificateEditName">
         <Form.Control
           type="editName"
-          value={title}
+          value={modTitle}
           placeholder="자격증 제목"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setModTitle(e.target.value)}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="certificateEditDescription">
         <Form.Control
           type="editDescription"
-          value={description}
+          value={modDescription}
           placeholder="상세내역"
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => setModDescription(e.target.value)}
         />
       </Form.Group>
       <DatePicker
