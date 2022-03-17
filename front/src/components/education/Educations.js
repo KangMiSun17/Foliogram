@@ -7,7 +7,7 @@ import EducationCard from "./EducationCard";
  * @param {Array} eduList - 학력 정보 리스트
  * @param {function} setEduList - eduList 상태를 바꿀 수 있는 함수(사용자의 학력 정보를 추가, 변경, 삭제를 eduList 상태값을 변경하여 바꾸는데 그때 사용)
  * @param {Boolean} isEditable - 편집 가능한지 여부(여기선 하위 컴포넌트에 props로 넘겨주기 위 가져옴)
- * @returns ( <Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable} />)
+ * @returns (\<Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable}/>)
  */
 function Educations({ val, eduList, setEduList, isEditable }) {
   /**

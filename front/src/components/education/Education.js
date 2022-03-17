@@ -8,11 +8,10 @@ import Educations from "./Educations";
 /**
  * @param {string} portfolioOwnerId - 로그인 되어있는지 여부 확인용
  * @param {string} isEditable - 사용자가 편집 가능한지 여부
- * @returns (<Education portfolioOwnerId={portfolioOwner.id} isEditable={portfolioOwner.id === userState.user?.id}/>)
+ * @returns (\<Education portfolioOwnerId={portfolioOwner.id} isEditable={portfolioOwner.id === userState.user?.id}/>)
  */
 function Education({ portfolioOwnerId, isEditable }) {
   /**
-   *
    * @param {Array} eduList - 각 사용자(아이디)에 맞는 학력 정보 리스트
    * @param {function} setEduList - eduList 상태를 변경할 수 있는 함수
    */
@@ -22,7 +21,6 @@ function Education({ portfolioOwnerId, isEditable }) {
     { school: "서울중학교", major: "학생", position: "재학중" },
   ]);
   /**
-   *
    * @param {Boolean} showAddForm - +버튼 추가할지 안할지 여부
    * @param {function} setShowAddForm - showAddForm 상태를 변경할 수 있는 함수
    */

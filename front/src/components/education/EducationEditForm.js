@@ -6,16 +6,32 @@ import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
  * @param {Array} eduList - 학력 정보 리스트
  * @param {function} setEduList - eduList 상태를 바꿀 수 있는 함수(사용자의 학력 정보를 추가, 변경, 삭제를 eduList 상태값을 변경하여 바꾸는데 그때 사용)
  * @param {Boolean} setIsEditing - 편집 가능한지 여부(여기선 편집이 완료된 후 카드페이지로 다시 가기 위해props로 가져옴 (편집 완료 후 false값으로 바꾸어야 카드 페이지로 리렌더링됨)
- * @returns ( <Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable} />)
+ * @returns (\<Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable} />)
  */
 function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
+  /**
+   * @param {String} school - 학교 정보(초기값은 val객체 안에 school값으로 설정 되어있음)
+   * @param {function} setSchool - school 상태를 바꿀 수 있는 함수(해당 기능을 통해 수정된 학교 정보를 가져와 상태를 변경할 수 있음 )
+   */
   const [school, setSchool] = useState(val.school);
+  /**
+   * @param {String} major - 학과 정보(초기값은 val객체 안에 major값으로 설정 되어있음)
+   * @param {function} setMajor - major 상태를 바꿀 수 있는 함수(해당 기능을 통해 수정된 학과 정보를 가져와 상태를 변경할 수 있음 )
+   */
   const [major, setMajor] = useState(val.major);
+  /**
+   * @param {String} position - 졸업 여부(초기값은 val객체 안에 position값으로 설정 되어있음)
+   * @param {function} setPosition - position 상태를 바꿀 수 있는 함수(해당 기능을 통해 수정된 졸업 여부를 가져와 상태를 변경할 수 있음 )
+   */
   const [position, setPosition] = useState(val.position);
-
+  /**
+   * 아래 form이 제출되면 해당 함수로 와서 변경된 사항을 setEduList에 넘겨주어 업데이트를함(api연결할 땐 사용하지 않음)
+   * @param {Object} e - 이벤트 객체
+   * @returns {void} 따로 리턴값이 없음
+   */
   function handleSubmit(e) {
     e.preventDefault();
-
+    // 변경사항을 업데이트 하는 과정(map을 돌려 변경하고자 하는 school의 값과 같은 객체를 newEdu로 변경하여 setEduList의 인자로 넘겨주는 것을 통해 update기능 구현)
     const newEduList = eduList.map((elem) => {
       if (elem.school === val.school) {
         const newEdu = { school, major, position };
