@@ -7,6 +7,7 @@ import { PortfolioOwnerContext } from "./certificate/common/Context";
 import * as Api from "../api";
 import User from "./user/User";
 import CertificateCard from "./certificate/CertificateCard";
+import Awards from "./award/Awards";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ function Portfolio() {
     <Container fluid>
       <Row>
         <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
-          <Col md="3" lg="3">
+          <Col lg="4">
             <User
               portfolioOwnerId={portfolioOwner.id}
               isEditable={portfolioOwner.id === userState.user?.id}
@@ -65,6 +66,12 @@ function Portfolio() {
           </Col>
           <Col>
             <CertificateCard />
+          </Col>
+          <Col>
+            <Awards
+              portfolioOwnerId={portfolioOwner.id}
+              isEditable={portfolioOwner.id === userState.user?.id}
+            />
           </Col>
         </PortfolioOwnerContext.Provider>
       </Row>
