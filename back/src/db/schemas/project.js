@@ -4,7 +4,18 @@ const dateValidator = {
     // Needs to be YYYY-MM-DD format.
     // date.toISOString().slice(0, 10) does that.
     validator: (v) => {
-        return new Date(v).toString() !== "Invalid Date";
+        return (
+            new Date(v).toString() !== "Invalid Date" &&
+            new RegExp(
+                [
+                    /^(?<year>[0-9]{4})/,
+                    /-(?<month>[01][0-9])/,
+                    /-(?<day>[0-3][0-9])$/,
+                ]
+                    .map((p) => p.source)
+                    .join("")
+            ).test(v)
+        );
     },
     message: "Not a correct date format, should be YYYY-MM-DD",
 };
@@ -52,6 +63,7 @@ const ProjectSchema = new Schema(
         to_date: {
             type: String,
             required: false,
+            validate: dateValidator,
             default: "THIS PROJECT ENDED WHEN YOU HAVE REPENTED ALL YOUR SINS",
         },
         description: {
