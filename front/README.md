@@ -46,3 +46,5 @@ yarn start
 - 각 Award 컴포넌트는 **isEditing 상태에 따라**, false면 AwardCard, true면 AwardEditForm이 됩니다.
 - **isEditable**(포트폴리오 소유자와 현재 로그인한 사용자가 일치할 때)이 true인 경우 편집 버튼이 생깁니다.
 - Awards는 **isAdding**이 true면 AwardAddForm, false면 그냥 Award들의 모음이 됩니다.
+
+브랜치를 만들었는데 분기가 잘 되었는지 확인하기 위한 더미 텍스트입니다.
