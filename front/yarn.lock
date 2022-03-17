@@ -1402,6 +1402,11 @@
     "source-map" "^0.7.3"
 
 "@popperjs/core@^2.0.0", "@popperjs/core@^2.10.1", "@popperjs/core@^2.10.2", "@popperjs/core@^2.9.2":
+<<<<<<< HEAD
+=======
+  "integrity" "sha512-q/ytXxO5NKvyT37pmisQAItCFqA7FD/vNb8dgaJy3/630Fsc+Mz9/9f2SziBoIZ30TJooXyTwZmhi1zjXmObYg=="
+  "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.4.tgz"
+>>>>>>> 30cf9edc79667dd4632b47b261dc8bfadaf651cc
   "version" "2.11.4"
 
 "@react-aria/ssr@^3.0.1":
@@ -8490,6 +8495,11 @@
     "is-typedarray" "^1.0.0"
 
 "typescript@^3.2.1 || ^4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
+<<<<<<< HEAD
+=======
+  "integrity" "sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.6.2.tgz"
+>>>>>>> 30cf9edc79667dd4632b47b261dc8bfadaf651cc
   "version" "4.6.2"
 
 "unbox-primitive@^1.0.1":
