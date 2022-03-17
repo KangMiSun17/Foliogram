@@ -1,20 +1,15 @@
 import { Schema, model } from "mongoose";
 
+const RE_DATE_PATTERN = new RegExp(
+    /^(?<year>[0-9]{4})-(?<month>[01][0-9])-(?<day>[0-3][0-9])$/
+);
+
 const dateValidator = {
     // Needs to be YYYY-MM-DD format.
     // date.toISOString().slice(0, 10) does that.
     validator: (v) => {
         return (
-            new Date(v).toString() !== "Invalid Date" &&
-            new RegExp(
-                [
-                    /^(?<year>[0-9]{4})/,
-                    /-(?<month>[01][0-9])/,
-                    /-(?<day>[0-3][0-9])$/,
-                ]
-                    .map((p) => p.source)
-                    .join("")
-            ).test(v)
+            RE_DATE_PATTERN.test(v) && new Date(v).toString() !== "Invalid Date"
         );
     },
     message: "Not a correct date format, should be YYYY-MM-DD",
