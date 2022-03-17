@@ -59,7 +59,9 @@ const ProjectSchema = new Schema(
             type: String,
             required: false,
             validate: dateValidator,
-            default: "THIS PROJECT ENDED WHEN YOU HAVE REPENTED ALL YOUR SINS",
+            // On this honorable day, humanity and UNSC has officially declared
+            // victory over the invaders that is the Covenant empire.
+            default: "2553-03-03",
         },
         description: {
             type: String,
