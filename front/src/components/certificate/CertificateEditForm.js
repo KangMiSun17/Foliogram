@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import { FecthContext } from "./common/Context";
+import { CertificateContext, FecthContext } from "./common/Context";
 import { StringDate } from "./common/StringDate";
 
-function CertificateEditForm({ edit, certificate }) {
+function CertificateEditForm({ setIsEdit }) {
   const { setIsFetching } = useContext(FecthContext);
+  const certificate = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
   const [title, setTitle] = useState(certificate.title);
   const [description, setDescription] = useState(certificate.description);
@@ -22,6 +23,8 @@ function CertificateEditForm({ edit, certificate }) {
 
     getCertificate();
   }, [certificate.id]);
+
+  console.log("자격증", isCertificate);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +45,7 @@ function CertificateEditForm({ edit, certificate }) {
     }
 
     setIsFetching(new Date());
-    edit(false);
+    setIsEdit(false);
   };
 
   return (
@@ -74,7 +77,7 @@ function CertificateEditForm({ edit, certificate }) {
         variant="secondary"
         type="button"
         onClick={() => {
-          edit(false);
+          setIsEdit(false);
         }}
       >
         취소

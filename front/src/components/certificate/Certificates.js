@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Certificate from "./Certificate";
-import { FecthContext } from "./common/Context";
+import { FecthContext, CertificateContext } from "./common/Context";
 
 function Certificates() {
   const { isFetching } = useContext(FecthContext);
@@ -19,7 +19,9 @@ function Certificates() {
   return (
     <>
       {certificateList.map((value) => (
-        <Certificate key={value.id} certificate={value} />
+        <CertificateContext.Provider key={value.id} value={value}>
+          <Certificate />
+        </CertificateContext.Provider>
       ))}
     </>
   );

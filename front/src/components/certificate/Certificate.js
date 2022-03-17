@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-import { OwnerContext } from "./common/Context";
+import { CertificateContext, OwnerContext } from "./common/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
-function Certificate({ certificate }) {
+function Certificate() {
   const { isOwner } = useContext(OwnerContext);
+  const certificate = useContext(CertificateContext);
   const [isEditing, setIsEditing] = useState(false);
   const { title, description, when_date } = certificate;
 
   return (
     <div>
       {isEditing ? (
-        <CertificateEditForm edit={setIsEditing} certificate={certificate} />
+        <CertificateEditForm setIsEdit={setIsEditing} />
       ) : (
         <>
           <p className="mb-0">{title}</p>
