@@ -30,7 +30,7 @@ function Education({ portfolioOwnerId, isEditable }) {
 
   return (
     <>
-      <Card>
+      <Card className="me-4 mb-3">
         <Card.Body>
           <Card.Title>학력</Card.Title>
           {/* (map을 통해 <Educations/>컴포넌트에 각 eduList의 내용(객체)을 주입 후 해당 컴포넌트 생성) */}
