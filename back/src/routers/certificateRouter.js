@@ -1,19 +1,19 @@
-import is from '@sindresorhus/is';
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { certificateService } from '../services/certificateService';
+import is from "@sindresorhus/is";
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { certificateService } from "../services/certificateService";
 
 const certificateRouter = Router();
 
 certificateRouter.post(
-    '/certificates/create',
+    "/certificates/create",
     login_required,
     async function (req, res, next) {
         try {
             //if req.body is not exist,return Error message
             if (is.emptyObject(req.body)) {
                 throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
+                    "headers의 Content-Type을 application/json으로 설정해주세요"
                 );
             }
 
@@ -39,7 +39,7 @@ certificateRouter.post(
 );
 
 certificateRouter.get(
-    '/certificates/:id',
+    "/certificates/:id",
     login_required,
     async function (req, res, next) {
         try {
@@ -59,7 +59,7 @@ certificateRouter.get(
 );
 
 certificateRouter.get(
-    '/certificatelist/:user_id',
+    "/certificatelist/:user_id",
     login_required,
     async function (req, res, next) {
         try {
@@ -77,7 +77,7 @@ certificateRouter.get(
 );
 
 certificateRouter.delete(
-    '/certificates/:id',
+    "/certificates/:id",
     login_required,
     async function (req, res, next) {
         try {
@@ -95,7 +95,7 @@ certificateRouter.delete(
 );
 
 certificateRouter.put(
-    '/certificates/:id',
+    "/certificates/:id",
     login_required,
     async function (req, res, next) {
         try {

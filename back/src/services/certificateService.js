@@ -1,5 +1,5 @@
-import { Certificate } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { v4 as uuidv4 } from 'uuid';
+import { certificate } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { v4 as uuidv4 } from "uuid";
 
 class certificateService {
     /**
@@ -34,7 +34,7 @@ class certificateService {
         const certificate = await Certificate.findById({ id });
         //if certificate is not exist in DB,return error message
         if (!certificate) {
-            const errorMessage = '삭제 되었거나 존재하지 않는 자격증입니다.';
+            const errorMessage = "삭제 되었거나 존재하지 않는 자격증입니다.";
             return { errorMessage };
         }
         return certificate;
@@ -79,13 +79,13 @@ class certificateService {
 
         //if certificate is not exist in DB,return error message
         if (!certificate) {
-            const errorMessage = '삭제 되었거나 존재하지 않는 자격증입니다.';
+            const errorMessage = "삭제 되었거나 존재하지 않는 자격증입니다.";
             return { errorMessage };
         }
 
         // update with keys which is not null
         if (toUpdate.title) {
-            const fieldToUpdate = 'title';
+            const fieldToUpdate = "title";
             const newValue = toUpdate.title;
             certificate = await Certificate.update({
                 id,
@@ -95,7 +95,7 @@ class certificateService {
         }
 
         if (toUpdate.description) {
-            const fieldToUpdate = 'description';
+            const fieldToUpdate = "description";
             const newValue = toUpdate.description;
             certificate = await Certificate.update({
                 id,
@@ -105,7 +105,7 @@ class certificateService {
         }
 
         if (toUpdate.when_date) {
-            const fieldToUpdate = 'when_date';
+            const fieldToUpdate = "when_date";
             const newValue = toUpdate.when_date;
             certificate = await Certificate.update({
                 id,
