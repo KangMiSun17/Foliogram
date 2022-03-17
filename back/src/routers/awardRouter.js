@@ -55,7 +55,6 @@ awardRouter.post(
                 awardee_id: user_id,
                 title,
                 description,
-                awardee,
             });
 
             res.status(201).json(newAward);
@@ -68,7 +67,7 @@ awardRouter.post(
 /** /awards/:id get router
  *
  * @implements GET /awards/:id
- * @returns {award} award
+ * @returns {award|null} award
  */
 awardRouter.get("/awards/:id", login_required, async function (req, res, next) {
     // Here we get the id of an award and give back a single award.
@@ -76,7 +75,9 @@ awardRouter.get("/awards/:id", login_required, async function (req, res, next) {
     // but it's a bit awkward.
     // On reflection, writing findByTitle wasn't all that smart after all.
     try {
-        const found = await awardService.getAward({ id });
+        const award_id = req.params.id;
+        console.log(`GET /awards/${award_id}`);
+        const found = await awardService.getAward({ award_id });
         res.status(200).json(found);
     } catch (why) {
         next(why);
@@ -97,12 +98,25 @@ awardRouter.put("/awards/:id", login_required, async function (req, res, next) {
     try {
         const award_id = req.params.id;
         const user_id = req.currentUserId;
+
         const award = await awardService.getAward({ award_id });
         if (!award) {
             throw new Error(`Award id ${award_id} not found`);
-        } else if (award.awardee.id !== user_id) {
+        } else if (award.awardee_id !== user_id) {
             throw new Error(`User is not an owner of the award id ${award_id}`);
         }
+
+        console.log(
+            `PUT /awards/:${award_id},
+user_id=${user_id},
+awardee_id=${award.awardee_id}`
+        );
+        console.log(req.body);
+
+        const updated = await awardService.setAward({
+            award_id,
+            pairs: Object.entries(req.body),
+        });
 
         res.status(200).json(award);
     } catch (why) {
@@ -121,7 +135,9 @@ awardRouter.get(
     async function (req, res, next) {
         try {
             const user_id = req.params.user_id;
-            const awards = await awardService.getUserAwards({ user_id });
+            const awards = await awardService.getUserAwards({
+                awardee_id: user_id,
+            });
 
             res.status(200).json(awards);
         } catch (why) {
@@ -144,7 +160,10 @@ awardRouter.delete(
     async function (req, res, next) {
         try {
             const award_id = req.params.id;
-            const deleted = await awardService.removeAward(award_id);
+
+            console.log(`DELETE /awards/:${award_id}`);
+
+            const deleted = await awardService.removeAward({ award_id });
 
             res.status(deleted ? 200 : 500).json({ result: !!deleted });
         } catch (why) {

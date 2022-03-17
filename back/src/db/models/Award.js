@@ -18,6 +18,7 @@ class Award {
      * @returns {award|null} created
      */
     static async create({ newAward }) {
+        console.log(`Award.create: received ${newAward}`);
         const created = await AwardModel.create(newAward);
         return created;
     }
@@ -52,7 +53,7 @@ class Award {
      *
      * @static
      * @async
-     * @returns {[award]} awards
+     * @returns {award[]} awards
      *
      * This method was named against the find/search convention for the sake of
      * consistency with the existing User MVP.
@@ -69,7 +70,7 @@ class Award {
      * @param {Object} payload
      * @param {RegExp|String} [payload.title]
      * @param {RegExp|String} [payload.description]
-     * @returns {[award]} awards
+     * @returns {award[]} awards
      *
      * Query keysords may either be RegExp literal or compiled RegExp object.
      * Regex options, if any, will have to be added inline.
@@ -120,12 +121,12 @@ class Award {
      * @async
      * @param {Object} payload
      * @param {uuid} payload.awardee_id - As RegExp literal or compiled RegExp Object.
-     * @returns {[award]} awards
+     * @returns {award[]} awards
      *
      * @todo I forgot to implement this one
      */
     static async searchByAwardee({ awardee_id }) {
-        const awards = await AwardModel.find({ award_id });
+        const awards = await AwardModel.find({ awardee_id });
         return awards;
     }
 
@@ -135,14 +136,16 @@ class Award {
      * @async
      * @param {Object} payload - An Object containing award id and data.
      * @param {uuid} payload.award_id
-     * @param {field} payload.fieldToUpdate
-     * @param {any} payload.newValue
+     * @param {String[]} payload.pairs - Array of [key, value] pairs.
      * @returns {award} updated
+     *
      */
-    static async update({ award_id, fieldToUpdate, newValue }) {
+    static async update({ award_id, pairs }) {
         const filter = { id: award_id };
-        const update = { [fieldToUpdate]: newValue };
+        // const update = { [fieldToUpdate]: newValue };
+        const update = Object.fromEntries(pairs);
         const option = { returnOriginal: false };
+
         const updated = await AwardModel.findOneAndUpdate(
             filter,
             update,
@@ -159,8 +162,8 @@ class Award {
      * @param {uuid} payload.award_id
      * @returns {award} deleted
      */
-    static async delete({ awrad_id }) {
-        const deleted = await Award.findOneAndDelete({ id: award_id });
+    static async delete({ award_id }) {
+        const deleted = await AwardModel.findOneAndDelete({ id: award_id });
         return deleted;
     }
 }

@@ -27,9 +27,14 @@ class awardService {
         // Unlike user email, awards MAY have same name.
 
         const id = uuidv4();
-        const newAward = { id, awardee_id, title, description };
+        const newAward = { id, awardee_id, title };
+        if (description) {
+            newAward.description = description;
+        }
 
-        const added = await Award.create(newAward);
+        console.log(`service.addAward >`, arguments);
+        const added = await Award.create({ newAward });
+        console.log(`service.addAward > added=${added}`);
         return added;
     }
 
@@ -47,13 +52,14 @@ class awardService {
      * Or we'll be oh so confused that we'll bail out.
      */
     static async getAward({ award_id, title }) {
+        console.log(`service.getAward > `, arguments[0]);
+        let found = null;
         if (award_id) {
-            const found = await Award.findById({ award_id });
+            found = await Award.findById({ award_id });
         } else if (title) {
-            const found = await Award.findByName({ title });
-        } else {
-            return null;
+            found = await Award.findByName({ title });
         }
+
         return found;
     }
 
@@ -61,7 +67,7 @@ class awardService {
      *
      * @static
      * @async
-     * @returns {[award]} found - If none, return an empty Array.
+     * @returns {award[]} found - If none, return an empty Array.
      *  It will not emit error message.
      */
     static async getAllAwards() {
@@ -75,12 +81,13 @@ class awardService {
      * @async
      * @param {Object} payload
      * @param {uuid} payload.awardee_id
-     * @returns {[award]} found - If none, return an empty Array.
+     * @returns {award[]} found - If none, return an empty Array.
      *  It will not emit error message.
      */
     static async getUserAwards({ awardee_id }) {
         // ???
-        const found = await Award.searchByAwardee({ user_id });
+        console.log(`service.getUserAwards > `, arguments[0]);
+        const found = await Award.searchByAwardee({ awardee_id });
         return found;
     }
 
@@ -91,7 +98,7 @@ class awardService {
      * @param {Object} payload
      * @param {String} [payload.title]
      * @param {String} [payload.description]
-     * @returns {[award]} found, or an empty Array.
+     * @returns {award[]} found, or an empty Array.
      *
      * @todo We're not implementing this until regex escaping can be done.
      */
@@ -105,17 +112,17 @@ class awardService {
      * @async
      * @param {Object} payload
      * @param {uuid} payload.award_id
-     * @param {Object} payload.toUpdate
-     * @param {field} payload.toUpdate.fieldToUpdate
-     * @param {any} payload.toUpdate.newValue
+     * @param {String[]} payload.pairs - Array of [key, value] pairs.
      * @returns {award} updated
+     *
+     * payload.pairs is an iterable of [key, value] pairs.
+     * key will be the field and value will be the... value!!
      */
-    static async setAward({ award_id, toUpdate }) {
-        const { fieldToUpdate, newValue } = toUpdate;
+    static async setAward({ award_id, pairs }) {
+        console.log(`service.setAward > `, arguments[0]);
         const updated = await Award.update({
             award_id,
-            fieldToUpdate,
-            newValue,
+            pairs,
         });
         return updated;
     }
@@ -129,7 +136,9 @@ class awardService {
      * @returns {award} removed
      */
     static async removeAward({ award_id }) {
+        console.log(`service.removeAward > `, arguments[0]);
         const removed = await Award.delete({ award_id });
+        console.log(`removed: `, removed);
         return removed;
     }
 }
