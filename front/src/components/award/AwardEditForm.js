@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import { Button, Form, Row } from "react-bootstrap";
 
-/**
- * 수상 이력 편집 컴포넌트입니다.
+/** 수상 이력 편집 컴포넌트입니다.
  *
  * @param {boolean} setIsEditing - 편집중 상태 변경
  * @param {object} award -  편집 할 수상 이력
  * @param {function} editHandler - 확인 버튼 누를 시 상 추가 되는 함수
  * @param {number} id - 편집 할 수상 id
- *
+ * @returns editForm
  */
 function AwardEditForm({ setIsEditing, award, editHandler, id }) {
-  const [editName, setEditName] = useState(award.name);
-  const [editContent, setEditContent] = useState(award.content);
+  const [editTitle, setEditTitle] = useState(award.title);
+  const [editContent, setEditContent] = useState(award.description);
   const thisId = id;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsEditing(false);
-
-    /**
-     * awards 변경하기 위해 인자로 편집된 award 넘겨줌
-     *
-     * @param {number} thisId - 편집 된 수상 이력 id
-     * @param {object} -  편집 된 수상 이력
-     *
-     */
-    editHandler(thisId, { name: editName, content: editContent, id: thisId });
+    //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
+    editHandler(thisId, {
+      title: editTitle,
+      description: editContent,
+    });
   };
 
   return (
@@ -37,8 +32,8 @@ function AwardEditForm({ setIsEditing, award, editHandler, id }) {
         <Form.Control
           type="text"
           className="mb-3"
-          value={editName}
-          onChange={(e) => setEditName(e.target.value)}
+          value={editTitle}
+          onChange={(e) => setEditTitle(e.target.value)}
         />
         <Form.Control
           type="text"

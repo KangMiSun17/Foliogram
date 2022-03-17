@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Button, Form, Row } from "react-bootstrap";
 
-/**
- * 수상 이력 추가 컴포넌트입니다.
+/** 수상 이력 추가 컴포넌트입니다.
  *
  * @param {function} addHandler - 확인 버튼 누를 시 상 추가 되는 함수
  * @param {number} id - 새롭게 추가 되는 상의 아이디
- *
+ * @returns addForm
  */
 function AwardAddForm({ addHandler, id }) {
   const [isEditing, setIsEditing] = useState(false); //편집중인지 아닌지
-  const [addName, setAddName] = useState(""); //추가된 상 이름
-  const [addContent, setAddContent] = useState(""); //추가된 상 내용
+  const [addTitle, setAddTitle] = useState(""); //추가된 상 이름
+  const [addDescription, setAddDescription] = useState(""); //추가된 상 내용
 
   const startEditing = () => {
     setIsEditing((cur) => !cur);
@@ -22,9 +21,9 @@ function AwardAddForm({ addHandler, id }) {
     e.preventDefault();
     setIsEditing((cur) => !cur);
     //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
-    addHandler({ name: addName, content: addContent, id: id });
-    setAddName("");
-    setAddContent("");
+    addHandler({ title: addTitle, description: addDescription, id: id });
+    setAddTitle("");
+    setAddDescription("");
   };
 
   return (
@@ -39,16 +38,16 @@ function AwardAddForm({ addHandler, id }) {
             <Form.Control
               type="text"
               placeholder="수상 내역"
-              value={addName}
-              onChange={(e) => setAddName(e.target.value)}
+              value={addTitle}
+              onChange={(e) => setAddTitle(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Control
               type="text"
               placeholder="상세 내역"
-              value={addContent}
-              onChange={(e) => setAddContent(e.target.value)}
+              value={addDescription}
+              onChange={(e) => setAddDescription(e.target.value)}
             />
           </Form.Group>
           <Row className="justify-content-md-center" xs="auto">
