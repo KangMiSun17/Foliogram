@@ -8,13 +8,7 @@ import * as Api from "../../api";
  * @param {number} id - 새롭게 추가 되는 상의 아이디
  * @returns addForm
  */
-function AwardAddForm({
-  addHandler,
-  portfolioOwnerId,
-  awards,
-  setAwards,
-  setLastCall,
-}) {
+function AwardAddForm({ portfolioOwnerId, setLastCall }) {
   const [isEditing, setIsEditing] = useState(false); //편집중인지 아닌지
   const [addTitle, setAddTitle] = useState(""); //추가된 상 이름
   const [addDescription, setAddDescription] = useState(""); //추가된 상 내용
@@ -34,7 +28,6 @@ function AwardAddForm({
       description: addDescription,
     });
     console.log(res.data);
-    setAwards([...awards], res.data);
     setAddTitle("");
     setAddDescription("");
     setLastCall((cur) => cur + 1);

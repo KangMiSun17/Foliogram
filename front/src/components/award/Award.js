@@ -29,16 +29,13 @@ function Award({ portfolioOwnerId, isEditable }) {
               key={award.id}
               isEditable={isEditable}
               award={award}
-              awards={awards}
-              setAwards={setAwards}
+              setLastCall={setLastCall}
             />
           ))}
         </Card.Text>
         {isEditable && (
           <AwardAddForm
             portfolioOwnerId={portfolioOwnerId}
-            awards={awards}
-            setAwards={setAwards}
             setLastCall={setLastCall}
           />
         )}

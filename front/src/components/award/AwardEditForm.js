@@ -10,7 +10,7 @@ import * as Api from "../../api";
  * @param {number} id - 편집 할 수상 id
  * @returns editForm
  */
-function AwardEditForm({ setIsEditing, award, setAwards, awards }) {
+function AwardEditForm({ setIsEditing, award, setLastCall }) {
   const [editTitle, setEditTitle] = useState(award.title);
   const [editContent, setEditContent] = useState(award.description);
 
@@ -19,12 +19,12 @@ function AwardEditForm({ setIsEditing, award, setAwards, awards }) {
     e.preventDefault();
     console.log(award);
     //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
-    const res = await Api.put(`awards/${award.awardee_id}`, {
+    const res = await Api.put(`awards/${award.id}`, {
       title: editTitle,
       description: editContent,
     });
     console.log(res.data);
-
+    setLastCall((cur) => cur + 1);
     setIsEditing(false);
   };
 
