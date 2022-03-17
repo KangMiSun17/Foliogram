@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Container, Col, Row } from "react-bootstrap";
+import AwardDelete from "./AwardDelete";
 
 /** 수상 이력 목록 컴포넌트입니다.
  *
@@ -8,7 +9,7 @@ import { Button, Container, Col, Row } from "react-bootstrap";
  * @param {object} award - award.map으로 넘어온 각각의 award
  * @returns awardList and edit button
  */
-function AwardCard({ setIsEditing, isEditable, award }) {
+function AwardCard({ setIsEditing, isEditable, award, setLastCall }) {
   return (
     <Container>
       <Row className="mb-3">
@@ -22,9 +23,11 @@ function AwardCard({ setIsEditing, isEditable, award }) {
             <Button
               variant="outline-primary"
               onClick={(e) => setIsEditing(true)}
+              className="me-2"
             >
               편집
             </Button>
+            <AwardDelete award={award} setLastCall={setLastCall} />
           </Col>
         )}
       </Row>

@@ -1,46 +1,35 @@
-import React, { useState, useEffect, Component } from "react";
-import { Card, Container, Col, Row } from "react-bootstrap";
-import AwardAddForm from "./AwardAddForm";
-import Awards from "./Awards";
-import * as Api from "../../api";
+import React, { useState } from "react";
+import AwardCard from "./AwardCard";
+import AwardEditForm from "./AwardEditForm";
 
-/** 수상 이력 카드 컴포넌트입니다.
+/** 편집 상태에 따라 편집 화면을 보여줄지 수상 내용을 보여줄지 판단하는 컴포넌트 입니다.
  *
  * @param {boolean} isEditable - 편집 가능 여부
- * @returns Awards
+ * @param {object} award - award.map으로 넘어온 각각의 award
+ * @param {function} editHandler - Awards update function
+ * @returns AwardEditForm or AwardCard
  */
-function Award({ portfolioOwnerId, isEditable }) {
-  //수상 이력 객체
-  const [awards, setAwards] = useState([]);
-  const [lastCall, setLastCall] = useState(0);
-
-  useEffect(() => {
-    Api.get(`awardlist`, portfolioOwnerId).then((res) => setAwards(res.data));
-    console.log(lastCall);
-  }, [portfolioOwnerId, lastCall]);
+function Award({ isEditable, award, setLastCall }) {
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <Card className="me-4">
-      <Card.Body>
-        <Card.Title className="mb-3">수상 이력</Card.Title>
-        <Card.Text>
-          {awards.map((award) => (
-            <Awards
-              key={award.id}
-              isEditable={isEditable}
-              award={award}
-              setLastCall={setLastCall}
-            />
-          ))}
-        </Card.Text>
-        {isEditable && (
-          <AwardAddForm
-            portfolioOwnerId={portfolioOwnerId}
-            setLastCall={setLastCall}
-          />
-        )}
-      </Card.Body>
-    </Card>
+    <div>
+      {isEditing ? (
+        <AwardEditForm
+          award={award}
+          setIsEditing={setIsEditing}
+          id={award.id}
+          setLastCall={setLastCall}
+        />
+      ) : (
+        <AwardCard
+          award={award}
+          isEditable={isEditable}
+          setIsEditing={setIsEditing}
+          setLastCall={setLastCall}
+        />
+      )}
+    </div>
   );
 }
 
