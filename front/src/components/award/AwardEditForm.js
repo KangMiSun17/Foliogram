@@ -44,7 +44,7 @@ function AwardEditForm({ setIsEditing, award, setLastCall }) {
           value={editContent}
           onChange={(e) => setEditContent(e.target.value)}
         />
-        <Row className="justify-content-md-center" xs="auto">
+        <Row className="justify-content-center" xs="auto">
           <Button type="submit" className="me-3">
             확인
           </Button>

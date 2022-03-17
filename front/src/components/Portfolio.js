@@ -58,7 +58,7 @@ function Portfolio() {
     <Container fluid>
       <Row>
         <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
-          <Col lg="4">
+          <Col xl="3">
             <User
               portfolioOwnerId={portfolioOwner.id}
               isEditable={portfolioOwner.id === userState.user?.id}
@@ -66,8 +66,6 @@ function Portfolio() {
           </Col>
           <Col>
             <CertificateCard />
-          </Col>
-          <Col>
             <Awards
               portfolioOwnerId={portfolioOwner.id}
               isEditable={portfolioOwner.id === userState.user?.id}

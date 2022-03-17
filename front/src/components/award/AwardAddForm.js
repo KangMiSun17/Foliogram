@@ -36,7 +36,7 @@ function AwardAddForm({ portfolioOwnerId, setLastCall }) {
   return (
     <>
       {!isEditing ? (
-        <Row className="justify-content-md-center" xs="auto">
+        <Row className="justify-content-center" xs="auto">
           <Button onClick={startEditing}>+</Button>
         </Row>
       ) : (
@@ -57,7 +57,7 @@ function AwardAddForm({ portfolioOwnerId, setLastCall }) {
               onChange={(e) => setAddDescription(e.target.value)}
             />
           </Form.Group>
-          <Row className="justify-content-md-center" xs="auto">
+          <Row className="justify-content-center" xs="auto">
             <Button type="submit" className="me-3">
               확인
             </Button>

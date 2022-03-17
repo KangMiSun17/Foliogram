@@ -30,7 +30,7 @@ function CertificateCard() {
   }, [userState.user.id, portfolioOwnerId]);
 
   return (
-    <Card>
+    <Card className="me-4">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
         <FecthContext.Provider value={{ isFetching, setIsFetching }}>

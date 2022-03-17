@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import AwardDelete from "./AwardDelete";
 
 /** 수상 이력 목록 컴포넌트입니다.
@@ -11,27 +11,28 @@ import AwardDelete from "./AwardDelete";
  */
 function AwardCard({ setIsEditing, isEditable, award, setLastCall }) {
   return (
-    <Container>
-      <Row className="mb-3">
-        <Col>
-          <span>{award.title}</span>
-          <br />
-          <span style={{ color: "gray" }}>{award.description}</span>
-        </Col>
-        {isEditable && (
-          <Col xs={2}>
+    <Row className="align-items-center">
+      <Col className="mb-3">
+        <span>{award.title}</span>
+        <br />
+        <span style={{ color: "gray" }}>{award.description}</span>
+      </Col>
+      {isEditable && (
+        <>
+          <Col sm={1}>
             <Button
               variant="outline-primary"
               onClick={(e) => setIsEditing(true)}
-              className="me-2"
             >
               편집
             </Button>
+          </Col>
+          <Col sm={1}>
             <AwardDelete award={award} setLastCall={setLastCall} />
           </Col>
-        )}
-      </Row>
-    </Container>
+        </>
+      )}
+    </Row>
   );
 }
 
