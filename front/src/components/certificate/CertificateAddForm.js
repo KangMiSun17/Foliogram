@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { toStringDate } from "./common/DateUtil";
 import { UserStateContext } from "../../App";
 import { FecthContext } from "./common/Context";
+import { BundleButton } from "./common/Button";
 import * as Api from "../../api";
 
 /**
@@ -68,27 +69,7 @@ function CertificateAddForm({ setIsAdding }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <div className="mt-3 text-center row">
-        <div className="col-sm-20">
-          <Button
-            className="me-3"
-            variant="primary"
-            type="submit"
-            onClick={handleAddSubmit}
-          >
-            확인
-          </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={() => {
-              setIsAdding(false);
-            }}
-          >
-            취소
-          </Button>
-        </div>
-      </div>
+      {BundleButton(handleAddSubmit, setIsAdding)}
     </Form>
   );
 }

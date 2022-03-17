@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { CertificateContext, FecthContext } from "./common/Context";
 import { toStringDate, toObjectDate } from "./common/DateUtil";
+import { BundleButton } from "./common/Button";
 import * as Api from "../../api";
 
 /**
@@ -80,27 +81,7 @@ function CertificateEditForm({ setIsEdit }) {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      <div className="mt-3 mb-4 text-center row">
-        <div className="col-sm-20">
-          <Button
-            className="me-3"
-            variant="primary"
-            type="submit"
-            onClick={handleEditSubmit}
-          >
-            확인
-          </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={() => {
-              setIsEdit(false);
-            }}
-          >
-            취소
-          </Button>
-        </div>
-      </div>
+      {BundleButton(handleEditSubmit, setIsEdit)}
     </Form>
   );
 }
