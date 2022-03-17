@@ -18,8 +18,8 @@ function Certificates() {
 
   return (
     <>
-      {certificateList.map((value, index) => (
-        <Certificate key={index} certificate={value} />
+      {certificateList.map((value) => (
+        <Certificate key={value.id} certificate={value} />
       ))}
     </>
   );

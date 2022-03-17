@@ -11,7 +11,7 @@ function Certificate({ certificate }) {
   return (
     <div>
       {isEditing ? (
-        <CertificateEditForm />
+        <CertificateEditForm edit={setIsEditing} certificate={certificate} />
       ) : (
         <>
           <p className="mb-0">{title}</p>
