@@ -146,8 +146,8 @@ projectRouter.get(
     async function (req, res, next) {
         try {
             const user_id = req.params.user_id;
-            const projects = await projectService.getUserAwards({
-                projectee_id: user_id,
+            const projects = await projectService.getUserProjects({
+                participant_id: user_id,
             });
 
             res.status(200).json(projects);

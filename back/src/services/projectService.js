@@ -107,9 +107,8 @@ class projectService {
      *  It will not emit error message.
      */
     static async getUserProjects({ participant_id }) {
-        // ???
-        console.log(`service.getUserAwards > `, arguments[0]);
-        const found = await Project.searchByAwardee({ participant_id });
+        console.log(`service.getUserProjects > `, arguments[0]);
+        const found = await Project.searchByParticipant({ participant_id });
         return found;
     }
 
