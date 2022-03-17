@@ -51,7 +51,7 @@ educationRouter.get(
             if (education.errorMessage) {
                 throw new Error(education.errorMessage);
             }
-            res.status(200).send(certificate);
+            res.status(200).send(education);
         } catch (error) {
             next(error);
         }
