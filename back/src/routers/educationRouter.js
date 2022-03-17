@@ -1,19 +1,19 @@
-import is from '@sindresorhus/is';
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { educationService } from '../services/educationService';
+import is from "@sindresorhus/is";
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { educationService } from "../services/educationService";
 
 const educationRouter = Router();
 
 educationRouter.post(
-    '/education/create',
+    "/education/create",
     login_required,
     async function (req, res, next) {
         try {
             //if req.body is not exist,return Error message
             if (is.emptyObject(req.body)) {
                 throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
+                    "headers의 Content-Type을 application/json으로 설정해주세요"
                 );
             }
 
@@ -39,7 +39,7 @@ educationRouter.post(
 );
 
 educationRouter.get(
-    '/educations/:id',
+    "/educations/:id",
     login_required,
     async function (req, res, next) {
         try {
@@ -59,7 +59,7 @@ educationRouter.get(
 );
 
 educationRouter.get(
-    '/educationlist/:user_id',
+    "/educationlist/:user_id",
     login_required,
     async function (req, res, next) {
         try {
@@ -77,7 +77,7 @@ educationRouter.get(
 );
 
 educationRouter.delete(
-    '/educations/:id',
+    "/educations/:id",
     login_required,
     async function (req, res, next) {
         try {
@@ -95,7 +95,7 @@ educationRouter.delete(
 );
 
 educationRouter.put(
-    '/educations/:id',
+    "/educations/:id",
     login_required,
     async function (req, res, next) {
         try {
@@ -113,7 +113,7 @@ educationRouter.put(
             });
             //if education is not exists,return error message
             if (updatedEducation.errorMessage) {
-                throw new Error(updatedCertificate.errorMessage);
+                throw new Error(updatedEducation.errorMessage);
             }
             res.status(200).send(updatedEducation);
         } catch (error) {
