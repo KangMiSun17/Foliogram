@@ -24,7 +24,7 @@ function Certificate() {
           <p>{when_date}</p>
         </>
       )}
-      {isOwner && (
+      {isOwner && !isEditing && (
         <Button variant="outline-info" onClick={() => setIsEditing(true)}>
           편집
         </Button>
