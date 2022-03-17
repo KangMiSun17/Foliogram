@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Award } from "./models/Award";
+import { Project } from "./models/Project";
 import { User } from "./models/User";
 
 const DB_URL =
@@ -16,4 +17,4 @@ db.on("error", (error) =>
     console.error("MongoDB 연결에 실패하였습니다...\n" + DB_URL + "\n" + error)
 );
 
-export { Award, User };
+export { Award, Project, User };
