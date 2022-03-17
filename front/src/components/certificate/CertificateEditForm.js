@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import DatePicker from "react-datepicker";
+import { DatePickForm } from "./common/DateUtil";
 import { CertificateContext, FecthContext } from "./common/Context";
 import { toStringDate, toObjectDate } from "./common/DateUtil";
 import { BundleButton } from "./common/Button";
@@ -79,10 +79,7 @@ function CertificateEditForm({ setIsEdit }) {
           onChange={(e) => setModDescription(e.target.value)}
         />
       </Form.Group>
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-      />
+      {DatePickForm(startDate, setStartDate)}
       {BundleButton(handleEditSubmit, setIsEdit)}
     </Form>
   );

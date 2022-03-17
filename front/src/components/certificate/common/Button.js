@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "react-bootstrap";
 
 /**
- * @param {function} submitHandler
- * @param {function} setState
+ * @param {function} submitHandler ConfirmButton onClick handler
+ * @param {function} setState Change state when CancleButton onClick
  * @returns {component} Confirm Button and Cancle Button
  */
 export const BundleButton = (submitHandler, setState) => {
