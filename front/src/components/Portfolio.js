@@ -62,7 +62,10 @@ function Portfolio() {
           />
         </Col>
         <Col>
-          <Award isEditable={portfolioOwner.id === userState.user?.id} />
+          <Award
+            portfolioOwnerId={portfolioOwner.id}
+            isEditable={portfolioOwner.id === userState.user?.id}
+          />
         </Col>
       </Row>
     </Container>

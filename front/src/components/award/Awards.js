@@ -9,7 +9,7 @@ import AwardEditForm from "./AwardEditForm";
  * @param {function} editHandler - Awards update function
  * @returns AwardEditForm or AwardCard
  */
-function Awards({ isEditable, award, editHandler }) {
+function Awards({ isEditable, award, editHandler, setAwards, awards }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -20,6 +20,8 @@ function Awards({ isEditable, award, editHandler }) {
           setIsEditing={setIsEditing}
           editHandler={editHandler}
           id={award.id}
+          setAwards={setAwards}
+          awards={awards}
         />
       ) : (
         <AwardCard

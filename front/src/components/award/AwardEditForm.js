@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Row } from "react-bootstrap";
+import * as Api from "../../api";
 
 /** 수상 이력 편집 컴포넌트입니다.
  *
@@ -9,20 +10,22 @@ import { Button, Form, Row } from "react-bootstrap";
  * @param {number} id - 편집 할 수상 id
  * @returns editForm
  */
-function AwardEditForm({ setIsEditing, award, editHandler, id }) {
+function AwardEditForm({ setIsEditing, award, setAwards, awards }) {
   const [editTitle, setEditTitle] = useState(award.title);
   const [editContent, setEditContent] = useState(award.description);
-  const thisId = id;
 
   //확인 버튼 누를 시 실행
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsEditing(false);
+    console.log(award);
     //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
-    editHandler(thisId, {
+    const res = await Api.put(`awards/${award.awardee_id}`, {
       title: editTitle,
       description: editContent,
     });
+    console.log(res.data);
+
+    setIsEditing(false);
   };
 
   return (
