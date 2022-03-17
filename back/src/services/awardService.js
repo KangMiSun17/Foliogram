@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
  * @method static async addAward({ title, description })
  * @method static async getAward({ id, title })
  * @method static async getAllAwards()
+ * @method static async getUserAwards({ awardee_id })
  * @method static async searchAwards({ title, description })
  * @method static async setAward({ award_id, toUpdate })
  * @method static async removeAward({ award_id })

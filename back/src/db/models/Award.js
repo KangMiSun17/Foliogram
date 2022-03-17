@@ -67,8 +67,8 @@ class Award {
      * @static
      * @async
      * @param {Object} payload
-     * @param {RegExp|String} payload.title
-     * @param {RegExp|String} payload.description
+     * @param {RegExp|String} [payload.title]
+     * @param {RegExp|String} [payload.description]
      * @returns {[award]} awards
      *
      * Query keysords may either be RegExp literal or compiled RegExp object.
