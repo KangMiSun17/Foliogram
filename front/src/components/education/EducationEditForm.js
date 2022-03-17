@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Row, Button, Col, Form, FormCheck } from "react-bootstrap";
 
+/**
+ * @param {Object} val - eduList 배열 안에 있는 각각의 객체, 예시:{ school: "서울대학교", major: "컴퓨터", position: "박사졸업" }
+ * @param {Array} eduList - 학력 정보 리스트
+ * @param {function} setEduList - eduList 상태를 바꿀 수 있는 함수(사용자의 학력 정보를 추가, 변경, 삭제를 eduList 상태값을 변경하여 바꾸는데 그때 사용)
+ * @param {Boolean} setIsEditing - 편집 가능한지 여부(여기선 편집이 완료된 후 카드페이지로 다시 가기 위해props로 가져옴 (편집 완료 후 false값으로 바꾸어야 카드 페이지로 리렌더링됨)
+ * @returns ( <Educations key={index} val={val} eduList={eduList} setEduList={setEduList} isEditable={isEditable} />)
+ */
 function EducationEditForm({ val, eduList, setEduList, setIsEditing }) {
   const [school, setSchool] = useState(val.school);
   const [major, setMajor] = useState(val.major);
