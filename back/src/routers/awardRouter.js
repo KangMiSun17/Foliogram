@@ -160,7 +160,11 @@ awardRouter.delete(
 
             const deleted = await awardService.removeAward({ award_id });
 
-            res.status(deleted ? 200 : 500).json({ result: !!deleted });
+            if (!deleted) {
+                throw new Error(`Award id ${award_id} not found`);
+            }
+
+            res.status(200).json({ result: true });
         } catch (why) {
             next(why);
         }
