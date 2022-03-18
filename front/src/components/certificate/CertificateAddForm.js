@@ -66,7 +66,7 @@ function CertificateAddForm({ setIsAdding }) {
         />
       </Form.Group>
       {DatePickForm(startDate, setStartDate)}
-      {BundleButton(handleAddSubmit, setIsAdding)}
+      <BundleButton submitHandler={handleAddSubmit} setState={setIsAdding} />
     </Form>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button } from "react-bootstrap";
+import { EditButton } from "../common/Button";
 import { CertificateContext, OwnerContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
@@ -26,9 +26,7 @@ function Certificate() {
       )}
       {isOwner && !isEditing && (
         <div className="col-lg-1 col">
-          <Button variant="outline-info" onClick={() => setIsEditing(true)}>
-            편집
-          </Button>
+          <EditButton setState={setIsEditing} />
         </div>
       )}
     </div>

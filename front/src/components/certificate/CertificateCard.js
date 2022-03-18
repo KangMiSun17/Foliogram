@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import {
   OwnerContext,
   FetchContext,
@@ -8,6 +8,7 @@ import {
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
 import { UserStateContext } from "../../App";
+import { PlusButton } from "../common/Button";
 
 /**
  * @description root component related to certification
@@ -40,9 +41,7 @@ function CertificateCard() {
           {isOwner && (
             <div className="mt-3 text-center mb-4 row">
               <div className="col-sm-20">
-                <Button variant="primary" onClick={() => setIsAdding(true)}>
-                  +
-                </Button>
+                <PlusButton setState={setIsAdding} />
               </div>
             </div>
           )}

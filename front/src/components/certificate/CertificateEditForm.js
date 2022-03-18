@@ -80,7 +80,7 @@ function CertificateEditForm({ setIsEdit }) {
         />
       </Form.Group>
       {DatePickForm(startDate, setStartDate)}
-      {BundleButton(handleEditSubmit, setIsEdit)}
+      <BundleButton submitHandler={handleEditSubmit} setState={setIsEdit} />
     </Form>
   );
 }
