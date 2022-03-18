@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { EditButton } from "../common/Button";
+import { DeleteButton, EditButton } from "../common/Button";
 import { EditTableContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
@@ -15,7 +15,7 @@ import CertificateEditForm from "./CertificateEditForm";
 function Certificate({ certificate, index, setCertificateList }) {
   const isEditable = useContext(EditTableContext);
   const [isEditing, setIsEditing] = useState(false);
-  const { title, description, when_date } = certificate;
+  const { id, title, description, when_date } = certificate;
 
   /**
    * @description isEditing {type: boolean} if true show CertificateEditForm
@@ -40,9 +40,14 @@ function Certificate({ certificate, index, setCertificateList }) {
         </Col>
       )}
       {isEditable && !isEditing && (
-        <Col sm={1}>
-          <EditButton setState={setIsEditing} />
-        </Col>
+        <>
+          <Col sm={1}>
+            <EditButton setState={setIsEditing} />
+          </Col>
+          <Col sm={1}>
+            <DeleteButton id={id} setState={setCertificateList} index={index} />
+          </Col>
+        </>
       )}
     </Row>
   );
