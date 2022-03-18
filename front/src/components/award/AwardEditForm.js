@@ -6,8 +6,7 @@ import * as Api from "../../api";
  *
  * @param {boolean} setIsEditing - 편집중 상태 변경
  * @param {object} award -  편집 할 수상 이력
- * @param {function} editHandler - 확인 버튼 누를 시 상 추가 되는 함수
- * @param {number} id - 편집 할 수상 id
+ * @param {state} setLastCall - 렌더링 하기 위한 state
  * @returns editForm
  */
 function AwardEditForm({ setIsEditing, award, setLastCall }) {
@@ -18,7 +17,7 @@ function AwardEditForm({ setIsEditing, award, setLastCall }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(award);
-    //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
+    //편집된 awards 업데이트 하기위해 서버에 put 요청
     const res = await Api.put(`awards/${award.id}`, {
       title: editTitle,
       description: editContent,

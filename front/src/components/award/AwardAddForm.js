@@ -4,8 +4,8 @@ import * as Api from "../../api";
 
 /** 수상 이력 추가 컴포넌트입니다.
  *
- * @param {function} addHandler - 확인 버튼 누를 시 상 추가 되는 함수
- * @param {number} id - 새롭게 추가 되는 상의 아이디
+ * @param {number} portfolioOwnerId - 포트폴리오 주인 아이디
+ * @param {state} setLastCall - 랜더링하기 위한 state
  * @returns addForm
  */
 function AwardAddForm({ portfolioOwnerId, setLastCall }) {
@@ -21,13 +21,12 @@ function AwardAddForm({ portfolioOwnerId, setLastCall }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsEditing((cur) => !cur);
-    //awards 업데이트 하기위해 addHandler로 데이터 넘겨줌
-    const res = await Api.post(`award/create`, {
+    //추가된 awards 업데이트 하기위해 서버에 post 요청
+    await Api.post(`award/create`, {
       user_id: portfolioOwnerId,
       title: addTitle,
       description: addDescription,
     });
-    console.log(res.data);
     setAddTitle("");
     setAddDescription("");
     setLastCall((cur) => cur + 1);

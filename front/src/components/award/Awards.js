@@ -6,8 +6,9 @@ import * as Api from "../../api";
 
 /** 수상 이력 카드 컴포넌트입니다.
  *
+ * @param {number} portfolioOwnerId - 포트폴리오 주인 아이디
  * @param {boolean} isEditable - 편집 가능 여부
- * @returns Awards
+ * @returns Award or AwardAddForm
  */
 function Awards({ portfolioOwnerId, isEditable }) {
   //수상 이력 객체
@@ -16,14 +17,13 @@ function Awards({ portfolioOwnerId, isEditable }) {
 
   useEffect(() => {
     Api.get(`awardlist`, portfolioOwnerId).then((res) => setAwards(res.data));
-    console.log(lastCall);
   }, [portfolioOwnerId, lastCall]);
 
   return (
     <Card className="me-4 mt-3">
       <Card.Body>
         <Card.Title className="mb-3">수상 이력</Card.Title>
-        <Card.Text>
+        <Card.Body>
           {awards.map((award) => (
             <Award
               key={award.id}
@@ -32,7 +32,7 @@ function Awards({ portfolioOwnerId, isEditable }) {
               setLastCall={setLastCall}
             />
           ))}
-        </Card.Text>
+        </Card.Body>
         {isEditable && (
           <AwardAddForm
             portfolioOwnerId={portfolioOwnerId}
