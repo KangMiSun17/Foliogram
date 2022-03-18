@@ -79,7 +79,7 @@ function CertificateEditForm({ setIsEdit }) {
           onChange={(e) => setModDescription(e.target.value)}
         />
       </Form.Group>
-      {DatePickForm(startDate, setStartDate)}
+      <DatePickForm startDate={startDate} setState={setStartDate} />
       <BundleButton submitHandler={handleEditSubmit} setState={setIsEdit} />
     </Form>
   );

@@ -65,7 +65,7 @@ function CertificateAddForm({ setIsAdding }) {
           onChange={(e) => setDescription(e.target.value)}
         />
       </Form.Group>
-      {DatePickForm(startDate, setStartDate)}
+      <DatePickForm startDate={startDate} setState={setStartDate} />
       <BundleButton submitHandler={handleAddSubmit} setState={setIsAdding} />
     </Form>
   );
