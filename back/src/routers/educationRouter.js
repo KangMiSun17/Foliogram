@@ -18,11 +18,18 @@ educationRouter.post(
             }
 
             // get informate from req
-            const school = req.body.school;
-            const major = req.body.major;
-            const position = req.body.position;
-            const user_id = req.currentUserId;
-
+            const school = req.body.school ?? null;
+            const major = req.body.major ?? null;
+            const position = req.body.position ?? null;
+            const user_id = req.body.user_id ?? null;
+            if (!school || !major || !position || !user_id) {
+                throw new Error(
+                    "school,major,position and user_id are required."
+                );
+            }
+            if (user_id !== req.currentUserId) {
+                throw new Error("Trying to create different user's education");
+            }
             // add a education with new information
             const newEducation = await educationService.addEducation({
                 school,
@@ -83,11 +90,25 @@ educationRouter.delete(
         try {
             //get id of education from req.params
             const id = req.params.id;
-            //get user's educations with id of user
-            const result = await educationService.deleteEducation({
-                id,
-            });
-            res.status(200).send(result);
+            const user_id = req.currentUserId;
+            const education = await educationService.getEducation({ id });
+            if (education.errorMessage) {
+                throw new Error(
+                    `이미 삭제 되었거나 존재하지 않아 삭제에 실패하였습니다.`
+                );
+            }
+            //if user have correct user_id,process delete
+            if (user_id === education.user_id) {
+                //get user's educations with id of user
+                const result = await educationService.deleteEducation({
+                    id,
+                });
+                res.status(200).send(result);
+            } else {
+                throw new Error(
+                    `User is not an owner of the education id ${id}`
+                );
+            }
         } catch (error) {
             next(error);
         }
@@ -101,21 +122,32 @@ educationRouter.put(
         try {
             //get information from req
             const id = req.params.id;
-            const school = req.body.school ?? null;
-            const major = req.body.major ?? null;
-            const position = req.body.position ?? null;
-            const toUpdate = { school, major, position };
+            const user_id = req.currentUserId;
+            const education = await educationService.getEducation({ id });
 
-            //update and get one education with id of education
-            const updatedEducation = await educationService.setEducation({
-                id,
-                toUpdate,
-            });
-            //if education is not exists,return error message
-            if (updatedEducation.errorMessage) {
-                throw new Error(updatedEducation.errorMessage);
+            if (education.errorMessage) {
+                throw new Error(
+                    `이미 삭제된 또는 존재하지 않아 수정에 실패하였습니다.`
+                );
             }
-            res.status(200).send(updatedEducation);
+            if (user_id === education.user_id) {
+                const school = req.body.school ?? null;
+                const major = req.body.major ?? null;
+                const position = req.body.position ?? null;
+                const toUpdate = { school, major, position };
+
+                //update and get one education with id of education
+                const updatedEducation = await educationService.setEducation({
+                    id,
+                    toUpdate,
+                    education,
+                });
+                res.status(200).send(updatedEducation);
+            } else {
+                throw new Error(
+                    `User is not an owner of the education id ${id}`
+                );
+            }
         } catch (error) {
             next(error);
         }
