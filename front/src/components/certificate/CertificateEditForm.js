@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
-import { CertificateContext, FecthContext } from "../common/Context";
+import { CertificateContext, FetchContext } from "../common/Context";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
@@ -13,7 +13,7 @@ import * as Api from "../../api";
  * @returns {component} Certificate edit Form
  */
 function CertificateEditForm({ setIsEdit }) {
-  const { setIsFetching } = useContext(FecthContext);
+  const { setIsFetching } = useContext(FetchContext);
   const { id, title, description, when_date } = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
   const [modTitle, setModTitle] = useState(title);

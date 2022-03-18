@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import { FecthContext } from "../common/Context";
+import { FetchContext } from "../common/Context";
 import { BundleButton } from "../common/Button";
 import { DatePickForm } from "../common/DateUtil";
 import { toStringDate } from "../common/DateUtil";
@@ -15,7 +15,7 @@ import * as Api from "../../api";
  */
 function CertificateAddForm({ setIsAdding }) {
   const userState = useContext(UserStateContext);
-  const { setIsFetching } = useContext(FecthContext);
+  const { setIsFetching } = useContext(FetchContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  FecthContext,
+  FetchContext,
   CertificateContext,
   PortfolioOwnerContext,
 } from "../common/Context";
@@ -12,7 +12,7 @@ import * as Api from "../../api";
  * @returns {component} List of certificate
  */
 function Certificates() {
-  const { isFetching } = useContext(FecthContext);
+  const { isFetching } = useContext(FetchContext);
   const [certificateList, setCertificateList] = useState([]);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 

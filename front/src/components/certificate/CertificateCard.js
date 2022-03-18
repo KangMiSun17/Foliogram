@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import {
   OwnerContext,
-  FecthContext,
+  FetchContext,
   PortfolioOwnerContext,
 } from "../common/Context";
 import CertificateAddForm from "./CertificateAddForm";
@@ -15,7 +15,7 @@ import { UserStateContext } from "../../App";
  */
 function CertificateCard() {
   const [isOwner, setIsOwner] = useState(false);
-  const [isAddingg, setIsAdding] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [isFetching, setIsFetching] = useState(new Date());
   const userState = useContext(UserStateContext);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
@@ -33,7 +33,7 @@ function CertificateCard() {
     <Card className="me-4">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <FecthContext.Provider value={{ isFetching, setIsFetching }}>
+        <FetchContext.Provider value={{ isFetching, setIsFetching }}>
           <OwnerContext.Provider value={{ isOwner }}>
             <Certificates />
           </OwnerContext.Provider>
@@ -46,8 +46,8 @@ function CertificateCard() {
               </div>
             </div>
           )}
-          {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
-        </FecthContext.Provider>
+          {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
+        </FetchContext.Provider>
       </Card.Body>
     </Card>
   );
