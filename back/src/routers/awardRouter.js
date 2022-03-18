@@ -35,27 +35,22 @@ awardRouter.post(
                 );
             }
 
-            const title = req.body.title ?? null;
-            if (!title) {
-                throw new Error("title field is required.");
-            }
+            // These fields are required.
+            ["user_id", "title"].forEach((k) => {
+                if (!(k in req.body)) {
+                    throw new Error(`${k} field is required`);
+                }
+            });
 
-            // const user_id = req.currentUserId;
-            const user_id = req.body.user_id ?? null;
-            if (!user_id) {
-                throw new Error("user_id is required in the request body");
-            } else if (user_id !== req.currentUserId) {
+            if (user_id !== req.currentUserId) {
                 throw new Error("Trying to create different user's award");
             }
 
-            const description = req.body.description ?? null;
+            const payload = { ...req.body };
+            payload.awardee_id = payload.user_id;
+            delete payload.user_id;
 
-            // const awardee = await userAuthService.getUser({ user_id });
-            const newAward = await awardService.addAward({
-                awardee_id: user_id,
-                title,
-                description,
-            });
+            const newAward = await awardService.addAward(payload);
 
             res.status(201).json(newAward);
         } catch (why) {
