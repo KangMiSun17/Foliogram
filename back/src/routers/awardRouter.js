@@ -113,7 +113,7 @@ awardee_id=${award.awardee_id}`
             pairs: Object.entries(req.body),
         });
 
-        res.status(200).json(award);
+        res.status(200).json(updated);
     } catch (why) {
         next(why);
     }
