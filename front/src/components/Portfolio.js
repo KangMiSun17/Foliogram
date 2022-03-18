@@ -11,6 +11,7 @@ import CertificateCard from "./certificate/CertificateCard";
 import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
+import Projects from "./project/Projects";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -75,11 +76,12 @@ function Portfolio() {
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
               ></Education>
-              <CertificateCard />
               <Awards
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
               />
+              <Projects />
+              <CertificateCard />
             </Col>
           </PortfolioOwnerContext.Provider>
         </EditTableContext.Provider>
