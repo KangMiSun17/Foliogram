@@ -1,13 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import {
-  OwnerContext,
-  FetchContext,
-  PortfolioOwnerContext,
-} from "../common/context/Context";
+import { FetchContext, EditTableContext } from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
-import { UserStateContext } from "../../App";
 import { PlusButton } from "../common/Button";
 
 /**
@@ -15,30 +10,17 @@ import { PlusButton } from "../common/Button";
  * @returns {component} Complete Certificate Card
  */
 function CertificateCard() {
-  const [isOwner, setIsOwner] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [reFetching, setReFetching] = useState(new Date());
-  const { user } = useContext(UserStateContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
-
-  // Checking login user id equals portfolio id
-  useEffect(() => {
-    if (user.id === portfolioOwnerId) {
-      setIsOwner(true);
-      return;
-    }
-    setIsOwner(false);
-  }, [user.id, portfolioOwnerId]);
+  const isEditable = useContext(EditTableContext);
 
   return (
     <Card className="me-4">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
         <FetchContext.Provider value={{ reFetching, setReFetching }}>
-          <OwnerContext.Provider value={{ isOwner }}>
-            <Certificates />
-          </OwnerContext.Provider>
-          {isOwner && (
+          <Certificates />
+          {isEditable && (
             <div className="mt-3 text-center mb-4 row">
               <div className="col-sm-20">
                 <PlusButton setState={setIsAdding} />

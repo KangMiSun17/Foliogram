@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import { EditButton } from "../common/Button";
-import { CertificateContext, OwnerContext } from "../common/context/Context";
+import {
+  CertificateContext,
+  EditTableContext,
+} from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
@@ -8,7 +11,7 @@ import CertificateEditForm from "./CertificateEditForm";
  * @returns {component} Certificate information
  */
 function Certificate() {
-  const { isOwner } = useContext(OwnerContext);
+  const isEditable = useContext(EditTableContext);
   const certificate = useContext(CertificateContext);
   const [isEditing, setIsEditing] = useState(false);
   const { title, description, when_date } = certificate;
@@ -24,7 +27,7 @@ function Certificate() {
           <p>{when_date}</p>
         </div>
       )}
-      {isOwner && !isEditing && (
+      {isEditable && !isEditing && (
         <div className="col-lg-1 col">
           <EditButton setState={setIsEditing} />
         </div>
