@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
-import { CertificateContext, FetchContext } from "../common/context/Context";
+import { CertificateFetchContext } from "../common/context/Context";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
@@ -12,12 +12,12 @@ import * as Api from "../../api";
  * @param {function} props.setIsEdit - This State is select show edit screen or not show edit screen
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({ setIsEdit }) {
-  const { setReFetching } = useContext(FetchContext);
-  const { id, title, description, when_date } = useContext(CertificateContext);
+function CertificateEditForm({ certificate, setIsEdit }) {
+  const { setReFetching } = useContext(CertificateFetchContext);
+  const { id, title, description, when_date } = certificate;
   const [isCertificate, setIsCertificate] = useState([]);
-  const [modTitle, setModTitle] = useState(title);
-  const [modDescription, setModDescription] = useState(description);
+  const [editTitle, setEditTitle] = useState(title);
+  const [editDescription, setEditDescription] = useState(description);
   const [startDate, setStartDate] = useState(toObjectDate(when_date));
 
   // Get certificate data only one
@@ -43,16 +43,16 @@ function CertificateEditForm({ setIsEdit }) {
   const handleEditSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      title: modTitle,
-      description: modDescription,
+      title: editTitle,
+      description: editDescription,
       when_date: toStringDate(startDate),
     };
     try {
       await Api.put("certificates/" + id, data);
 
       // Set state when success send request
-      setModTitle("");
-      setModDescription("");
+      setEditTitle("");
+      setEditDescription("");
     } catch (err) {
       console.log("Error: certificates put request fail", err);
     }
@@ -66,17 +66,17 @@ function CertificateEditForm({ setIsEdit }) {
       <Form.Group className="mb-3" controlId="certificateEditName">
         <Form.Control
           type="editName"
-          value={modTitle}
+          value={editTitle}
           placeholder="자격증 제목"
-          onChange={(e) => setModTitle(e.target.value)}
+          onChange={(e) => setEditTitle(e.target.value)}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="certificateEditDescription">
         <Form.Control
           type="editDescription"
-          value={modDescription}
+          value={editDescription}
           placeholder="상세내역"
-          onChange={(e) => setModDescription(e.target.value)}
+          onChange={(e) => setEditDescription(e.target.value)}
         />
       </Form.Group>
       <DatePickForm startDate={startDate} setState={setStartDate} />

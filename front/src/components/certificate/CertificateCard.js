@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  FetchContext,
-  CertificateContext,
+  CertificateFetchContext,
   PortfolioOwnerContext,
 } from "../common/context/Context";
 import Certificate from "./Certificate";
@@ -11,8 +10,8 @@ import * as Api from "../../api";
  * @description This component that get list of certifications and show screen
  * @returns {component} List of certificate
  */
-function Certificates() {
-  const { reFetching } = useContext(FetchContext);
+function CertificateCard() {
+  const { reFetching } = useContext(CertificateFetchContext);
   const [certificateList, setCertificateList] = useState([]);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
@@ -33,12 +32,10 @@ function Certificates() {
   return (
     <>
       {certificateList.map((value) => (
-        <CertificateContext.Provider key={value.id} value={value}>
-          <Certificate />
-        </CertificateContext.Provider>
+        <Certificate key={value.id} certificate={value} />
       ))}
     </>
   );
 }
 
-export default Certificates;
+export default CertificateCard;

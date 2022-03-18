@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Card, Row } from "react-bootstrap";
-import { FetchContext, EditTableContext } from "../common/context/Context";
+import {
+  CertificateFetchContext,
+  EditTableContext,
+} from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import CertificateCard from "./CertificateCard";
 import { PlusButton } from "../common/Button";
@@ -18,7 +21,7 @@ function Certificates() {
     <Card className="me-4 mt-3 mb-3">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <FetchContext.Provider value={{ reFetching, setReFetching }}>
+        <CertificateFetchContext.Provider value={{ reFetching, setReFetching }}>
           <CertificateCard />
           {isEditable && (
             <Row className="justify-content-center mb-4" xs="auto">
@@ -26,7 +29,7 @@ function Certificates() {
             </Row>
           )}
           {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
-        </FetchContext.Provider>
+        </CertificateFetchContext.Provider>
       </Card.Body>
     </Card>
   );

@@ -1,26 +1,25 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton } from "../common/Button";
-import {
-  CertificateContext,
-  EditTableContext,
-} from "../common/context/Context";
+import { EditTableContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
  * @description This component that shows editing screen or certificate info depending on the isEditing state
  * @returns {component} Certificate information
  */
-function Certificate() {
+function Certificate({ certificate }) {
   const isEditable = useContext(EditTableContext);
-  const certificate = useContext(CertificateContext);
   const [isEditing, setIsEditing] = useState(false);
   const { title, description, when_date } = certificate;
 
   return (
     <Row className="align-items-center row">
       {isEditing ? (
-        <CertificateEditForm setIsEdit={setIsEditing} />
+        <CertificateEditForm
+          certificate={certificate}
+          setIsEdit={setIsEditing}
+        />
       ) : (
         <Col className="mb-3">
           <span>{title}</span>
