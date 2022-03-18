@@ -26,11 +26,15 @@ class awardService {
     static async addAward({ awardee_id, title, description }) {
         // Unlike user email, awards MAY have same name.
 
+        const allowedFields = ["awardee_id", "title", "description"];
+        const newAward = Object.fromEntries(
+            Object.entries(arguments[0]).filter(([k, v]) =>
+                allowedFields.includes(k)
+            )
+        );
+
         const id = uuidv4();
-        const newAward = { id, awardee_id, title };
-        if (description) {
-            newAward.description = description;
-        }
+        newAward.id = id;
 
         console.log(`service.addAward >`, arguments);
         const added = await Award.create({ newAward });
@@ -85,7 +89,6 @@ class awardService {
      *  It will not emit error message.
      */
     static async getUserAwards({ awardee_id }) {
-        // ???
         console.log(`service.getUserAwards > `, arguments[0]);
         const found = await Award.searchByAwardee({ awardee_id });
         return found;
@@ -112,18 +115,23 @@ class awardService {
      * @async
      * @param {Object} payload
      * @param {uuid} payload.award_id
-     * @param {String[]} payload.pairs - Array of [key, value] pairs.
+     * @param {Array[String[]]} payload.pairs - Array of [key, value] pairs.
      * @returns {award} updated
      *
      * payload.pairs is an iterable of [key, value] pairs.
-     * key will be the field and value will be the... value!!
+     * The key will be the field and the value will be the... value!!
      */
     static async setAward({ award_id, pairs }) {
         console.log(`service.setAward > `, arguments[0]);
+
+        const allowedFields = ["awardee_id", "title", "description"];
         const updated = await Award.update({
             award_id,
-            pairs,
+            pairs: pairs.filter(([k, v]) => {
+                return allowedFields.includes(k);
+            }),
         });
+
         return updated;
     }
 
