@@ -42,7 +42,7 @@ awardRouter.post(
                 }
             });
 
-            if (user_id !== req.currentUserId) {
+            if (req.body.user_id !== req.currentUserId) {
                 throw new Error("Trying to create different user's award");
             }
 
