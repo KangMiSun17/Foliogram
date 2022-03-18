@@ -39,17 +39,13 @@ function EducationEditForm({
     e.preventDefault();
     // 변경사항을 업데이트 하는 과정(map을 돌려 변경하고자 하는 school의 값과 같은 객체를 newEdu로 변경하여 setEduList의 인자로 넘겨주는 것을 통해 update기능 구현)
 
-    const res = await Api.put(`educations/${val.id}`, {
+    await Api.put(`educations/${val.id}`, {
       school,
       major,
       position,
     });
-
-    console.log(res.data);
-
-    Api.get("educationlist", portfolioOwnerId).then((res) =>
-      setEduList(res.data)
-    );
+    const res = await Api.get("educationlist", portfolioOwnerId);
+    setEduList(res.data);
     // const newEduList = eduList.map((elem) => {
     //   if (elem.school === val.school) {
     //     const newEdu = { school, major, position };
@@ -125,7 +121,7 @@ function EducationEditForm({
           ></FormCheck>
         </Form.Group>
 
-        <Form.Group as={Row} className="mt-3 text-center">
+        <Form.Group as={Row} className="mt-3 mb-3 text-center">
           <Col sm={{ span: 20 }}>
             <Button variant="primary" type="submit" className="me-3">
               확인
