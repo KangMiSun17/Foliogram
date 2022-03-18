@@ -7,7 +7,7 @@ import {
 } from "./common/context/Context";
 import User from "./user/User";
 import Education from "./education/Education";
-import CertificateCard from "./certificate/CertificateCard";
+import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
@@ -81,7 +81,7 @@ function Portfolio() {
                 isEditable={portfolioOwner.id === userState.user?.id}
               />
               <Projects />
-              <CertificateCard />
+              <Certificates />
             </Col>
           </PortfolioOwnerContext.Provider>
         </EditTableContext.Provider>

@@ -1,37 +1,44 @@
-import React, { useContext, useState } from "react";
-import { Card } from "react-bootstrap";
-import { FetchContext, EditTableContext } from "../common/context/Context";
-import CertificateAddForm from "./CertificateAddForm";
-import Certificates from "./Certificates";
-import { PlusButton } from "../common/Button";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  FetchContext,
+  CertificateContext,
+  PortfolioOwnerContext,
+} from "../common/context/Context";
+import Certificate from "./Certificate";
+import * as Api from "../../api";
 
 /**
- * @description root component related to certification
- * @returns {component} Complete Certificate Card
+ * @description This component that get list of certifications and show screen
+ * @returns {component} List of certificate
  */
-function CertificateCard() {
-  const [isAdding, setIsAdding] = useState(false);
-  const [reFetching, setReFetching] = useState(new Date());
-  const isEditable = useContext(EditTableContext);
+function Certificates() {
+  const { reFetching } = useContext(FetchContext);
+  const [certificateList, setCertificateList] = useState([]);
+  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+
+  // All certificate data get - get request
+  useEffect(() => {
+    try {
+      const getCertificateList = async () => {
+        const res = await Api.get("certificatelist/" + portfolioOwnerId);
+        setCertificateList(res.data);
+      };
+
+      getCertificateList();
+    } catch (err) {
+      console.log("Error: certificatelist get request fail", err);
+    }
+  }, [reFetching, portfolioOwnerId]);
 
   return (
-    <Card className="me-4">
-      <Card.Body>
-        <Card.Title>자격증</Card.Title>
-        <FetchContext.Provider value={{ reFetching, setReFetching }}>
-          <Certificates />
-          {isEditable && (
-            <div className="mt-3 text-center mb-4 row">
-              <div className="col-sm-20">
-                <PlusButton setState={setIsAdding} />
-              </div>
-            </div>
-          )}
-          {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
-        </FetchContext.Provider>
-      </Card.Body>
-    </Card>
+    <>
+      {certificateList.map((value) => (
+        <CertificateContext.Provider key={value.id} value={value}>
+          <Certificate />
+        </CertificateContext.Provider>
+      ))}
+    </>
   );
 }
 
-export default CertificateCard;
+export default Certificates;
