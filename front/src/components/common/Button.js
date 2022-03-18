@@ -50,7 +50,7 @@ export const PlusButton = ({ setState }) => {
  */
 export const EditButton = ({ setState }) => {
   return (
-    <Button variant="outline-info" onClick={() => setState(true)}>
+    <Button size="sm" variant="outline-info" onClick={() => setState(true)}>
       편집
     </Button>
   );
@@ -62,7 +62,7 @@ export const EditButton = ({ setState }) => {
  */
 export const DeleteButton = ({ handleDelete }) => {
   return (
-    <Button variant="outline-danger" onClick={handleDelete}>
+    <Button size="sm" variant="outline-danger" onClick={handleDelete}>
       삭제
     </Button>
   );
