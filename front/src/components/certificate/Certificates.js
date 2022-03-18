@@ -12,7 +12,7 @@ import * as Api from "../../api";
  * @returns {component} List of certificate
  */
 function Certificates() {
-  const { isFetching } = useContext(FetchContext);
+  const { reFetching } = useContext(FetchContext);
   const [certificateList, setCertificateList] = useState([]);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
@@ -28,7 +28,7 @@ function Certificates() {
     } catch (err) {
       console.log("Error: certificatelist get request fail", err);
     }
-  }, [isFetching, portfolioOwnerId]);
+  }, [reFetching, portfolioOwnerId]);
 
   return (
     <>

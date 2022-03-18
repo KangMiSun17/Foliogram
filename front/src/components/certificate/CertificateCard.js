@@ -17,7 +17,7 @@ import { PlusButton } from "../common/Button";
 function CertificateCard() {
   const [isOwner, setIsOwner] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const [isFetching, setIsFetching] = useState(new Date());
+  const [reFetching, setReFetching] = useState(new Date());
   const { user } = useContext(UserStateContext);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
@@ -34,7 +34,7 @@ function CertificateCard() {
     <Card className="me-4">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <FetchContext.Provider value={{ isFetching, setIsFetching }}>
+        <FetchContext.Provider value={{ reFetching, setReFetching }}>
           <OwnerContext.Provider value={{ isOwner }}>
             <Certificates />
           </OwnerContext.Provider>

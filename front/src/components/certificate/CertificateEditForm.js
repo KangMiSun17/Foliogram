@@ -13,7 +13,7 @@ import * as Api from "../../api";
  * @returns {component} Certificate edit Form
  */
 function CertificateEditForm({ setIsEdit }) {
-  const { setIsFetching } = useContext(FetchContext);
+  const { setReFetching } = useContext(FetchContext);
   const { id, title, description, when_date } = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
   const [modTitle, setModTitle] = useState(title);
@@ -57,7 +57,7 @@ function CertificateEditForm({ setIsEdit }) {
       console.log("Error: certificates put request fail", err);
     }
 
-    setIsFetching(new Date());
+    setReFetching(new Date());
     setIsEdit(false);
   };
 

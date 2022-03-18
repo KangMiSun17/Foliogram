@@ -15,7 +15,7 @@ import * as Api from "../../api";
  */
 function CertificateAddForm({ setIsAdding }) {
   const { user } = useContext(UserStateContext);
-  const { setIsFetching } = useContext(FetchContext);
+  const { setReFetching } = useContext(FetchContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -43,7 +43,7 @@ function CertificateAddForm({ setIsAdding }) {
       console.log("Error: certificates/create post request fail", err);
     }
 
-    setIsFetching(new Date());
+    setReFetching(new Date());
     setIsAdding(false);
   };
 
