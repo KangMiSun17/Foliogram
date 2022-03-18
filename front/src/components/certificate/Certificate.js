@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-import { CertificateContext, OwnerContext } from "../common/Context";
+import { CertificateContext, OwnerContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**

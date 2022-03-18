@@ -4,7 +4,7 @@ import {
   OwnerContext,
   FetchContext,
   PortfolioOwnerContext,
-} from "../common/Context";
+} from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
 import { UserStateContext } from "../../App";
