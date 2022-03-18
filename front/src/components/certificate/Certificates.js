@@ -3,7 +3,7 @@ import {
   FecthContext,
   CertificateContext,
   PortfolioOwnerContext,
-} from "./common/Context";
+} from "../common/Context";
 import Certificate from "./Certificate";
 import * as Api from "../../api";
 
