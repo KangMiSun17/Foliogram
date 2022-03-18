@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import { EditButton } from "../common/Button";
 import {
   CertificateContext,
@@ -17,22 +18,24 @@ function Certificate() {
   const { title, description, when_date } = certificate;
 
   return (
-    <div className="align-items-center row">
+    <Row className="align-items-center row">
       {isEditing ? (
         <CertificateEditForm setIsEdit={setIsEditing} />
       ) : (
-        <div className="col">
-          <p className="mb-0">{title}</p>
-          <p className="mb-0">{description}</p>
-          <p>{when_date}</p>
-        </div>
+        <Col className="mb-3">
+          <span>{title}</span>
+          <br />
+          <span style={{ color: "gray" }}>{description}</span>
+          <br />
+          <span style={{ color: "gray" }}>{when_date}</span>
+        </Col>
       )}
       {isEditable && !isEditing && (
-        <div className="col-lg-1 col">
+        <Col sm={1}>
           <EditButton setState={setIsEditing} />
-        </div>
+        </Col>
       )}
-    </div>
+    </Row>
   );
 }
 
