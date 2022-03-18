@@ -1,7 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
-import { PortfolioOwnerContext } from "./certificate/common/Context";
+import {
+  PortfolioOwnerContext,
+  EditTableContext,
+} from "./common/context/Context";
 import User from "./user/User";
 import Education from "./education/Education";
 import CertificateCard from "./certificate/CertificateCard";
@@ -57,25 +60,29 @@ function Portfolio() {
   return (
     <Container fluid>
       <Row>
-        <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
-          <Col xl="3">
-            <User
-              portfolioOwnerId={portfolioOwner.id}
-              isEditable={portfolioOwner.id === userState.user?.id}
-            />
-          </Col>
-          <Col>
-            <Education
-              portfolioOwnerId={portfolioOwner.id}
-              isEditable={portfolioOwner.id === userState.user?.id}
-            ></Education>
-            <CertificateCard />
-            <Awards
-              portfolioOwnerId={portfolioOwner.id}
-              isEditable={portfolioOwner.id === userState.user?.id}
-            />
-          </Col>
-        </PortfolioOwnerContext.Provider>
+        <EditTableContext.Provider
+          value={portfolioOwner.id === userState.user?.id}
+        >
+          <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+            <Col xl="3">
+              <User
+                portfolioOwnerId={portfolioOwner.id}
+                isEditable={portfolioOwner.id === userState.user?.id}
+              />
+            </Col>
+            <Col>
+              <Education
+                portfolioOwnerId={portfolioOwner.id}
+                isEditable={portfolioOwner.id === userState.user?.id}
+              ></Education>
+              <CertificateCard />
+              <Awards
+                portfolioOwnerId={portfolioOwner.id}
+                isEditable={portfolioOwner.id === userState.user?.id}
+              />
+            </Col>
+          </PortfolioOwnerContext.Provider>
+        </EditTableContext.Provider>
       </Row>
     </Container>
   );

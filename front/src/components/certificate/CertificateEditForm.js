@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import { DatePickForm } from "./common/DateUtil";
-import { BundleButton } from "./common/Button";
-import { CertificateContext, FecthContext } from "./common/Context";
-import { toStringDate, toObjectDate } from "./common/DateUtil";
+import { DatePickForm } from "../common/DateUtil";
+import { BundleButton } from "../common/Button";
+import { CertificateContext, FetchContext } from "../common/context/Context";
+import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
 /**
@@ -13,7 +13,7 @@ import * as Api from "../../api";
  * @returns {component} Certificate edit Form
  */
 function CertificateEditForm({ setIsEdit }) {
-  const { setIsFetching } = useContext(FecthContext);
+  const { setReFetching } = useContext(FetchContext);
   const { id, title, description, when_date } = useContext(CertificateContext);
   const [isCertificate, setIsCertificate] = useState([]);
   const [modTitle, setModTitle] = useState(title);
@@ -57,7 +57,7 @@ function CertificateEditForm({ setIsEdit }) {
       console.log("Error: certificates put request fail", err);
     }
 
-    setIsFetching(new Date());
+    setReFetching(new Date());
     setIsEdit(false);
   };
 
@@ -79,8 +79,8 @@ function CertificateEditForm({ setIsEdit }) {
           onChange={(e) => setModDescription(e.target.value)}
         />
       </Form.Group>
-      {DatePickForm(startDate, setStartDate)}
-      {BundleButton(handleEditSubmit, setIsEdit)}
+      <DatePickForm startDate={startDate} setState={setStartDate} />
+      <BundleButton submitHandler={handleEditSubmit} setState={setIsEdit} />
     </Form>
   );
 }

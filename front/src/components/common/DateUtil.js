@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
  * @param {function} setState State function to change when date change
  * @returns {component} DatePicker component
  */
-export const DatePickForm = (startDate, setState) => {
+export const DatePickForm = ({ startDate, setState }) => {
   return (
     <DatePicker selected={startDate} onChange={(date) => setState(date)} />
   );
