@@ -26,11 +26,15 @@ class awardService {
     static async addAward({ awardee_id, title, description }) {
         // Unlike user email, awards MAY have same name.
 
+        const allowedFields = ["awardee_id", "title", "description"];
+        const newAward = Object.fromEntries(
+            Object.entries(arguments[0]).filter(([k, v]) =>
+                allowedFields.includes(k)
+            )
+        );
+
         const id = uuidv4();
-        const newAward = { id, awardee_id, title };
-        if (description) {
-            newAward.description = description;
-        }
+        newAward.id = id;
 
         console.log(`service.addAward >`, arguments);
         const added = await Award.create({ newAward });
