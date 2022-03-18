@@ -37,10 +37,6 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
         const newCertificateList = [...cur, res.data];
         return newCertificateList;
       });
-
-      // Set state when success send request
-      setTitle("");
-      setDescription("");
     } catch (err) {
       console.log("Error: certificates/create post request fail", err);
     }

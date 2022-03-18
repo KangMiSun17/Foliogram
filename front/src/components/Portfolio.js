@@ -59,12 +59,10 @@ function Portfolio() {
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <EditTableContext.Provider
-          value={portfolioOwner.id === userState.user?.id}
-        >
-          <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+    <EditTableContext.Provider value={portfolioOwner.id === userState.user?.id}>
+      <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+        <Container fluid>
+          <Row>
             <Col xl="3">
               <User
                 portfolioOwnerId={portfolioOwner.id}
@@ -83,10 +81,10 @@ function Portfolio() {
               <Projects />
               <Certificates />
             </Col>
-          </PortfolioOwnerContext.Provider>
-        </EditTableContext.Provider>
-      </Row>
-    </Container>
+          </Row>
+        </Container>
+      </PortfolioOwnerContext.Provider>
+    </EditTableContext.Provider>
   );
 }
 

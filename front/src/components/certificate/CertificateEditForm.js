@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
@@ -18,26 +18,9 @@ function CertificateEditForm({
   index,
 }) {
   const { id, title, description, when_date } = certificate;
-  const [isCertificate, setIsCertificate] = useState([]);
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescription] = useState(description);
   const [startDate, setStartDate] = useState(toObjectDate(when_date));
-
-  // Get certificate data only one
-  useEffect(() => {
-    try {
-      const getCertificate = async () => {
-        const res = await Api.get("certificates", id);
-        setIsCertificate(res.data);
-      };
-
-      getCertificate();
-    } catch (err) {
-      console.log("Error: certificates get request fail", err);
-    }
-  }, [id]);
-
-  console.log("자격증 정보 API 테스트", isCertificate);
 
   /**
    * Send certificate data - PUT request
@@ -54,14 +37,10 @@ function CertificateEditForm({
       });
 
       setCertificateList((cur) => {
-        cur.splice(index, 1, res.data);
+        cur[index] = res.data;
         const newCertificateList = [...cur];
         return newCertificateList;
       });
-
-      // Set state when success send request
-      setEditTitle("");
-      setEditDescription("");
     } catch (err) {
       console.log("Error: certificates put request fail", err);
     }
