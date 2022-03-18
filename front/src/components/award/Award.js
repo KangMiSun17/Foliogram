@@ -6,7 +6,7 @@ import AwardEditForm from "./AwardEditForm";
  *
  * @param {boolean} isEditable - 편집 가능 여부
  * @param {object} award - award.map으로 넘어온 각각의 award
- * @param {function} editHandler - Awards update function
+ * @param {state} setLastCall - 렌더링 하기 위한 state
  * @returns AwardEditForm or AwardCard
  */
 function Award({ isEditable, award, setLastCall }) {

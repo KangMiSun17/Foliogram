@@ -1,53 +1,34 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Card, Button } from "react-bootstrap";
-import {
-  OwnerContext,
-  FecthContext,
-  PortfolioOwnerContext,
-} from "./common/Context";
+import React, { useContext, useState } from "react";
+import { Card } from "react-bootstrap";
+import { FetchContext, EditTableContext } from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import Certificates from "./Certificates";
-import { UserStateContext } from "../../App";
+import { PlusButton } from "../common/Button";
 
 /**
  * @description root component related to certification
  * @returns {component} Complete Certificate Card
  */
 function CertificateCard() {
-  const [isOwner, setIsOwner] = useState(false);
-  const [isAddingg, setIsAdding] = useState(false);
-  const [isFetching, setIsFetching] = useState(new Date());
-  const userState = useContext(UserStateContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
-
-  // Checking login user id equals portfolio id
-  useEffect(() => {
-    if (userState.user.id === portfolioOwnerId) {
-      setIsOwner(true);
-      return;
-    }
-    setIsOwner(false);
-  }, [userState.user.id, portfolioOwnerId]);
+  const [isAdding, setIsAdding] = useState(false);
+  const [reFetching, setReFetching] = useState(new Date());
+  const isEditable = useContext(EditTableContext);
 
   return (
     <Card className="me-4">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <FecthContext.Provider value={{ isFetching, setIsFetching }}>
-          <OwnerContext.Provider value={{ isOwner }}>
-            <Certificates />
-          </OwnerContext.Provider>
-          {isOwner && (
+        <FetchContext.Provider value={{ reFetching, setReFetching }}>
+          <Certificates />
+          {isEditable && (
             <div className="mt-3 text-center mb-4 row">
               <div className="col-sm-20">
-                <Button variant="primary" onClick={() => setIsAdding(true)}>
-                  +
-                </Button>
+                <PlusButton setState={setIsAdding} />
               </div>
             </div>
           )}
-          {isAddingg && <CertificateAddForm setIsAdding={setIsAdding} />}
-        </FecthContext.Provider>
+          {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
+        </FetchContext.Provider>
       </Card.Body>
     </Card>
   );

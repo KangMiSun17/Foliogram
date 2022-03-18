@@ -7,6 +7,7 @@ import AwardDelete from "./AwardDelete";
  * @param {boolean} setIsEditing - 편집중 상태 변경 state
  * @param {boolean} isEditable - 편집 가능 여부
  * @param {object} award - award.map으로 넘어온 각각의 award
+ * @param {state} setLastCall - 렌더링 하기 위한 state
  * @returns awardList and edit button
  */
 function AwardCard({ setIsEditing, isEditable, award, setLastCall }) {

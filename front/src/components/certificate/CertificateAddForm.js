@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import { FecthContext } from "./common/Context";
-import { BundleButton } from "./common/Button";
-import { DatePickForm } from "./common/DateUtil";
-import { toStringDate } from "./common/DateUtil";
+import { FetchContext } from "../common/context/Context";
+import { BundleButton } from "../common/Button";
+import { DatePickForm } from "../common/DateUtil";
+import { toStringDate } from "../common/DateUtil";
 import { UserStateContext } from "../../App";
 import * as Api from "../../api";
 
@@ -14,8 +14,8 @@ import * as Api from "../../api";
  * @returns {component} Certificate add Form
  */
 function CertificateAddForm({ setIsAdding }) {
-  const userState = useContext(UserStateContext);
-  const { setIsFetching } = useContext(FecthContext);
+  const { user } = useContext(UserStateContext);
+  const { setReFetching } = useContext(FetchContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -27,7 +27,7 @@ function CertificateAddForm({ setIsAdding }) {
   const handleAddSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      user_id: userState.user.id,
+      user_id: user.id,
       title,
       description,
       when_date: toStringDate(startDate),
@@ -43,7 +43,7 @@ function CertificateAddForm({ setIsAdding }) {
       console.log("Error: certificates/create post request fail", err);
     }
 
-    setIsFetching(new Date());
+    setReFetching(new Date());
     setIsAdding(false);
   };
 
@@ -65,8 +65,8 @@ function CertificateAddForm({ setIsAdding }) {
           onChange={(e) => setDescription(e.target.value)}
         />
       </Form.Group>
-      {DatePickForm(startDate, setStartDate)}
-      {BundleButton(handleAddSubmit, setIsAdding)}
+      <DatePickForm startDate={startDate} setState={setStartDate} />
+      <BundleButton submitHandler={handleAddSubmit} setState={setIsAdding} />
     </Form>
   );
 }

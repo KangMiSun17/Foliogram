@@ -136,7 +136,7 @@ class Award {
      * @async
      * @param {Object} payload - An Object containing award id and data.
      * @param {uuid} payload.award_id
-     * @param {String[]} payload.pairs - Array of [key, value] pairs.
+     * @param {String[][]} payload.pairs - Array of [key, value] pairs.
      * @returns {award} updated
      *
      */

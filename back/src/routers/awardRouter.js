@@ -35,27 +35,22 @@ awardRouter.post(
                 );
             }
 
-            const title = req.body.title ?? null;
-            if (!title) {
-                throw new Error("title field is required.");
-            }
+            // These fields are required.
+            ["user_id", "title"].forEach((k) => {
+                if (!(k in req.body)) {
+                    throw new Error(`${k} field is required`);
+                }
+            });
 
-            // const user_id = req.currentUserId;
-            const user_id = req.body.user_id ?? null;
-            if (!user_id) {
-                throw new Error("user_id is required in the request body");
-            } else if (user_id !== req.currentUserId) {
+            if (req.body.user_id !== req.currentUserId) {
                 throw new Error("Trying to create different user's award");
             }
 
-            const description = req.body.description ?? null;
+            const payload = { ...req.body };
+            payload.awardee_id = payload.user_id;
+            delete payload.user_id;
 
-            // const awardee = await userAuthService.getUser({ user_id });
-            const newAward = await awardService.addAward({
-                awardee_id: user_id,
-                title,
-                description,
-            });
+            const newAward = await awardService.addAward(payload);
 
             res.status(201).json(newAward);
         } catch (why) {
@@ -118,7 +113,7 @@ awardee_id=${award.awardee_id}`
             pairs: Object.entries(req.body),
         });
 
-        res.status(200).json(award);
+        res.status(200).json(updated);
     } catch (why) {
         next(why);
     }
@@ -165,7 +160,11 @@ awardRouter.delete(
 
             const deleted = await awardService.removeAward({ award_id });
 
-            res.status(deleted ? 200 : 500).json({ result: !!deleted });
+            if (!deleted) {
+                throw new Error(`Award id ${award_id} not found`);
+            }
+
+            res.status(200).json({ result: true });
         } catch (why) {
             next(why);
         }
