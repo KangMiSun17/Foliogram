@@ -8,7 +8,7 @@ import CertificateEditForm from "./CertificateEditForm";
  * @description This component that shows editing screen or certificate info depending on the isEditing state
  * @returns {component} Certificate information
  */
-function Certificate({ certificate }) {
+function Certificate({ certificate, setCertificateList, index }) {
   const isEditable = useContext(EditTableContext);
   const [isEditing, setIsEditing] = useState(false);
   const { title, description, when_date } = certificate;
@@ -19,6 +19,8 @@ function Certificate({ certificate }) {
         <CertificateEditForm
           certificate={certificate}
           setIsEdit={setIsEditing}
+          setCertificateList={setCertificateList}
+          index={index}
         />
       ) : (
         <Col className="mb-3">

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import { CertificateFetchContext } from "../common/context/Context";
 import { BundleButton } from "../common/Button";
 import { DatePickForm } from "../common/DateUtil";
 import { toStringDate } from "../common/DateUtil";
@@ -13,9 +12,8 @@ import * as Api from "../../api";
  * @param {function} props.setIsAdding - This State is select show add screen or not show add screen
  * @returns {component} Certificate add Form
  */
-function CertificateAddForm({ setIsAdding }) {
+function CertificateAddForm({ setCertificateList, setIsAdding }) {
   const { user } = useContext(UserStateContext);
-  const { setReFetching } = useContext(CertificateFetchContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -26,15 +24,19 @@ function CertificateAddForm({ setIsAdding }) {
    */
   const handleAddSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      user_id: user.id,
-      title,
-      description,
-      when_date: toStringDate(startDate),
-    };
 
     try {
-      await Api.post("certificates/create", data);
+      const res = await Api.post("certificates/create", {
+        user_id: user.id,
+        title,
+        description,
+        when_date: toStringDate(startDate),
+      });
+
+      setCertificateList((cur) => {
+        const newCertificateList = [...cur, res.data];
+        return newCertificateList;
+      });
 
       // Set state when success send request
       setTitle("");
@@ -43,7 +45,6 @@ function CertificateAddForm({ setIsAdding }) {
       console.log("Error: certificates/create post request fail", err);
     }
 
-    setReFetching(new Date());
     setIsAdding(false);
   };
 

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
-import { CertificateFetchContext } from "../common/context/Context";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
@@ -12,8 +11,12 @@ import * as Api from "../../api";
  * @param {function} props.setIsEdit - This State is select show edit screen or not show edit screen
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({ certificate, setIsEdit }) {
-  const { setReFetching } = useContext(CertificateFetchContext);
+function CertificateEditForm({
+  setCertificateList,
+  setIsEdit,
+  certificate,
+  index,
+}) {
   const { id, title, description, when_date } = certificate;
   const [isCertificate, setIsCertificate] = useState([]);
   const [editTitle, setEditTitle] = useState(title);
@@ -42,13 +45,19 @@ function CertificateEditForm({ certificate, setIsEdit }) {
    */
   const handleEditSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      title: editTitle,
-      description: editDescription,
-      when_date: toStringDate(startDate),
-    };
+
     try {
-      await Api.put("certificates/" + id, data);
+      const res = await Api.put("certificates/" + id, {
+        title: editTitle,
+        description: editDescription,
+        when_date: toStringDate(startDate),
+      });
+
+      setCertificateList((cur) => {
+        cur.splice(index, 1, res.data);
+        const newCertificateList = [...cur];
+        return newCertificateList;
+      });
 
       // Set state when success send request
       setEditTitle("");
@@ -57,7 +66,6 @@ function CertificateEditForm({ certificate, setIsEdit }) {
       console.log("Error: certificates put request fail", err);
     }
 
-    setReFetching(new Date());
     setIsEdit(false);
   };
 
