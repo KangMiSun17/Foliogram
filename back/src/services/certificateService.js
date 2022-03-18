@@ -14,9 +14,12 @@ class certificateService {
     static async addCertificate({ title, description, user_id, when_date }) {
         //give a unique string
         const id = uuidv4();
-        const newCertificate = { id, user_id, title, description, when_date };
+        const newCertificate = { id, user_id, title, when_date };
 
         // store in DB
+        if (description) {
+            newCertificate.description = description;
+        }
         const createdNewCertificate = await Certificate.create({
             newCertificate,
         });
@@ -48,12 +51,7 @@ class certificateService {
      */
     static async deleteCertificate({ id }) {
         const { deletedCount } = await Certificate.delete({ id });
-        //if failed with delete process,return error message
-        if (deletedCount === 0) {
-            return { result: false };
-        } else {
-            return { result: true };
-        }
+        return { result: true };
     }
 
     /**
@@ -74,15 +72,7 @@ class certificateService {
      * @param {object} toUpdate information to update with certificate
      * @return {object} return updated certificate
      */
-    static async setCertificate({ id, toUpdate }) {
-        let certificate = await Certificate.findById({ id });
-
-        //if certificate is not exist in DB,return error message
-        if (!certificate) {
-            const errorMessage = "삭제 되었거나 존재하지 않는 자격증입니다.";
-            return { errorMessage };
-        }
-
+    static async setCertificate({ id, toUpdate, certificate }) {
         // update with keys which is not null
         if (toUpdate.title) {
             const fieldToUpdate = "title";
