@@ -14,7 +14,7 @@ import * as Api from "../../api";
  * @returns {component} Certificate add Form
  */
 function CertificateAddForm({ setIsAdding }) {
-  const userState = useContext(UserStateContext);
+  const { user } = useContext(UserStateContext);
   const { setIsFetching } = useContext(FetchContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,7 +27,7 @@ function CertificateAddForm({ setIsAdding }) {
   const handleAddSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      user_id: userState.user.id,
+      user_id: user.id,
       title,
       description,
       when_date: toStringDate(startDate),

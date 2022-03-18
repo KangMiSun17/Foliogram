@@ -21,7 +21,6 @@ function Certificates() {
     try {
       const getCertificateList = async () => {
         const res = await Api.get("certificatelist/" + portfolioOwnerId);
-        console.log(res);
         setCertificateList(res.data);
       };
 

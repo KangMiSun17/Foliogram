@@ -17,17 +17,17 @@ function CertificateCard() {
   const [isOwner, setIsOwner] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isFetching, setIsFetching] = useState(new Date());
-  const userState = useContext(UserStateContext);
+  const { user } = useContext(UserStateContext);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
   // Checking login user id equals portfolio id
   useEffect(() => {
-    if (userState.user.id === portfolioOwnerId) {
+    if (user.id === portfolioOwnerId) {
       setIsOwner(true);
       return;
     }
     setIsOwner(false);
-  }, [userState.user.id, portfolioOwnerId]);
+  }, [user.id, portfolioOwnerId]);
 
   return (
     <Card className="me-4">
