@@ -6,9 +6,12 @@ import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
 /**
- * @description This component that shows certificate editing screen if isEditing state === true
+ * This component can edit certification item
  * @param {Object} props
- * @param {function} props.setIsEdit - This State is select show edit screen or not show edit screen
+ * @param {function} props.setCertificateList function to change the state of a list of certificates
+ * @param {function} props.setIsEdit This State is select show edit screen or not show edit screen
+ * @param {object} props.certificate Item in the Certification List
+ * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate edit Form
  */
 function CertificateEditForm({
@@ -22,10 +25,7 @@ function CertificateEditForm({
   const [editDescription, setEditDescription] = useState(description);
   const [startDate, setStartDate] = useState(toObjectDate(when_date));
 
-  /**
-   * Send certificate data - PUT request
-   * @param {object} event Event object
-   */
+  // Request certificate item modification api
   const handleEditSubmit = async (event) => {
     event.preventDefault();
 

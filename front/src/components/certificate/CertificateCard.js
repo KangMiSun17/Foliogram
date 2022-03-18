@@ -2,8 +2,8 @@ import React from "react";
 import Certificate from "./Certificate";
 
 /**
- * @description This component that get list of certifications and show screen
- * @returns {component} List of certificate
+ * This component make up the list of certifications
+ * @returns {component} List of certificate component
  */
 function CertificateCard({ certificateList, setCertificateList }) {
   return (

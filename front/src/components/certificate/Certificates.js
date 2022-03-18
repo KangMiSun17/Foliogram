@@ -10,8 +10,8 @@ import { PlusButton } from "../common/Button";
 import * as Api from "../../api";
 
 /**
- * @description root component related to certification
- * @returns {component} Complete Certificate Card
+ * root component related to certification
+ * @returns {component} Completed Certificates
  */
 function Certificates() {
   const [certificateList, setCertificateList] = useState([]);
@@ -19,7 +19,7 @@ function Certificates() {
   const isEditable = useContext(EditTableContext);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
 
-  // All certificate data get - get request
+  // All certificate list get API request
   useEffect(() => {
     try {
       const getCertificateList = async () => {
@@ -33,6 +33,10 @@ function Certificates() {
     }
   }, [portfolioOwnerId]);
 
+  /**
+   * @description isEditable {type: boolean} if true show PlusButton
+   * @description isAdding {type: boolean} if true show CertificateAddForm
+   */
   return (
     <Card className="me-4 mt-3 mb-3">
       <Card.Body>
