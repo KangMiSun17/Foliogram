@@ -2,34 +2,20 @@ import React, { useState } from "react";
 import AwardCard from "./AwardCard";
 import AwardEditForm from "./AwardEditForm";
 
-/** 편집 상태에 따라 편집 화면을 보여줄지 수상 내용을 보여줄지 판단하는 컴포넌트 입니다.
+/** If editing, show AwardEditForm, otherwise show AwardCard.
  *
- * @param {boolean} isEditable - 편집 가능 여부
- * @param {object} award - award.map으로 넘어온 각각의 award
- * @param {state} setLastCall - 렌더링 하기 위한 state
  * @returns AwardEditForm or AwardCard
  */
-function Award({ isEditable, award, setLastCall }) {
+function Award() {
   const [isEditing, setIsEditing] = useState(false);
-
   return (
-    <div>
+    <>
       {isEditing ? (
-        <AwardEditForm
-          award={award}
-          setIsEditing={setIsEditing}
-          id={award.id}
-          setLastCall={setLastCall}
-        />
+        <AwardEditForm setIsEditing={setIsEditing} />
       ) : (
-        <AwardCard
-          award={award}
-          isEditable={isEditable}
-          setIsEditing={setIsEditing}
-          setLastCall={setLastCall}
-        />
+        <AwardCard setIsEditing={setIsEditing} />
       )}
-    </div>
+    </>
   );
 }
 

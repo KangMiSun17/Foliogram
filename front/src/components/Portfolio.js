@@ -74,10 +74,7 @@ function Portfolio() {
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
               ></Education>
-              <Awards
-                portfolioOwnerId={portfolioOwner.id}
-                isEditable={portfolioOwner.id === userState.user?.id}
-              />
+              <Awards />
               <Projects />
               <Certificates />
             </Col>
