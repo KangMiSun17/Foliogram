@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import EducationCard from "./EducationCard";
 import EducationEditForm from "./EducationEditForm";
 
-/** 편집 상태에 따라 편집 화면을 보여줄지 수상 내용을 보여줄지 판단하는 컴포넌트 입니다.
+/** 편집 상태에 따라 편집 화면을 보여줄지 학력 카드 내용을 보여줄지 판단하는 컴포넌트 입니다.
  *
- * @returns ProjectEditForm or ProjectCard
+ * @returns EducationEditForm or EducationCard
  */
 function Education() {
   const [isEditing, setIsEditing] = useState(false);

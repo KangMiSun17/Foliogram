@@ -7,9 +7,9 @@ import {
 } from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 프로젝트 추가하는 컴포넌트입니다.
+/** 학력을 추가하는 컴포넌트입니다.
  *
- * @returns {component} ProjectAddForm
+ * @returns {component} EducationAddForm
  */
 function EducationAddForm() {
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
@@ -23,7 +23,7 @@ function EducationAddForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //추가된 projects 업데이트 하기위해 서버에 post 요청
+    //추가된 Education 업데이트 하기위해 서버에 post 요청
     try {
       await Api.post(`education/create`, {
         user_id: portfolioOwnerId,

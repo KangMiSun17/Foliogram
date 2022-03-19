@@ -10,6 +10,10 @@ import {
 } from "../common/context/Context";
 import * as Api from "../../api";
 
+/** Education list and Education add component
+ *
+ * @returns Education or EducationAddForm
+ */
 function Educations() {
   const isEditable = useContext(EditTableContext);
   const portfolioOwnerId = useContext(PortfolioOwnerContext);

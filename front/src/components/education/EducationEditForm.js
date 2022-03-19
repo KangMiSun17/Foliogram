@@ -7,9 +7,9 @@ import {
 } from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 선택된 Project 편집하는 컴포넌트입니다.
+/** 선택된 Education을 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state
- * @returns {component} - ProjectEditForm
+ * @returns {component} - EducationEditForm
  */
 function EducationEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(EducationFetchContext);
