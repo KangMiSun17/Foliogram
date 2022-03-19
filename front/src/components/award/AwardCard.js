@@ -14,7 +14,7 @@ import {
  */
 function AwardCard({ setIsEditing }) {
   const isEditable = useContext(EditTableContext);
-  const setReFetch = useContext(AwardFetchContext);
+  const setReFetching = useContext(AwardFetchContext);
   //Each award
   const award = useContext(AwardContext);
   return (
@@ -33,7 +33,7 @@ function AwardCard({ setIsEditing }) {
             <DeleteButton
               endpoint={"awards"}
               id={award.id}
-              setState={setReFetch}
+              setState={setReFetching}
             />
           </Col>
         </>
