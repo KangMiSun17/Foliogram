@@ -14,7 +14,7 @@ function ProjectEditForm({ setIsEditing }) {
   const { id, title, description, from_date, to_date } =
     useContext(ProjectContext);
   const [editTitle, setEditTitle] = useState(title);
-  const [editContent, setEditContent] = useState(description);
+  const [editDescription, setEditDescription] = useState(description);
   const [startDate, setStartDate] = useState(toObjectDate(from_date));
   const [endDate, setEndDate] = useState(toObjectDate(to_date));
 
@@ -25,7 +25,7 @@ function ProjectEditForm({ setIsEditing }) {
     try {
       await Api.put(`projects/${id}`, {
         title: editTitle,
-        description: editContent,
+        description: editDescription,
         from_date: toStringDate(startDate),
         to_date: toStringDate(endDate),
       });
@@ -50,8 +50,8 @@ function ProjectEditForm({ setIsEditing }) {
         <Form.Control
           type="text"
           className="mb-3"
-          value={editContent}
-          onChange={(e) => setEditContent(e.target.value)}
+          value={editDescription}
+          onChange={(e) => setEditDescription(e.target.value)}
         />
       </Form.Group>
 
