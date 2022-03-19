@@ -6,7 +6,7 @@ import {
   EditTableContext,
 } from "./common/context/Context";
 import User from "./user/User";
-import Education from "./education/Education";
+import Educations from "./education/Educations";
 import CertificateCard from "./certificate/CertificateCard";
 import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
@@ -72,10 +72,10 @@ function Portfolio() {
               />
             </Col>
             <Col>
-              <Education
+              <Educations
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
-              ></Education>
+              ></Educations>
               <Awards
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
