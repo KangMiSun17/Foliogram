@@ -1,12 +1,11 @@
 /**
  * @typedef {any} Model - Mongoose model.
  * @typedef {[string, any]} kvpair - Key, value pair.
- * @typedef {kvpair[]} kvpairs - Iterable of key, value pairs.
  */
 
 /** Base class for Models. Implements simple CRUD interface.
  *
- * @property {Model} Model
+ * @prop {Model} Model - static
  * @method static async create(fields) {}
  * @method static async find(kvpairs) {}
  * @method static async findAll(kvpairs) {}
