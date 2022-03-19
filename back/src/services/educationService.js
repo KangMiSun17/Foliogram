@@ -1,5 +1,5 @@
-import { Education } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { v4 as uuidv4 } from 'uuid';
+import { Education } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { v4 as uuidv4 } from "uuid";
 
 class educationService {
     /**
@@ -34,7 +34,7 @@ class educationService {
         const education = await Education.findById({ id });
         //if education is not exist in DB,return error message
         if (!education) {
-            const errorMessage = '삭제 되었거나 존재하지 않는 학력입니다.';
+            const errorMessage = "삭제 되었거나 존재하지 않는 학력입니다.";
             return { errorMessage };
         }
         return education;
@@ -48,12 +48,7 @@ class educationService {
      */
     static async deleteEducation({ id }) {
         const { deletedCount } = await Education.delete({ id });
-        //if failed with delete process,return error message
-        if (deletedCount === 0) {
-            return { result: false };
-        } else {
-            return { result: true };
-        }
+        return { result: true };
     }
 
     /**
@@ -74,18 +69,10 @@ class educationService {
      * @param {object} toUpdate information to update with education
      * @return {object} return updated education
      */
-    static async setEducation({ id, toUpdate }) {
-        let education = await Education.findById({ id });
-
-        //if education is not exist in DB,return error message
-        if (!education) {
-            const errorMessage = '삭제 되었거나 존재하지 않는 학력입니다.';
-            return { errorMessage };
-        }
-
+    static async setEducation({ id, toUpdate, education }) {
         // update with keys which is not null
         if (toUpdate.school) {
-            const fieldToUpdate = 'school';
+            const fieldToUpdate = "school";
             const newValue = toUpdate.school;
             education = await Education.update({
                 id,
@@ -95,7 +82,7 @@ class educationService {
         }
 
         if (toUpdate.major) {
-            const fieldToUpdate = 'major';
+            const fieldToUpdate = "major";
             const newValue = toUpdate.major;
             education = await Education.update({
                 id,
@@ -105,7 +92,7 @@ class educationService {
         }
 
         if (toUpdate.position) {
-            const fieldToUpdate = 'position';
+            const fieldToUpdate = "position";
             const newValue = toUpdate.position;
             education = await Education.update({
                 id,
