@@ -1,5 +1,6 @@
 /**
  * @typedef {any} Model - Mongoose model.
+ * @typedef {Object.<string, any>} record
  * @typedef {[string, any]} kvpair - Key, value pair.
  */
 
@@ -16,11 +17,11 @@
 class BaseModel {
     static Model;
 
-    static async create(fields) {}
-    static async find(fields) {}
+    static async create(record) {}
+    static async find(record) {}
     static async findAll() {}
-    static async search({ op, regex, ...fields }) {}
-    static async update({ id, ...fields }) {}
+    static async search({ op, regex, ...record }) {}
+    static async update({ id, ...record }) {}
     static async delete({ id }) {}
 }
 
