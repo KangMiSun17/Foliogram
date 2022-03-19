@@ -24,9 +24,10 @@ import { BaseModel } from "../db";
  * @prop {field[]} allFields -
  *      All existing fields, only these are allowed in.
  *
- * @method static async add(record) {} -
- *      Add a record to the user.
+ * @method static async add(record) {}
+ *  - Add a record to the user.
  * @method static async get({ id, ...record }) {}
+ *  - Find the first record that exactly matches the id.
  * @method static async getAll(record) {}
  * @method static async getSiblings({ user_id }) {}
  * @method static async set(record) {}
@@ -65,16 +66,18 @@ class BaseService {
 
         // Squash unnecessary fields first.
         const data = Object.fromEntries(
-            Object.entries(record).filter(([k, v]) =>
-                this.allowedFields.includes(k)
-            )
+            Object.entries(record).filter(([k, v]) => {
+                return this.allFields.includes(k);
+            })
         );
 
         // Then see if it has all we need.
         // These fields are required.
         this.requiredFields.forEach((k) => {
             if (!(k in data)) {
-                throw new Error(`${k} field is required`);
+                throw new Error(
+                    `${k} field is required for ${this.name} record`
+                );
             }
         });
 
@@ -87,7 +90,30 @@ class BaseService {
         return added;
     }
 
-    static async get({ id, ...record }) {}
+    /** Find the first record that exactly matches the id.
+     *
+     * @static
+     * @async
+     * @param {{id: uuid}} payload
+     * @returns {record|null} found - If not found, just null.
+     *      It will not emit error message.
+     */
+    static async get({ id }) {
+        console.log(`${this.name}Service.get > `, arguments[0]);
+
+        // Confirmed, null query is ok.
+        // Probably because we don't have any null in the db.
+        // Yet.
+        // Hmm
+        // if (!id) {
+        //     throw new Error(`Bad query: ${arguments[0]}`)
+        // }
+
+        const found = await this.Model.find({ id });
+
+        return found;
+    }
+
     static async getAll(record) {}
     static async getUserOwned({ user_id }) {}
     static async set(record) {}
