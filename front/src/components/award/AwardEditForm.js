@@ -1,29 +1,37 @@
-import React, { useState } from "react";
-import { Button, Form, Row } from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { Form, Row } from "react-bootstrap";
 import * as Api from "../../api";
+import { BundleButton } from "../common/Button";
+import { AwardFetchContext, AwardContext } from "../common/context/Context";
 
-/** 수상 이력 편집 컴포넌트입니다.
+/** Edit award component
  *
- * @param {boolean} setIsEditing - 편집중 상태 변경
- * @param {object} award -  편집 할 수상 이력
- * @param {state} setLastCall - 렌더링 하기 위한 state
- * @returns editForm
+ * @param {boolean} setIsEditing - Change state whether editing or not
+ * @returns EditForm
  */
-function AwardEditForm({ setIsEditing, award, setLastCall }) {
+function AwardEditForm({ setIsEditing }) {
+  //To re-render
+  const { setReFetching } = useContext(AwardFetchContext);
+  const award = useContext(AwardContext);
+  //Edited title
   const [editTitle, setEditTitle] = useState(award.title);
-  const [editContent, setEditContent] = useState(award.description);
+  //Edited description
+  const [editDescription, setEditDescription] = useState(award.description);
 
-  //확인 버튼 누를 시 실행
+  //Click OK button, edit award
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(award);
-    //편집된 awards 업데이트 하기위해 서버에 put 요청
-    const res = await Api.put(`awards/${award.id}`, {
-      title: editTitle,
-      description: editContent,
-    });
-    console.log(res.data);
-    setLastCall((cur) => cur + 1);
+    //Put request to update edited award
+    try {
+      await Api.put(`awards/${award.id}`, {
+        title: editTitle,
+        description: editDescription,
+      });
+      setReFetching(new Date());
+    } catch (err) {
+      console.log("Error: award put request fail", err);
+    }
+
     setIsEditing(false);
   };
 
@@ -40,16 +48,11 @@ function AwardEditForm({ setIsEditing, award, setLastCall }) {
         <Form.Control
           type="text"
           className="mb-3"
-          value={editContent}
-          onChange={(e) => setEditContent(e.target.value)}
+          value={editDescription}
+          onChange={(e) => setEditDescription(e.target.value)}
         />
         <Row className="justify-content-center" xs="auto">
-          <Button type="submit" className="me-3">
-            확인
-          </Button>
-          <Button variant="secondary" onClick={() => setIsEditing(false)}>
-            취소
-          </Button>
+          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
         </Row>
       </Form.Group>
     </Form>

@@ -1,63 +1,50 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
-import { CertificateContext, FetchContext } from "../common/context/Context";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
 
 /**
- * @description This component that shows certificate editing screen if isEditing state === true
+ * This component can edit certification item
  * @param {Object} props
- * @param {function} props.setIsEdit - This State is select show edit screen or not show edit screen
+ * @param {function} props.setCertificateList function to change the state of a list of certificates
+ * @param {function} props.setIsEdit This State is select show edit screen or not show edit screen
+ * @param {object} props.certificate Item in the Certification List
+ * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({ setIsEdit }) {
-  const { setReFetching } = useContext(FetchContext);
-  const { id, title, description, when_date } = useContext(CertificateContext);
-  const [isCertificate, setIsCertificate] = useState([]);
-  const [modTitle, setModTitle] = useState(title);
-  const [modDescription, setModDescription] = useState(description);
+function CertificateEditForm({
+  setCertificateList,
+  setIsEdit,
+  certificate,
+  index,
+}) {
+  const { id, title, description, when_date } = certificate;
+  const [editTitle, setEditTitle] = useState(title);
+  const [editDescription, setEditDescription] = useState(description);
   const [startDate, setStartDate] = useState(toObjectDate(when_date));
 
-  // Get certificate data only one
-  useEffect(() => {
-    try {
-      const getCertificate = async () => {
-        const res = await Api.get("certificates", id);
-        setIsCertificate(res.data);
-      };
-
-      getCertificate();
-    } catch (err) {
-      console.log("Error: certificates get request fail", err);
-    }
-  }, [id]);
-
-  console.log("자격증 정보 API 테스트", isCertificate);
-
-  /**
-   * Send certificate data - PUT request
-   * @param {object} event Event object
-   */
+  // Request certificate item modification api
   const handleEditSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      title: modTitle,
-      description: modDescription,
-      when_date: toStringDate(startDate),
-    };
-    try {
-      await Api.put("certificates/" + id, data);
 
-      // Set state when success send request
-      setModTitle("");
-      setModDescription("");
+    try {
+      const res = await Api.put("certificates/" + id, {
+        title: editTitle,
+        description: editDescription,
+        when_date: toStringDate(startDate),
+      });
+
+      setCertificateList((cur) => {
+        cur[index] = res.data;
+        const newCertificateList = [...cur];
+        return newCertificateList;
+      });
     } catch (err) {
       console.log("Error: certificates put request fail", err);
     }
 
-    setReFetching(new Date());
     setIsEdit(false);
   };
 
@@ -66,17 +53,17 @@ function CertificateEditForm({ setIsEdit }) {
       <Form.Group className="mb-3" controlId="certificateEditName">
         <Form.Control
           type="editName"
-          value={modTitle}
+          value={editTitle}
           placeholder="자격증 제목"
-          onChange={(e) => setModTitle(e.target.value)}
+          onChange={(e) => setEditTitle(e.target.value)}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="certificateEditDescription">
         <Form.Control
           type="editDescription"
-          value={modDescription}
+          value={editDescription}
           placeholder="상세내역"
-          onChange={(e) => setModDescription(e.target.value)}
+          onChange={(e) => setEditDescription(e.target.value)}
         />
       </Form.Group>
       <DatePickForm startDate={startDate} setState={setStartDate} />

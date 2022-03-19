@@ -1,16 +1,17 @@
-import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import AwardDelete from "./AwardDelete";
+import React, { useContext } from "react";
+import { Col, Row } from "react-bootstrap";
+import { DeleteButton, EditButton } from "../common/Button";
+import { AwardContext, EditTableContext } from "../common/context/Context";
 
-/** 수상 이력 목록 컴포넌트입니다.
+/** Award list component
  *
- * @param {boolean} setIsEditing - 편집중 상태 변경 state
- * @param {boolean} isEditable - 편집 가능 여부
- * @param {object} award - award.map으로 넘어온 각각의 award
- * @param {state} setLastCall - 렌더링 하기 위한 state
- * @returns awardList and edit button
+ * @param {boolean} setIsEditing - Change state whether editing or not
+ * @returns AwardList and edit button or null
  */
-function AwardCard({ setIsEditing, isEditable, award, setLastCall }) {
+function AwardCard({ setIsEditing }) {
+  const isEditable = useContext(EditTableContext);
+  //Each award
+  const award = useContext(AwardContext);
   return (
     <Row className="align-items-center">
       <Col className="mb-3">
@@ -21,15 +22,10 @@ function AwardCard({ setIsEditing, isEditable, award, setLastCall }) {
       {isEditable && (
         <>
           <Col sm={1}>
-            <Button
-              variant="outline-primary"
-              onClick={(e) => setIsEditing(true)}
-            >
-              편집
-            </Button>
+            <EditButton setState={setIsEditing} />
           </Col>
           <Col sm={1}>
-            <AwardDelete award={award} setLastCall={setLastCall} />
+            <DeleteButton />
           </Col>
         </>
       )}

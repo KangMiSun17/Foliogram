@@ -7,7 +7,7 @@ import {
 } from "./common/context/Context";
 import User from "./user/User";
 import Educations from "./education/Educations";
-import CertificateCard from "./certificate/CertificateCard";
+import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
@@ -59,12 +59,10 @@ function Portfolio() {
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <EditTableContext.Provider
-          value={portfolioOwner.id === userState.user?.id}
-        >
-          <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+    <EditTableContext.Provider value={portfolioOwner.id === userState.user?.id}>
+      <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+        <Container fluid>
+          <Row>
             <Col xl="3">
               <User
                 portfolioOwnerId={portfolioOwner.id}
@@ -72,21 +70,15 @@ function Portfolio() {
               />
             </Col>
             <Col>
-              <Educations
-                portfolioOwnerId={portfolioOwner.id}
-                isEditable={portfolioOwner.id === userState.user?.id}
-              ></Educations>
-              <Awards
-                portfolioOwnerId={portfolioOwner.id}
-                isEditable={portfolioOwner.id === userState.user?.id}
-              />
+              <Educations />
+              <Awards />
               <Projects />
-              <CertificateCard />
+              <Certificates />
             </Col>
-          </PortfolioOwnerContext.Provider>
-        </EditTableContext.Provider>
-      </Row>
-    </Container>
+          </Row>
+        </Container>
+      </PortfolioOwnerContext.Provider>
+    </EditTableContext.Provider>
   );
 }
 

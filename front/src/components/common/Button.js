@@ -1,5 +1,7 @@
 import React from "react";
+import { Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import * as Api from "../../api";
 
 /**
  * @param {function} submitHandler ConfirmButton onClick handler
@@ -8,27 +10,25 @@ import { Button } from "react-bootstrap";
  */
 export const BundleButton = ({ submitHandler, setState }) => {
   return (
-    <div className="mt-3 mb-4 text-center row">
-      <div className="col-sm-20">
-        <Button
-          className="me-3"
-          variant="primary"
-          type="submit"
-          onClick={submitHandler}
-        >
-          확인
-        </Button>
-        <Button
-          variant="secondary"
-          type="button"
-          onClick={() => {
-            setState(false);
-          }}
-        >
-          취소
-        </Button>
-      </div>
-    </div>
+    <Row className="justify-content-center" xs="auto">
+      <Button
+        className="me-3"
+        variant="primary"
+        type="submit"
+        onClick={submitHandler}
+      >
+        확인
+      </Button>
+      <Button
+        variant="secondary"
+        type="button"
+        onClick={() => {
+          setState(false);
+        }}
+      >
+        취소
+      </Button>
+    </Row>
   );
 };
 
@@ -57,10 +57,27 @@ export const EditButton = ({ setState }) => {
 };
 
 /**
- * @param {function} handleDelete Delete request when deleteButton onClick
+ * This component return delete button and sends a delete request when clicked
+ * @param {Object} props
+ * @param {string} props.id id value to be delete
+ * @param {function} props.setState State to change after delete
+ * @param {number} index Index number of the list to delete, but not require if state is boolean.
  * @returns {component} DeleteButton
  */
-export const DeleteButton = ({ handleDelete }) => {
+export const DeleteButton = ({ id, setState, index = null }) => {
+  async function handleDelete() {
+    await Api.delete("certificates", id);
+    setState((cur) => {
+      if (typeof cur === "boolean") {
+        return !cur;
+      }
+
+      const newArr = [...cur];
+      newArr.splice(index, 1);
+      return newArr;
+    });
+  }
+
   return (
     <Button size="sm" variant="outline-danger" onClick={handleDelete}>
       삭제

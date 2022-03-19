@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const CertificateSchema = new Schema(
     {
@@ -20,7 +20,8 @@ const CertificateSchema = new Schema(
         },
         description: {
             type: String,
-            required: true,
+            required: false,
+            default: "설명이 아직 없습니다. 추가해 주세요.",
         },
     },
     {
@@ -28,6 +29,6 @@ const CertificateSchema = new Schema(
     }
 );
 
-const CertificateModel = model('Certificate', CertificateSchema);
+const CertificateModel = model("Certificate", CertificateSchema);
 
 export { CertificateModel };
