@@ -7,20 +7,20 @@
  *
  * @prop {Model} Model - static
  * @method static async create(fields) {}
- * @method static async find(kvpairs) {}
- * @method static async findAll(kvpairs) {}
- * @method static async search({ op, regex, kvpairs }) {}
- * @method static async update({ id, kvpairs }) {}
+ * @method static async find(fields) {}
+ * @method static async findAll() {}
+ * @method static async search({ op, regex, ...fields }) {}
+ * @method static async update({ id, ...fields }) {}
  * @method static async delete({ id }) {}
  */
 class BaseModel {
     static Model;
 
     static async create(fields) {}
-    static async find(kvpairs) {}
-    static async findAll(kvpairs) {}
-    static async search({ op, regex, kvpairs }) {}
-    static async update({ id, kvpairs }) {}
+    static async find(fields) {}
+    static async findAll() {}
+    static async search({ op, regex, ...fields }) {}
+    static async update({ id, ...fields }) {}
     static async delete({ id }) {}
 }
 
