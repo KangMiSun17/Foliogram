@@ -11,7 +11,7 @@ import { AwardFetchContext, AwardContext } from "../common/context/Context";
  */
 function AwardEditForm({ setIsEditing }) {
   //To re-render
-  const { setReFetching } = useContext(AwardFetchContext);
+  const setReFetching = useContext(AwardFetchContext);
   const award = useContext(AwardContext);
   //Edited title
   const [editTitle, setEditTitle] = useState(award.title);

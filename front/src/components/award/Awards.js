@@ -36,7 +36,7 @@ function Awards() {
   }, [portfolioOwnerId, reFetching]);
 
   return (
-    <AwardFetchContext.Provider value={{ reFetching, setReFetching }}>
+    <AwardFetchContext.Provider value={setReFetching}>
       <Card className="me-4 mt-3">
         <Card.Body>
           <Card.Title className="mb-3">수상 이력</Card.Title>

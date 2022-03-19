@@ -14,7 +14,7 @@ import * as Api from "../../api";
 function AwardAddForm() {
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
   //To re-render
-  const { setReFetching } = useContext(AwardFetchContext);
+  const setReFetching = useContext(AwardFetchContext);
   //Whether adding or not
   const [isAdding, setIsAdding] = useState(false);
   //Added award title
