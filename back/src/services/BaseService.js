@@ -27,9 +27,10 @@ import { BaseModel } from "../db";
  * @method static async add(record) {} - Add a record to the user.
  * @method static async get({ id }) {}
  *  - Find the first record that exactly matches the id.
- * @method static async getAll(record) {}
+ * @method static async getAll(query) {}
  *  - Find every last record there is (that matches the optional query).
- * @method static async getSiblings({ user_id }) {}
+ * @method static async getUserOwned({ user_id })
+ *  - Find all records that belong to the user.
  * @method static async set(record) {}
  * @method static async del({ id }) {}
  */
@@ -37,7 +38,7 @@ class BaseService {
     static Model = BaseModel;
 
     static name = "base";
-    // _user_id_amend silently amends the mistake in Award, Project schemas
+    // #_user_id_amend silently amends the mistake in Award, Project schemas
     // whose owner field names are set to some overcomplicated names instead of
     // just 'user_id'.
     static #_user_id_amend = null;
@@ -131,7 +132,31 @@ class BaseService {
         return found;
     }
 
-    static async getUserOwned({ user_id }) {}
+    /** Find all records that belong to the user.
+     *
+     * @static
+     * @async
+     * @param {{user_id: uuid}} payload
+     * @returns {project[]} found - If none, return an empty Array.
+     *  It will not emit error message.
+     */
+    static async getUserOwned({ user_id }) {
+        console.log(`${this.name}Service.getUserOwned > `, arguments[0]);
+
+        const query = {};
+        if (this.#_user_id_amend) {
+            // Passing this test means that at some point of the past I
+            // fucked up hard and now facing the consequences.
+            query[this.#_user_id_amend] = user_id;
+        } else {
+            query.user_id = user_id;
+        }
+
+        const found = await this.Model.findAll(query);
+
+        return found;
+    }
+
     static async set(record) {}
     static async del({ id }) {}
 }
