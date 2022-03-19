@@ -16,10 +16,11 @@ class certificateService {
         const id = uuidv4();
         const newCertificate = { id, user_id, title, when_date };
 
-        // store in DB
+        // if description is null,store description field default string in schemas
         if (description) {
             newCertificate.description = description;
         }
+        // store in DB
         const createdNewCertificate = await Certificate.create({
             newCertificate,
         });

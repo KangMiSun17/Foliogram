@@ -22,11 +22,13 @@ educationRouter.post(
             const major = req.body.major ?? null;
             const position = req.body.position ?? null;
             const user_id = req.body.user_id ?? null;
+            // school,major,position and user_id is required
             if (!school || !major || !position || !user_id) {
                 throw new Error(
                     "school,major,position and user_id are required."
                 );
             }
+            //if user have not correct user_id,return error
             if (user_id !== req.currentUserId) {
                 throw new Error("Trying to create different user's education");
             }
@@ -92,6 +94,7 @@ educationRouter.delete(
             const id = req.params.id;
             const user_id = req.currentUserId;
             const education = await educationService.getEducation({ id });
+            //if education is not exist,throw errorMessage
             if (education.errorMessage) {
                 throw new Error(
                     `이미 삭제 되었거나 존재하지 않아 삭제에 실패하였습니다.`
@@ -124,12 +127,13 @@ educationRouter.put(
             const id = req.params.id;
             const user_id = req.currentUserId;
             const education = await educationService.getEducation({ id });
-
+            //if education is not exist,return error
             if (education.errorMessage) {
                 throw new Error(
                     `이미 삭제된 또는 존재하지 않아 수정에 실패하였습니다.`
                 );
             }
+            //if user have correct user_id,process update
             if (user_id === education.user_id) {
                 const school = req.body.school ?? null;
                 const major = req.body.major ?? null;
@@ -144,6 +148,7 @@ educationRouter.put(
                 });
                 res.status(200).send(updatedEducation);
             } else {
+                //if user have not correct user_id,return error
                 throw new Error(
                     `User is not an owner of the education id ${id}`
                 );

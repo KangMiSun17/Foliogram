@@ -17,7 +17,7 @@ certificateRouter.post(
                 );
             }
 
-            // get informate from req
+            // get informattion from req
             const title = req.body.title ?? null;
             const when_date = req.body.when_date ?? null;
             const user_id = req.body.user_id ?? null;
@@ -25,6 +25,7 @@ certificateRouter.post(
             if (!title || !when_date || !user_id) {
                 throw new Error("title,when_date and user_id are required.");
             }
+            //if user have not correct user_id,return error
             if (user_id !== req.currentUserId) {
                 throw new Error(
                     "Trying to create different user's certificate"
@@ -90,10 +91,11 @@ certificateRouter.delete(
     login_required,
     async function (req, res, next) {
         try {
+            //get id of education from req.params
             const id = req.params.id;
             const user_id = req.currentUserId;
             const certificate = await certificateService.getCertificate({ id });
-            //if failed to get certificate,throw errorMessage
+            //if certificate is not exist,throw errorMessage
             if (certificate.errorMessage) {
                 throw new Error(
                     `이미 삭제 되었거나 존재하지 않아 삭제에 실패하였습니다.`
@@ -125,12 +127,13 @@ certificateRouter.put(
             const id = req.params.id;
             const user_id = req.currentUserId;
             const certificate = await certificateService.getCertificate({ id });
-
+            //if certificate is not exist,return error
             if (certificate.errorMessage) {
                 throw new Error(
                     `이미 삭제된 또는 존재하지 않아 수정에 실패하였습니다.`
                 );
             }
+            //if user have correct user_id,process update
             if (user_id === certificate.user_id) {
                 const title = req.body.title ?? null;
                 const description = req.body.description ?? null;
@@ -146,6 +149,7 @@ certificateRouter.put(
                     });
                 res.status(200).send(updatedCertificate);
             } else {
+                //if user have not correct user_id,return error
                 throw new Error(
                     `User is not an owner of the certificate id ${id}`
                 );
