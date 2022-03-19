@@ -17,7 +17,7 @@ function EducationCard({ setIsEditing }) {
         <span>{school}</span>
         <br />
         <span style={{ color: "gray" }}>{major}</span>
-        <span style={{ color: "gray", marginLeft: 5 }}>{position}</span>
+        <span style={{ color: "gray", marginLeft: 5 }}>({position})</span>
         <br />
       </Col>
       {isEditable && (
