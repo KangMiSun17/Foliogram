@@ -25,7 +25,7 @@ function ProjectCard({ setIsEditing }) {
       {isEditable && (
         <>
           <Col sm={1}>
-            <EditButton setState={setIsEditing}>편집</EditButton>
+            <EditButton setState={setIsEditing} />
           </Col>
           <Col sm={1}>
             <DeleteButton handleDelete={() => {}} />

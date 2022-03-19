@@ -16,7 +16,7 @@ function ProjectAddForm() {
   const portfolioOwnerId = useContext(PortfolioOwnerContext);
   const { setReFetching } = useContext(ProjectFetchContext);
   const [addTitle, setAddTitle] = useState("");
-  const [addContent, setAddContent] = useState("");
+  const [addDescription, setAddDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isAdding, setIsAdding] = useState(false);
@@ -30,13 +30,13 @@ function ProjectAddForm() {
       await Api.post(`project/create`, {
         user_id: portfolioOwnerId,
         title: addTitle,
-        description: addContent,
+        description: addDescription,
         from_date: toStringDate(startDate),
         to_date: toStringDate(endDate),
       });
 
       setAddTitle("");
-      setAddContent("");
+      setAddDescription("");
     } catch (err) {
       console.log(err);
     }
@@ -67,8 +67,8 @@ function ProjectAddForm() {
             <Form.Control
               type="text"
               placeholder="상세내역"
-              value={addContent}
-              onChange={(e) => setAddContent(e.target.value)}
+              value={addDescription}
+              onChange={(e) => setAddDescription(e.target.value)}
             />
           </Form.Group>
 

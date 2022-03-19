@@ -1,42 +1,51 @@
-import React, { useState } from "react";
-import { Button, Form, Row } from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { Form, Row } from "react-bootstrap";
+import { PlusButton, BundleButton } from "../common/Button";
+import {
+  AwardFetchContext,
+  PortfolioOwnerContext,
+} from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 수상 이력 추가 컴포넌트입니다.
+/** Award add component
  *
- * @param {number} portfolioOwnerId - 포트폴리오 주인 아이디
- * @param {state} setLastCall - 랜더링하기 위한 state
- * @returns addForm
+ * @returns AddForm
  */
-function AwardAddForm({ portfolioOwnerId, setLastCall }) {
-  const [isEditing, setIsEditing] = useState(false); //편집중인지 아닌지
-  const [addTitle, setAddTitle] = useState(""); //추가된 상 이름
-  const [addDescription, setAddDescription] = useState(""); //추가된 상 내용
+function AwardAddForm() {
+  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  //To re-render
+  const { setReFetching } = useContext(AwardFetchContext);
+  //Whether adding or not
+  const [isAdding, setIsAdding] = useState(false);
+  //Added award title
+  const [addTitle, setAddTitle] = useState("");
+  //Added award description
+  const [addDescription, setAddDescription] = useState("");
 
-  const startEditing = () => {
-    setIsEditing((cur) => !cur);
-  };
-
-  //확인 버튼 누를 시 수상 내역 추가
+  //Click OK button, add award
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsEditing((cur) => !cur);
-    //추가된 awards 업데이트 하기위해 서버에 post 요청
-    await Api.post(`award/create`, {
-      user_id: portfolioOwnerId,
-      title: addTitle,
-      description: addDescription,
-    });
-    setAddTitle("");
-    setAddDescription("");
-    setLastCall((cur) => cur + 1);
+    //Post request to update added award
+    try {
+      await Api.post(`award/create`, {
+        user_id: portfolioOwnerId,
+        title: addTitle,
+        description: addDescription,
+      });
+      setAddTitle("");
+      setAddDescription("");
+      setReFetching(new Date());
+    } catch (err) {
+      console.log("Error: award post request fail", err);
+    }
+    setIsAdding((cur) => !cur);
   };
 
   return (
     <>
-      {!isEditing ? (
+      {!isAdding ? (
         <Row className="justify-content-center" xs="auto">
-          <Button onClick={startEditing}>+</Button>
+          <PlusButton setState={setIsAdding} />
         </Row>
       ) : (
         <Form onSubmit={handleSubmit}>
@@ -57,12 +66,7 @@ function AwardAddForm({ portfolioOwnerId, setLastCall }) {
             />
           </Form.Group>
           <Row className="justify-content-center" xs="auto">
-            <Button type="submit" className="me-3">
-              확인
-            </Button>
-            <Button variant="secondary" onClick={startEditing}>
-              취소
-            </Button>
+            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
           </Row>
         </Form>
       )}
