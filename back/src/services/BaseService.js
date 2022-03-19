@@ -10,29 +10,32 @@ import { BaseModel } from "../db";
  */
 
 /** Base class for Services. Mainly verifies the data fields passing through.
+ * @todo check unique in [ ] add, [ ] set
  *
  * @prop {BaseModel} Model
  * @prop {string} name
+ * @prop {Boolean} deletable - If true, this Service allows deletion of records.
  * @prop {field[]} requiredFields - Required field names.
  * @prop {field[]} optionalFields - Optional field names.
- * @prop {field[]} uniqueFields -
- *      Field names that should not happen twice in the db.
- * @prop {field[]} searchableFields -
- *      Field names that are searchable with substring.
- * @prop {populator} refFields -
- *      Indicates that KEY fields need to be populated with VALUEs.
- * @prop {field[]} allFields -
- *      All existing fields, only these are allowed in.
+ * @prop {field[]} settableFields
+ *  - Field names that are allowed to be modified.
+ * @prop {field[]} uniqueFields
+ *  - Field names that should not happen twice in the db.
+ * @prop {field[]} searchableFields
+ *  - Field names that are searchable with substring.
+ * @prop {populator} refFields
+ *  - Indicates that KEY fields need to be populated with VALUEs.
+ * @prop {field[]} allFields - All existing fields, only these are allowed in.
  *
- * @method static async add(record) {} - Add a record to the user.
- * @method static async get({ id }) {}
+ * @method static async add(record) - Add a record to the user.
+ * @method static async get({ id })
  *  - Find the first record that exactly matches the id.
- * @method static async getAll(query) {}
+ * @method static async getAll(query)
  *  - Find every last record there is (that matches the optional query).
  * @method static async getUserOwned({ user_id })
  *  - Find all records that belong to the user.
- * @method static async set(record) {}
- * @method static async del({ id }) {}
+ * @method static async set({ id, ...record }) - Modify a record.
+ * @method static async del({ id }) - Remove a project.
  */
 class BaseService {
     static Model = BaseModel;
@@ -42,9 +45,11 @@ class BaseService {
     // whose owner field names are set to some overcomplicated names instead of
     // just 'user_id'.
     static #_user_id_amend = null;
+    static deletable = true;
 
     static requiredFields = Object.freeze([]);
     static optionalFields = Object.freeze([]);
+    static settableFields = Object.freeze([]);
     static uniqueFields = Object.freeze([]);
     static searchableFields = Object.freeze([]);
 
@@ -124,6 +129,8 @@ class BaseService {
      *      It will not emit error message.
      */
     static async getAll(query) {
+        console.log(`${this.name}Service.getAll > `, arguments[0]);
+
         // It's ok to omit query!
         if (!query) {
             query = {};
@@ -157,8 +164,47 @@ class BaseService {
         return found;
     }
 
-    static async set(record) {}
-    static async del({ id }) {}
+    /** Modify a record.
+     *
+     * @static
+     * @async
+     * @param {{id: uuid, record: record}} payload
+     * @returns {record|null} updated
+     */
+    static async set({ id, ...record }) {
+        console.log(`${this.name}Service.set > `, arguments[0]);
+
+        // We're picking out uneditable entries here.
+        const toUpdate = Object.fromEntries(
+            Object.entries(record).filter(([k, v]) => {
+                return this.settableFields.includes(k);
+            })
+        );
+
+        const updated = await this.Model.update({ id, ...record });
+
+        return updated;
+    }
+
+    /** Remove a project.
+     *
+     * @static
+     * @async
+     * @param {{id}} payload
+     * @returns {record|null} removed
+     *
+     * It is an error to attempt to delete an undeletable record.
+     */
+    static async del({ id }) {
+        console.log(`${this.name}.del > `, arguments[0]);
+        if (this.deletable) {
+            const removed = await this.Model.delete({ id });
+
+            return removed;
+        } else {
+            throw new Error(`${this.name} is not deletable`);
+        }
+    }
 }
 
 export { BaseService };
