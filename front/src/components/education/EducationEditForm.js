@@ -24,8 +24,8 @@ function EducationEditForm({ setIsEditing }) {
     //편집된 education 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`educations/${id}`, {
-        title: editSchool,
-        description: editMajor,
+        school: editSchool,
+        major: editMajor,
         position: editPosition,
       });
     } catch (err) {
