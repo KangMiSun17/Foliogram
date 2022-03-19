@@ -64,17 +64,17 @@ export const EditButton = ({ setState }) => {
  * @param {number} index Index number of the list to delete, but not require if state is boolean.
  * @returns {component} DeleteButton
  */
-export const DeleteButton = ({ id, setState, index = null }) => {
+export const DeleteButton = ({ endpoint, id, setState, index = null }) => {
   async function handleDelete() {
-    await Api.delete("certificates", id);
+    await Api.delete(endpoint, id);
     setState((cur) => {
-      if (typeof cur === "boolean") {
-        return !cur;
+      if (!(cur instanceof Date)) {
+        const newArr = [...cur];
+        newArr.splice(index, 1);
+        return newArr;
       }
 
-      const newArr = [...cur];
-      newArr.splice(index, 1);
-      return newArr;
+      setState(new Date());
     });
   }
 

@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import { AwardContext, EditTableContext } from "../common/context/Context";
+import {
+  AwardContext,
+  AwardFetchContext,
+  EditTableContext,
+} from "../common/context/Context";
 
 /** Award list component
  *
@@ -10,6 +14,7 @@ import { AwardContext, EditTableContext } from "../common/context/Context";
  */
 function AwardCard({ setIsEditing }) {
   const isEditable = useContext(EditTableContext);
+  const setReFetch = useContext(AwardFetchContext);
   //Each award
   const award = useContext(AwardContext);
   return (
@@ -25,7 +30,11 @@ function AwardCard({ setIsEditing }) {
             <EditButton setState={setIsEditing} />
           </Col>
           <Col sm={1}>
-            <DeleteButton />
+            <DeleteButton
+              endpoint={"awards"}
+              id={award.id}
+              setState={setReFetch}
+            />
           </Col>
         </>
       )}

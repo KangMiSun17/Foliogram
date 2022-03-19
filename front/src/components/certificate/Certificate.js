@@ -45,7 +45,12 @@ function Certificate({ certificate, index, setCertificateList }) {
             <EditButton setState={setIsEditing} />
           </Col>
           <Col sm={1}>
-            <DeleteButton id={id} setState={setCertificateList} index={index} />
+            <DeleteButton
+              endpoint={"certificates"}
+              id={id}
+              setState={setCertificateList}
+              index={index}
+            />
           </Col>
         </>
       )}
