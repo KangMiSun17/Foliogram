@@ -24,11 +24,11 @@ import { BaseModel } from "../db";
  * @prop {field[]} allFields -
  *      All existing fields, only these are allowed in.
  *
- * @method static async add(record) {}
- *  - Add a record to the user.
- * @method static async get({ id, ...record }) {}
+ * @method static async add(record) {} - Add a record to the user.
+ * @method static async get({ id }) {}
  *  - Find the first record that exactly matches the id.
  * @method static async getAll(record) {}
+ *  - Find every last record there is (that matches the optional query).
  * @method static async getSiblings({ user_id }) {}
  * @method static async set(record) {}
  * @method static async del({ id }) {}
@@ -114,7 +114,23 @@ class BaseService {
         return found;
     }
 
-    static async getAll(record) {}
+    /** Find every last record there is (that matches the optional query).
+     *
+     * @static
+     * @async
+     * @param {record} [query]
+     * @returns {record[]} found - If none, return an empty Array.
+     *      It will not emit error message.
+     */
+    static async getAll(query) {
+        // It's ok to omit query!
+        if (!query) {
+            query = {};
+        }
+        const found = await this.Model.findAll(query);
+        return found;
+    }
+
     static async getUserOwned({ user_id }) {}
     static async set(record) {}
     static async del({ id }) {}
