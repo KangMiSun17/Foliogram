@@ -11,6 +11,7 @@ import { BaseModel } from "../db";
 /** Base class for Services. Mainly verifies the data fields passing through.
  *
  * @prop {BaseModel} Model
+ * @prop {string} name
  * @prop {field[]} requiredFields - Required field names.
  * @prop {field[]} optionalFields - Optional field names.
  * @prop {field[]} uniqueFields -
@@ -31,6 +32,13 @@ import { BaseModel } from "../db";
  */
 class BaseService {
     static Model = BaseModel;
+
+    static name = "";
+    // _user_id_amend silently amends the mistake in Award, Project schemas
+    // whose owner field names are set to some overcomplicated names instead of
+    // just 'user_id'.
+    static #_user_id_amend = null;
+
     static requiredFields = Object.freeze([]);
     static optionalFields = Object.freeze([]);
     static uniqueFields = Object.freeze([]);
@@ -50,7 +58,7 @@ class BaseService {
     static async add(record) {}
     static async get({ id, ...record }) {}
     static async getAll(record) {}
-    static async getSiblings({ user_id }) {}
+    static async getUserOwned({ user_id }) {}
     static async set(record) {}
     static async del({ id }) {}
 }
