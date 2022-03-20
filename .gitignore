@@ -1,2 +1,8 @@
 # dependencies
 node_modules
+<<<<<<< HEAD
+.env
+=======
+yarn.lock
+package-lock.json
+>>>>>>> dev
