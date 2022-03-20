@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Card, Form, Col, Row } from 'react-bootstrap';
 import * as Api from '../../api';
 import axios from 'axios';
@@ -7,15 +7,11 @@ function ProfileImage({ user, setUser, setProfileImage }) {
     const onUploadImage = async (e) => {
         e.preventDefault();
         // e: input, type=file인 DOM 객체
-        console.log(e.target.File.files[0]);
         if (e.target.File.files) {
             // 업로드된 파일이 존재한다면
             const image = e.target.File.files[0];
             const datas = new FormData();
-            console.log(datas);
             datas.append('image', image, image.name);
-            console.log(datas.get('image'));
-            console.log('프로필', user);
             try {
                 const result = await axios({
                     method: 'post',
@@ -28,14 +24,11 @@ function ProfileImage({ user, setUser, setProfileImage }) {
                     data: datas,
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
-                console.log(result.data);
                 const imageLink = result.data.imageLink;
-                console.log(imageLink);
                 const res = await Api.put(`users/${user.id}`, {
                     ...user,
                     profileImage: imageLink,
                 });
-                console.log(res);
                 setProfileImage(false);
                 setUser(res.data);
             } catch (err) {
