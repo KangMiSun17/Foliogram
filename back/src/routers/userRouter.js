@@ -2,8 +2,48 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { DynamoDB } from "aws-sdk";
+require("dotenv").config();
+const multer = require("multer");
+const AWS = require("aws-sdk");
+const { v4: uuidv4 } = require("uuid");
 
 const userAuthRouter = Router();
+
+const upload = multer();
+
+userAuthRouter.post(
+    "/user/profileImage",
+    upload.single("image"),
+    async function (req, res, next) {
+        console.log(req.file);
+        console.log("env, ", process.env.IMAGE_ACCESSKEY);
+        try {
+            const S3 = new AWS.S3({
+                endpoint: new AWS.Endpoint(process.env.IMAGE_ENDPOINT),
+                region: "kr-standard",
+                credentials: {
+                    accessKeyId: process.env.IMAGE_ACCESSKEY,
+                    secretAccessKey: process.env.IMAGE_SECRETACCESSKEY,
+                },
+            });
+            const imageName = uuidv4();
+            await S3.putObject({
+                Bucket: process.env.IMAGE_BUCKET,
+                Key: `${imageName}.PNG`,
+                ACL: "public-read",
+                Body: req.file.buffer,
+                ContentType: "image/png",
+            }).promise();
+
+            res.status(200).json({
+                imageLink: `${process.env.IMAGE_ENDPOINT}/${process.env.IMAGE_BUCKET}/${imageName}.PNG`,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 userAuthRouter.post("/user/register", async function (req, res, next) {
     try {
@@ -102,8 +142,14 @@ userAuthRouter.put(
             const email = req.body.email ?? null;
             const password = req.body.password ?? null;
             const description = req.body.description ?? null;
-
-            const toUpdate = { name, email, password, description };
+            const profileImage = req.body.profileImage ?? null;
+            const toUpdate = {
+                name,
+                email,
+                password,
+                description,
+                profileImage,
+            };
 
             // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedUser = await userAuthService.setUser({
