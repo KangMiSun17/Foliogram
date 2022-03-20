@@ -42,7 +42,7 @@ function ProfileImage({ user, setUser, setProfileImage }) {
             <Card.Body>
                 <Form onSubmit={onUploadImage}>
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Default file input example</Form.Label>
+                        <Form.Label>한개의 사진을 추가해주세요.</Form.Label>
                         <Form.Control type="file" name="File" multiple />
                     </Form.Group>
                     <Form.Group as={Row} className="mt-3 text-center">
