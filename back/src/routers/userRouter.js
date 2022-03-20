@@ -16,7 +16,6 @@ userAuthRouter.post(
     "/user/profileImage",
     upload.single("image"),
     async function (req, res, next) {
-        console.log(req.file);
         console.log("env, ", process.env.IMAGE_ACCESSKEY);
         try {
             const S3 = new AWS.S3({
