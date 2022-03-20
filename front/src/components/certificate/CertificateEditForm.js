@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
 import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
+import { CertificateContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /**
  * This component can edit certification item
  * @param {Object} props
- * @param {function} props.setCertificateList function to change the state of a list of certificates
  * @param {function} props.setIsEdit This State is select show edit screen or not show edit screen
  * @param {object} props.certificate Item in the Certification List
  * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({
-  setCertificateList,
-  setIsEdit,
-  certificate,
-  index,
-}) {
+function CertificateEditForm({ setIsEdit, certificate, index }) {
+  const { setCertificateList } = useContext(CertificateContext);
   const { id, title, description, when_date } = certificate;
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescription] = useState(description);
