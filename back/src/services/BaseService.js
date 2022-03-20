@@ -11,10 +11,11 @@ import { BaseModel } from "../db";
 
 /** Base class for Services. Mainly verifies the data fields passing through.
  * @todo check unique in [ ] add, [ ] set
+ * @todo subclass subservice and rename getUserOwned
  *
  * @prop {BaseModel} Model
  * @prop {string} name
- * @prop {Boolean} deletable - If true, this Service allows deletion of records.
+ * @prop {boolean} deletable - If true, this Service allows deletion of records.
  * @prop {field[]} requiredFields - Required field names.
  * @prop {field[]} optionalFields - Optional field names.
  * @prop {field[]} settableFields
