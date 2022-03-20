@@ -15,7 +15,6 @@ userAuthRouter.post(
     "/user/profileImage",
     upload.single("image"),
     async function (req, res, next) {
-        console.log("env, ", process.env.IMAGE_ACCESSKEY);
         try {
             const S3 = new AWS.S3({
                 endpoint: new AWS.Endpoint(process.env.IMAGE_ENDPOINT),
@@ -25,15 +24,18 @@ userAuthRouter.post(
                     secretAccessKey: process.env.IMAGE_SECRETACCESSKEY,
                 },
             });
+            //create unique id
             const imageName = uuidv4();
+            //add image file in Bucket in Ncloud with settings
             await S3.putObject({
                 Bucket: process.env.IMAGE_BUCKET,
                 Key: `${imageName}.PNG`,
+                //ACL is access permission in image,all client can acces imagefile with 'public-read'
                 ACL: "public-read",
                 Body: req.file.buffer,
                 ContentType: "image/png",
             }).promise();
-
+            //return image url
             res.status(200).json({
                 imageLink: `${process.env.IMAGE_ENDPOINT}/${process.env.IMAGE_BUCKET}/${imageName}.PNG`,
             });
