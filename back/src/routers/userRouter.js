@@ -2,7 +2,6 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
-import { DynamoDB } from "aws-sdk";
 require("dotenv").config();
 const multer = require("multer");
 const AWS = require("aws-sdk");
