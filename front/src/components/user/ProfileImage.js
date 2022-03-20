@@ -6,13 +6,15 @@ import axios from 'axios';
 function ProfileImage({ user, setUser, setProfileImage }) {
     const onUploadImage = async (e) => {
         e.preventDefault();
-        // e: input, type=file인 DOM 객체
         if (e.target.File.files) {
             // 업로드된 파일이 존재한다면
             const image = e.target.File.files[0];
+            //create FormData Object
             const datas = new FormData();
+            //add image field to datas
             datas.append('image', image, image.name);
             try {
+                //get image url with axios
                 const result = await axios({
                     method: 'post',
                     url:
@@ -25,6 +27,7 @@ function ProfileImage({ user, setUser, setProfileImage }) {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 const imageLink = result.data.imageLink;
+                //upadte imageurl in user information
                 const res = await Api.put(`users/${user.id}`, {
                     ...user,
                     profileImage: imageLink,
