@@ -15,7 +15,7 @@ class RequestError extends Error {
         super(...params);
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, NetworkError);
+            Error.captureStackTrace(this, RequestError);
         }
 
         this.name = "RequestError";
