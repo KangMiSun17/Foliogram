@@ -6,6 +6,7 @@ import {
   EducationFetchContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
+import { FormCheckField } from "../common/Form";
 
 /** 학력을 추가하는 컴포넌트입니다.
  *
@@ -69,48 +70,35 @@ function EducationAddForm() {
           </Form.Group>
 
           <Form.Group className="mt-3">
-            <FormCheck
-              inline
+            <FormCheckField
               label="재학중"
               id="radio1"
-              type="radio"
-              name="position"
               value="재학중"
               checked={addPosition === "재학중"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
+              checkFunction={setAddPosition}
+            />
+            <FormCheckField
               label="학사졸업"
               id="radio2"
-              type="radio"
-              name="position"
               value="학사졸업"
               checked={addPosition === "학사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
+              checkFunction={setAddPosition}
+            />
+            <FormCheckField
               label="석사졸업"
               id="radio3"
-              type="radio"
-              name="position"
               value="석사졸업"
               checked={addPosition === "석사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
+              checkFunction={setAddPosition}
+            />
+            <FormCheckField
               label="박사졸업"
               id="radio4"
-              type="radio"
-              name="position"
               value="박사졸업"
               checked={addPosition === "박사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
+              checkFunction={setAddPosition}
+            />
           </Form.Group>
-
           <Row className="justify-content-center" xs="auto">
             <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
           </Row>

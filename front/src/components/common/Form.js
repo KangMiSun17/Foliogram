@@ -1,21 +1,27 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import * as Api from "../../api";
+import { Form, FormCheck } from "react-bootstrap";
 
 /**
- * @param {function} submitHandler ConfirmButton onClick handler
- * @param {function} setState Change state when CancleButton onClick
- * @returns {component} Confirm Button and Cancle Button
+ * @param {string} value object value
+ * @param {string} name object key
+ * @param {string} placeholder Change state when CancleButton onClick
+ * @param {function} changeFunction
+ * @returns {component} FormTextField
  */
-export const FormTextField = ({ type, value, placeholder, clickFunction }) => {
+export const FormTextField = ({ value, name, placeholder, changeFunction }) => {
   return (
     <Form.Group className="mb-3" controlId="formTextField">
       <Form.Control
-        type={type}
+        type="text"
         value={value}
+        name={name}
         placeholder={placeholder}
-        onChange={(e) => clickFunction(e.target.value)}
+        onChange={(e) =>
+          changeFunction((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+          }))
+        }
       />
     </Form.Group>
   );
@@ -25,51 +31,23 @@ export const FormTextField = ({ type, value, placeholder, clickFunction }) => {
  * @param {function} setState Change state when plusButton onClick
  * @returns {component} PlusButton
  */
-export const PlusButton = ({ setState }) => {
+export const FormCheckField = ({
+  label,
+  id,
+  value,
+  checked,
+  checkFunction,
+}) => {
   return (
-    <Button variant="primary" onClick={() => setState(true)}>
-      +
-    </Button>
-  );
-};
-
-/**
- * @param {function} setState Change state when editButton onClick
- * @returns {component} EditButton
- */
-export const EditButton = ({ setState }) => {
-  return (
-    <Button size="sm" variant="outline-info" onClick={() => setState(true)}>
-      편집
-    </Button>
-  );
-};
-
-/**
- * This component return delete button and sends a delete request when clicked
- * @param {Object} props
- * @param {string} props.id id value to be delete
- * @param {function} props.setState State to change after delete
- * @param {number} index Index number of the list to delete, but not require if state is boolean.
- * @returns {component} DeleteButton
- */
-export const DeleteButton = ({ endpoint, id, setState, index = null }) => {
-  async function handleDelete() {
-    await Api.delete(endpoint, id);
-    setState((cur) => {
-      if (!(cur instanceof Date)) {
-        const newArr = [...cur];
-        newArr.splice(index, 1);
-        return newArr;
-      }
-
-      setState(new Date());
-    });
-  }
-
-  return (
-    <Button size="sm" variant="outline-danger" onClick={handleDelete}>
-      삭제
-    </Button>
+    <FormCheck
+      inline
+      label={label}
+      id={id}
+      type="radio"
+      name="position"
+      value={value}
+      checked={checked}
+      onChange={(e) => checkFunction(e.target.value)}
+    />
   );
 };
