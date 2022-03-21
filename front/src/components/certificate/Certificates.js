@@ -3,6 +3,7 @@ import { Card, Row } from "react-bootstrap";
 import {
   EditTableContext,
   PortfolioOwnerContext,
+  CertificateContext,
 } from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import CertificateCard from "./CertificateCard";
@@ -38,26 +39,22 @@ function Certificates() {
    * @description isAdding {type: boolean} if true show CertificateAddForm
    */
   return (
-    <Card className="me-4 mt-3 mb-3">
-      <Card.Body>
-        <Card.Title>자격증</Card.Title>
-        <CertificateCard
-          certificateList={certificateList}
-          setCertificateList={setCertificateList}
-        />
-        {isEditable && (
-          <Row className="justify-content-center mb-4" xs="auto">
-            <PlusButton setState={setIsAdding} />
-          </Row>
-        )}
-        {isAdding && (
-          <CertificateAddForm
-            setCertificateList={setCertificateList}
-            setIsAdding={setIsAdding}
-          />
-        )}
-      </Card.Body>
-    </Card>
+    <CertificateContext.Provider
+      value={{ certificateList, setCertificateList }}
+    >
+      <Card className="me-4 mt-3 mb-3">
+        <Card.Body>
+          <Card.Title>자격증</Card.Title>
+          <CertificateCard />
+          {isEditable && (
+            <Row className="justify-content-center mb-4" xs="auto">
+              <PlusButton setState={setIsAdding} />
+            </Row>
+          )}
+          {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
+        </Card.Body>
+      </Card>
+    </CertificateContext.Provider>
   );
 }
 
