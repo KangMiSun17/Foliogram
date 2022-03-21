@@ -52,7 +52,7 @@ const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
  *
  * ## Properties
  * @prop {number} debug
- *  - (static) Stored value of process.env.DEBUG; Defaults to 1.
+ *  - (static) Stored value of `process.env.DEBUG`; Defaults to 1.
  * @prop {number} stdout
  *  - (static) This is equal to `process.stdout.fd`.
  * @prop {string} name
