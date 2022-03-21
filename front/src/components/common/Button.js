@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Api from "../../api";
+import { SubmittableContext } from "./context/Context";
 
 /**
  * @param {function} submitHandler ConfirmButton onClick handler
@@ -9,12 +10,14 @@ import * as Api from "../../api";
  * @returns {component} Confirm Button and Cancle Button
  */
 export const BundleButton = ({ submitHandler, setState }) => {
+  const { subAble } = useContext(SubmittableContext);
   return (
     <Row className="justify-content-center" xs="auto">
       <Button
         className="me-3"
         variant="primary"
         type="submit"
+        disabled={subAble}
         onClick={submitHandler}
       >
         확인

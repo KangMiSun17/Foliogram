@@ -4,6 +4,7 @@ import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
 import { AwardFetchContext, AwardContext } from "../common/context/Context";
 import { FormTextField } from "../common/Form";
+import Submittable from "../common/Submittable";
 
 /** Edit award component
  *
@@ -52,6 +53,7 @@ function AwardEditForm({ setIsEditing }) {
           value={edit.description}
           setState={setEdit}
         />
+        <Submittable title={edit.title} description={edit.description} />
         <Row className="justify-content-center" xs="auto">
           <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
         </Row>

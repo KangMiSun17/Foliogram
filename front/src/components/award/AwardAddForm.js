@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Form, Row } from "react-bootstrap";
-import { PlusButton, BundleButton } from "../common/Button";
+import { PlusButton, BundleButton, EditButton } from "../common/Button";
 import {
   AwardFetchContext,
   PortfolioOwnerContext,
 } from "../common/context/Context";
 import { FormTextField } from "../common/Form";
 import * as Api from "../../api";
+import Submittable from "../common/Submittable";
 
 /** Award add component
  *
@@ -26,11 +27,12 @@ function AwardAddForm() {
   };
   //Added award title
   const [add, setAdd] = useState(init);
+  const [able, setAble] = useState(true);
 
   //Click OK button, add award
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Post request to update added award
+    //Post request to update added award'
     try {
       await Api.post(`award/create`, add);
       setAdd(init);
@@ -62,6 +64,7 @@ function AwardAddForm() {
             value={add.description}
             setState={setAdd}
           />
+          <Submittable title={add.title} description={add.description} />
           <Row className="justify-content-center" xs="auto">
             <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
           </Row>
