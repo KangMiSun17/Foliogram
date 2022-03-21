@@ -3,6 +3,7 @@ import { Form, Row } from "react-bootstrap";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
 import { AwardFetchContext, AwardContext } from "../common/context/Context";
+import { FormTextField } from "../common/Form";
 
 /** Edit award component
  *
@@ -13,10 +14,10 @@ function AwardEditForm({ setIsEditing }) {
   //To re-render
   const setReFetching = useContext(AwardFetchContext);
   const award = useContext(AwardContext);
-  //Edited title
-  const [editTitle, setEditTitle] = useState(award.title);
-  //Edited description
-  const [editDescription, setEditDescription] = useState(award.description);
+  const [edit, setEdit] = useState({
+    title: award.title,
+    description: award.description,
+  });
 
   //Click OK button, edit award
   const handleSubmit = async (e) => {
@@ -24,8 +25,8 @@ function AwardEditForm({ setIsEditing }) {
     //Put request to update edited award
     try {
       await Api.put(`awards/${award.id}`, {
-        title: editTitle,
-        description: editDescription,
+        title: edit.title,
+        description: edit.description,
       });
       setReFetching(new Date());
     } catch (err) {
@@ -39,17 +40,17 @@ function AwardEditForm({ setIsEditing }) {
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>수정할 내용</Form.Label>
-        <Form.Control
-          type="text"
-          className="mb-3"
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
+        <FormTextField
+          placeholder="수상 내역"
+          name="title"
+          value={edit.title}
+          changeFunction={setEdit}
         />
-        <Form.Control
-          type="text"
-          className="mb-3"
-          value={editDescription}
-          onChange={(e) => setEditDescription(e.target.value)}
+        <FormTextField
+          placeholder="상세 내역"
+          name="description"
+          value={edit.description}
+          changeFunction={setEdit}
         />
         <Row className="justify-content-center" xs="auto">
           <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
