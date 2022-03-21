@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
-import { debug } from "console";
 // import * as fsp from "fs/promises";
 // import { Writable } from "stream";
 
@@ -14,8 +13,11 @@ const { W_OK } = fs.constants;
 const { O_APPEND, O_SYNC } = fs.constants;
 const { S_IRWXU, S_IRWXG } = fs.constants;
 
-/** Directory where log files reside. It's '/back/log'. */
+/** @constant {string} LOGDIR - Path where log files reside: `/back/log`. */
 const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
+
+/** @constant {string} DEFAULTLOG - Default log path: `/back/log/unified.log */
+const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
 
 /** Output logs to multiple streams, depending on debug level.
  *
@@ -62,45 +64,53 @@ const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
  *    will be written, ignoring `env.DEBUG`'s value.
  */
 class Logger {
-    static debug = process.env.DEBUG ? Number(process.env.DEBUG) : 1;
-    static stdout = process.stdout.fd;
+    stdout = process.stdout.fd;
+    debug = process.env.DEBUG ? Number(process.env.DEBUG) : 1;
 
     name_ = "I AM TOO LAZY TO NAME MY LOGGER";
     tee = [];
+    #_tee = [];
     tee_ignore_level = false;
 
     constructor({
-        name_ = "",
+        name_ = null,
         tee = [],
         tee_ignore_level = false,
         debug_override = null,
     }) {
         this.name_ = name_;
         this.tee_ignore_level = tee_ignore_level;
+
         if (debug_override) {
             this.debug = debug_override;
         }
 
-        tee.forEach((filelike) => {
+        for (const filelike of tee) {
             let fd = filelike;
 
             if (typeof filelike === "string") {
                 try {
+                    if (!fs.existsSync(filelike)) {
+                        fs.mkdirSync(path.dirname(filelike), {
+                            recursive: true,
+                        });
+                    }
+
                     // Open file as append/sync, with group rwx permission.
-                    fd = fs.openSync(filelike, O_APPEND | O_SYNC, S_IRWXG);
+                    fd = fs.openSync(filelike, "a");
                 } catch (error) {
                     console.log(
                         `${this.name_} > Can't open file "${filelike}" for writing`
                     );
+                    console.log(error);
+                    continue;
                 }
             }
 
-            if (!fs.accessSync(fd, W_OK)) {
-                console.log(`${this.name_} > "${filelike}" is not writable`);
-            }
+            this.#_tee.push(fd);
+        }
 
-            this.tee.push(fd);
-        });
+        this.#_init();
     }
 
     /** Convenience path joining tool so that you don't need to.
@@ -124,14 +134,16 @@ class Logger {
      *  - `__level__` specifies the level of a message. A message will be
      *    written to streams only if its `__level__` is less than or equal to
      *    current `process.env.DEBUG` value.
-     *  - It defaults to 0. **If you want to omit it, pass `{}` instead.**
+     *  - Defaults to 0. **If you want to omit it, pass `{}` instead.**
      */
     log({ __level__ = 0 }, ...msgs) {
-        const consoleMsg =
-            `<${this.name_}>$ ` +
-            msgs.map((m) => util.inspect(m)).join(" ") +
-            "\n";
-        const msg = `[${new Date().toISOString.slice(2, 10)}]` + consoleMsg;
+        const date = new Date();
+        const msg = msgs.map((m) => util.inspect(m)).join(" ") + "\n";
+        const consoleMsg = `${this.name_}$ ${msg}`;
+        const fileMsg =
+            `${this.name_} @` +
+            `${date.toISOString().slice(2, 10)} / ` +
+            `${date.toTimeString().slice(0, 8)} $\n${msg}`;
 
         // Write to the console. Will always follow rules.
         if (__level__ <= this.debug) {
@@ -139,15 +151,25 @@ class Logger {
         }
 
         if (this.tee_ignore_level || __level__ <= this.debug) {
-            this.tee.forEach((fd) => fs.writeSync(fd, msg, "utf-8"));
+            this.#_tee.forEach((fd) => fs.writeSync(fd, fileMsg, "utf-8"));
         }
+    }
+
+    /** Write distiniguishable lines in the log files. */
+    #_init() {
+        const now = Date();
+        const padding = " ".repeat(parseInt((79 - now.length) / 2));
+        const msg = `\n\n${"=".repeat(79)}\n${padding}${now}\n${"=".repeat(
+            79
+        )}\n`;
+        this.#_tee.forEach((fd) => fs.writeSync(fd, msg, "utf-8"));
     }
 }
 
 // Quick test code!
-const logger = new Logger({
+/* const logger = new Logger({
     name_: "myFirstLogger",
-    tee: [Logger.resolvePaths(LOGDIR, "mylogtest.log")],
+    tee: [DEFAULT_LOG, Logger.resolvePaths(LOGDIR, "mylogtest.log")],
 });
 // Test some basic object types.
 logger.log({}, "I feel fine!");
@@ -156,6 +178,6 @@ logger.log(
     { __level__: 1 },
     { ham: "jam", spam: "eggs", Camelot: "A silly place" }
 );
-logger.log({}, new Error("Something did not went wrong"));
+logger.log({}, new Error("Something did not went wrong")); */
 
-export { Logger, LOGDIR };
+export { Logger, LOGDIR, DEFAULT_LOG };
