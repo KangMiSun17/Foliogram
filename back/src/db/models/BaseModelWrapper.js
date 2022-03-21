@@ -83,11 +83,11 @@ class BaseModel {
      *
      * @static
      * @async
-     * @param {{id: uuid}} id
+     * @param {{id: uuid, ...query: record}} payload
      * @returns {record} deleted
      */
-    static async delete({ id }) {
-        const deleted = await this.Model.findOneAndDelete({ id });
+    static async delete({ id, ...query }) {
+        const deleted = await this.Model.findOneAndDelete({ id, ...query });
         return deleted;
     }
 }

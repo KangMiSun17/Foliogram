@@ -1,5 +1,7 @@
+import { query } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { BaseModel } from "../db";
+import { Logger } from "../utils/logging";
 
 /**
  * @typedef {string} field
@@ -7,31 +9,33 @@ import { BaseModel } from "../db";
  * @typedef {Object.<string, string>} populator
  * @typedef {[string, any]} kvpair
  * @typedef {string} uuid
+ * @typedef {{errorMessage: string, statusCode: number}} reqerror
  */
 
 /** Base class for Services. Mainly verifies the data fields passing through.
  * @todo leave required field verification, check unique up to Router
- * @todo throw most errors here rather than router; [ ] add [ ] set
+ * @todo don't throw errors here; just error message and? status codes.
+ *
+ * ## Constructor
+ * @constructor
+ * @param {Logger} logger
+ *  - logger instance to use. Defaults to console.
  *
  * ## Methods
  * @constructor constructor({ logger })
- * @method static async add(record)
+ * @method async add(record)
  *  - Add a record to the user.
- * @method static async get({ id })
+ * @method async get({ id, ...query })
  *  - Find the first record that exactly matches the id.
- * @method static async getAll(query)
- *  - Find every last record there is (that matches the optional query).
- * @method static async set({ id, ...record })
+ * @method async set({ id, ...record })
  *  - Modify a record.
- * @method static async del({ id })
+ * @method async del({ id, ...query })
  *  - Remove a project.
  *
  * ## Static properties
  * @prop {BaseModel} Model
- * @prop {string} name_
+ * @prop {string} name
  *  - The record kind's general name.
- *    The trailing underscore is to avoid name clash with the automatic
- *    read-only property 'name' that exists in classes or functions.
  * @prop {boolean} deletable
  *  - If true, this Service allows deletion of records.
  * @prop {field[]} requiredFields
@@ -53,35 +57,30 @@ import { BaseModel } from "../db";
  *  - Instance of logger; Defaults to console.
  */
 class BaseService {
-    static Model = BaseModel;
+    Model = BaseModel;
 
-    static name_ = "base";
+    // name = "base";
     // #_user_id_amend silently amends the mistake in Award, Project schemas
     // whose owner field names are set to some overcomplicated names instead of
     // just 'user_id'.
     // static #_user_id_amend = null;
-    static deletable = true;
+    deletable = true;
 
-    static requiredFields = Object.freeze([]);
-    static optionalFields = Object.freeze([]);
-    static settableFields = Object.freeze([]);
-    static uniqueFields = Object.freeze([]);
-    static searchableFields = Object.freeze([]);
+    requiredFields = Object.freeze([]);
+    optionalFields = Object.freeze([]);
+    settableFields = Object.freeze([]);
+    uniqueFields = Object.freeze([]);
+    searchableFields = Object.freeze([]);
 
-    static refFields = Object.freeze({});
+    refFields = Object.freeze({});
 
-    static allFields = Object.freeze([
-        ...this.requiredFields,
-        ...this.optionalFields,
-    ]);
+    allFields = Object.freeze([...this.requiredFields, ...this.optionalFields]);
 
     logger;
 
     /**
      *
-     * @class
-     * @param {Logger} logger
-     *  - logger instance to use. Defaults to console.
+     * @param {{logger: Logger}} logger
      */
     constructor({ logger }) {
         this.logger = logger ?? console;
@@ -94,8 +93,8 @@ class BaseService {
      * @param {record} record
      * @returns {record} added
      */
-    static async add(record) {
-        console.log(`${this.name_}.add >`, arguments[0]);
+    async add(record) {
+        console.log(`${this.name}.add >`, arguments[0]);
 
         // Squash unnecessary fields first.
         const data = Object.fromEntries(
@@ -109,7 +108,7 @@ class BaseService {
         this.requiredFields.forEach((k) => {
             if (!(k in data)) {
                 throw new Error(
-                    `${k} field is required for ${this.name_} record`
+                    `${k} field is required for ${this.name} record`
                 );
             }
         });
@@ -118,21 +117,21 @@ class BaseService {
         data.id = uuidv4();
 
         const added = await this.Model.create(data);
-        console.log(`${this.name_}.add > added=`, added);
+        console.log(`${this.name}.add > added=`, added);
 
         return added;
     }
 
-    /** Find the first record that exactly matches the id.
+    /** Find the first record that exactly matches the id and optional query.
      *
      * @static
      * @async
-     * @param {{id: uuid}} payload
+     * @param {{id: uuid, query: record}} payload
      * @returns {record|null} found - If not found, just null.
      *      It will not emit error message.
      */
-    static async get({ id }) {
-        console.log(`${this.name_}Service.get > `, arguments[0]);
+    async get({ id, ...query }) {
+        console.log(`${this.name}Service.get > `, arguments[0]);
 
         // Confirmed, null query is ok.
         // Probably because we don't have any null in the db.
@@ -142,27 +141,8 @@ class BaseService {
         //     throw new Error(`Bad query: ${arguments[0]}`)
         // }
 
-        const found = await this.Model.find({ id });
+        const found = await this.Model.find({ id, ...query });
 
-        return found;
-    }
-
-    /** Find every last record there is (that matches the optional query).
-     *
-     * @static
-     * @async
-     * @param {record} [query]
-     * @returns {record[]} found - If none, return an empty Array.
-     *      It will not emit error message.
-     */
-    static async getAll(query) {
-        console.log(`${this.name_}Service.getAll > `, arguments[0]);
-
-        // It's ok to omit query!
-        if (!query) {
-            query = {};
-        }
-        const found = await this.Model.findAll(query);
         return found;
     }
 
@@ -171,7 +151,7 @@ class BaseService {
      * @param {field} path
      * @returns {record|record[]} children
      */
-    static async getChildren({ path }) {}
+    async getChildren({ path }) {}
 
     /** Modify a record.
      *
@@ -180,8 +160,8 @@ class BaseService {
      * @param {{id: uuid, record: record}} payload
      * @returns {record|null} updated
      */
-    static async set({ id, ...record }) {
-        console.log(`${this.name_}Service.set > `, arguments[0]);
+    async set({ id, ...record }) {
+        console.log(`${this.name}Service.set > `, arguments[0]);
 
         // We're picking out uneditable entries here.
         const toUpdate = Object.fromEntries(
@@ -199,35 +179,60 @@ class BaseService {
      *
      * @static
      * @async
-     * @param {{id}} payload
+     * @param {{id: uuid, query: record}} payload
      * @returns {record|null} removed
      *
      * It is an error to attempt to delete an undeletable record.
      */
-    static async del({ id }) {
-        console.log(`${this.name_}.del > `, arguments[0]);
+    async del({ id, ...query }) {
+        console.log(`${this.name}.del > `, arguments[0]);
         if (this.deletable) {
-            const removed = await this.Model.delete({ id });
+            const removed = await this.Model.delete({ id, ...query });
 
             return removed;
         } else {
-            throw new Error(`${this.name_} is not deletable`);
+            throw new Error(`${this.name} is not deletable`);
         }
     }
 }
 
-/** Service template for record kind that can be a child of another record.
+/** Service template for records that are a parent another records.
  *
  * @extends BaseService
  *
  * ## Methods
- * @method static async getParent({ id, ...query })
+ * @method async getAll(query)
+ *  - Find every last record there is (that matches the optional query).
+ */
+class ToprecordService extends BaseService {
+    /** Find every last record there is (that matches the optional query).
+     *
+     * @static
+     * @async
+     * @param {record} [query]
+     * @returns {record[]} found - If none, return an empty Array.
+     *      It will not emit error message.
+     */
+    async getAll(query = {}) {
+        console.log(`${this.name}Service.getAll > `, arguments[0]);
+        const found = await this.Model.findAll(query);
+        return found;
+    }
+}
+
+/** Service template for record kind that can be a child of another record.
+ * That doesn't mean they shouldn't have children. They can.
+ *
+ * @extends BaseService
+ *
+ * ## Methods
+ * @method async getParent({ id, ...query })
  *  - Find and return the *parent* of the found record.
- * @method static async getSiblings({ user_id })
+ * @method async getSiblings({ user_id })
  *  - Find all records that belong to the owner, who isn't necessarily user.
  */
 class SubrecordService extends BaseService {
-    static ownerField = "user_id";
+    ownerField = "user_id";
 
     /** Find and return the *parent* of the found record.
      *
@@ -237,13 +242,13 @@ class SubrecordService extends BaseService {
      *  - `null`: The record itself exists and it just has no parent.
      *  - Error: The record was not found.
      */
-    static async getParent({ id, ...query }) {
-        console.log(`${this.name_}Service.getParent > `, arguments[0]);
+    async getParent({ id, ...query }) {
+        console.log(`${this.name}Service.getParent > `, arguments[0]);
 
         const me = await this.Model.find({ id, ...query });
         if (!me) {
             throw new Error(
-                `${this.name_} with query ${artuments[0]} not found`
+                `${this.name} with query ${artuments[0]} not found`
             );
         }
 
@@ -264,8 +269,8 @@ class SubrecordService extends BaseService {
      * @returns {record[]} found
      *  - If none, return an empty Array. It will not emit error message.
      */
-    static async getSiblings({ user_id }) {
-        console.log(`${this.name_}Service.getSiblings > `, arguments[0]);
+    async getSiblings({ user_id }) {
+        console.log(`${this.name}Service.getSiblings > `, arguments[0]);
 
         const query = { [this.ownerField]: user_id };
         const found = await this.Model.findAll(query);
@@ -274,4 +279,4 @@ class SubrecordService extends BaseService {
     }
 }
 
-export { BaseService };
+export { BaseService, ToprecordService, SubrecordService };
