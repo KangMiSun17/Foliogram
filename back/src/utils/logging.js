@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as util from "util";
+import * as path from "path";
 // import * as fsp from "fs/promises";
 // import { Writable } from "stream";
 
@@ -11,6 +12,9 @@ import * as util from "util";
 const { W_OK } = fs.constants;
 const { O_APPEND, O_SYNC } = fs.constants;
 const { S_IRWXU, S_IRWXG } = fs.constants;
+
+/** Directory where log files reside. It's '/back/log'. */
+const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
 
 /** Output logs to multiple streams, depending on debug level.
  *
@@ -29,6 +33,12 @@ const { S_IRWXU, S_IRWXG } = fs.constants;
  *    Mixing them is fine.
  *  - `tee_ignore_level` if `true`, all tee streams (that are not `stdout`)
  *    will be written, ignoring `env.DEBUG`'s value.
+ *
+ * ## Methods
+ * @method static resolvePaths(...paths)
+ *  - Convenience path joining tool so that you don't need to.
+ * @method log({ __level__ = 0 }, ...msgs)
+ *  - Log messages. Output may or may not appear on stdout depending on env.
  *
  * ## Properties
  * @prop {number} debug
@@ -60,9 +70,12 @@ class Logger {
 
             if (typeof filelike === "string") {
                 try {
+                    // Open file as append/sync, with group rwx permission.
                     fd = fs.openSync(filelike, O_APPEND | O_SYNC, S_IRWXG);
                 } catch (error) {
-                    console.log(`${this.name} > Can't open file "${filelike}"`);
+                    console.log(
+                        `${this.name} > Can't open file "${filelike}" for writing`
+                    );
                 }
             }
 
@@ -72,6 +85,18 @@ class Logger {
 
             this.tee.push(fd);
         });
+    }
+
+    /** Convenience path joining tool so that you don't need to.
+     *
+     * @param {string[]} paths
+     *  - Iterable of strings representing paths. Usually you will want
+     *    something like: `Logger.resolvePaths(Logger.LOGDIR, "mylogfile.log")`
+     * @returns {string} resolvedPath
+     *  - The joined and resolved absolute path to your log file.
+     */
+    static resolvePaths(...paths) {
+        return path.resolve(...paths);
     }
 
     /** Log messages. Output may or may not appear on stdout depending on env.
@@ -102,4 +127,4 @@ class Logger {
     }
 }
 
-export { Logger };
+export { Logger, LOGDIR };
