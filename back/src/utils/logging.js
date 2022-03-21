@@ -52,7 +52,7 @@ const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
  *
  * ## Properties
  * @prop {number} debug
- *  - (static) Stored value of `process.env.DEBUG`; Defaults to 1.
+ *  - (static) Stored value of `process.env.DEBUG`; Defaults to 3.
  * @prop {number} stdout
  *  - (static) This is equal to `process.stdout.fd`.
  * @prop {string} name
@@ -65,7 +65,7 @@ const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
  */
 class Logger {
     stdout = process.stdout.fd;
-    debug = process.env.DEBUG ? Number(process.env.DEBUG) : 1;
+    debug = process.env.DEBUG ? Number(process.env.DEBUG) : 3;
 
     name_ = "I AM TOO LAZY TO NAME MY LOGGER";
     tee = [];
@@ -129,14 +129,14 @@ class Logger {
      *
      * @param {{__level__: number}} options
      *  ```js
-     *  { __level__: number = 0 }
+     *  { __level__: number = 3 }
      * ```
      *  - `__level__` specifies the level of a message. A message will be
      *    written to streams only if its `__level__` is less than or equal to
      *    current `process.env.DEBUG` value.
-     *  - Defaults to 0. **If you want to omit it, pass `{}` instead.**
+     *  - Defaults to 3. **If you want to omit it, pass `{}` instead.**
      */
-    log({ __level__ = 0 }, ...msgs) {
+    log({ __level__ = 3 }, ...msgs) {
         const date = new Date();
         const msg = msgs.map((m) => util.inspect(m)).join(" ") + "\n";
         const consoleMsg = `${this.name_}$ ${msg}`;
