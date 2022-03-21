@@ -9,14 +9,14 @@ import * as path from "path";
  *  - Either string representing a writable file path or open file descriptor.
  */
 
-const { W_OK } = fs.constants;
-const { O_APPEND, O_SYNC } = fs.constants;
-const { S_IRWXU, S_IRWXG } = fs.constants;
+// const { W_OK } = fs.constants;
+// const { O_APPEND, O_SYNC } = fs.constants;
+// const { S_IRWXU, S_IRWXG } = fs.constants;
 
-/** @constant {string} LOGDIR - Path where log files reside: `/back/log`. */
+/** @const {string} LOGDIR - Path where log files reside: `/back/log`. */
 const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
 
-/** @constant {string} DEFAULTLOG - Default log path: `/back/log/unified.log */
+/** @const {string} DEFAULT_LOG - Default log path: `/back/log/unified.log` */
 const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
 
 /** Output logs to multiple streams, depending on debug level.
