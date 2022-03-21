@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
+import { debug } from "console";
 // import * as fsp from "fs/promises";
 // import { Writable } from "stream";
 
@@ -20,12 +21,18 @@ const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
  *
  * ## Constructor
  * @constructor
- * @param {{name: string, tee: filelike[], tee_ignore_level: boolean}} option
+ * @param {{
+ *      name_: string,
+ *      tee: filelike[],
+ *      tee_ignore_level: boolean,
+ *      debug_override: number
+ * }} option
  *  ```js
  *  {
  *      name_: string = "",
  *      tee: filelike[] = [],
  *      tee_ignore_level: boolean = false,
+ *      debug_override: number = null
  *  }
  *  ```
  *  - `name` will help identify which logger wrote it in your log.
@@ -33,6 +40,7 @@ const LOGDIR = path.resolve(`${__dirname}`, "..", "..", "log");
  *    Mixing them is fine.
  *  - `tee_ignore_level` if `true`, all tee streams (that are not `stdout`)
  *    will be written, ignoring `env.DEBUG`'s value.
+ *  - `debug_override`, if set, overrides `DEBUG` set in the env.
  *
  * ## Methods
  * @method static resolvePaths(...paths)
@@ -61,9 +69,17 @@ class Logger {
     tee = [];
     tee_ignore_level = false;
 
-    constructor({ name_ = "", tee = [], tee_ignore_level = false }) {
+    constructor({
+        name_ = "",
+        tee = [],
+        tee_ignore_level = false,
+        debug_override = null,
+    }) {
         this.name_ = name_;
         this.tee_ignore_level = tee_ignore_level;
+        if (debug_override) {
+            this.debug = debug_override;
+        }
 
         tee.forEach((filelike) => {
             let fd = filelike;
@@ -74,13 +90,13 @@ class Logger {
                     fd = fs.openSync(filelike, O_APPEND | O_SYNC, S_IRWXG);
                 } catch (error) {
                     console.log(
-                        `${this.name} > Can't open file "${filelike}" for writing`
+                        `${this.name_} > Can't open file "${filelike}" for writing`
                     );
                 }
             }
 
             if (!fs.accessSync(fd, W_OK)) {
-                console.log(`${this.name} > "${filelike}" is not writable`);
+                console.log(`${this.name_} > "${filelike}" is not writable`);
             }
 
             this.tee.push(fd);
@@ -106,12 +122,13 @@ class Logger {
      *  { __level__: number = 0 }
      * ```
      *  - `__level__` specifies the level of a message. A message will be
-     *    written to streams only if its `__level__` is less or equal than
+     *    written to streams only if its `__level__` is less than or equal to
      *    current `process.env.DEBUG` value.
+     *  - It defaults to 0. **If you want to omit it, pass `{}` instead.**
      */
     log({ __level__ = 0 }, ...msgs) {
         const consoleMsg =
-            `<${this.name}>$ ` +
+            `<${this.name_}>$ ` +
             msgs.map((m) => util.inspect(m)).join(" ") +
             "\n";
         const msg = `[${new Date().toISOString.slice(2, 10)}]` + consoleMsg;
@@ -126,5 +143,19 @@ class Logger {
         }
     }
 }
+
+// Quick test code!
+const logger = new Logger({
+    name_: "myFirstLogger",
+    tee: [Logger.resolvePaths(LOGDIR, "mylogtest.log")],
+});
+// Test some basic object types.
+logger.log({}, "I feel fine!");
+logger.log({}, `LOGDIR is ${LOGDIR}`);
+logger.log(
+    { __level__: 1 },
+    { ham: "jam", spam: "eggs", Camelot: "A silly place" }
+);
+logger.log({}, new Error("Something did not went wrong"));
 
 export { Logger, LOGDIR };
