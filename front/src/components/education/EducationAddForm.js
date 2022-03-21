@@ -75,28 +75,28 @@ function EducationAddForm() {
               id="radio1"
               value="재학중"
               checked={addPosition === "재학중"}
-              checkFunction={setAddPosition}
+              setState={setAddPosition}
             />
             <FormCheckField
               label="학사졸업"
               id="radio2"
               value="학사졸업"
               checked={addPosition === "학사졸업"}
-              checkFunction={setAddPosition}
+              setState={setAddPosition}
             />
             <FormCheckField
               label="석사졸업"
               id="radio3"
               value="석사졸업"
               checked={addPosition === "석사졸업"}
-              checkFunction={setAddPosition}
+              setState={setAddPosition}
             />
             <FormCheckField
               label="박사졸업"
               id="radio4"
               value="박사졸업"
               checked={addPosition === "박사졸업"}
-              checkFunction={setAddPosition}
+              setState={setAddPosition}
             />
           </Form.Group>
           <Row className="justify-content-center" xs="auto">

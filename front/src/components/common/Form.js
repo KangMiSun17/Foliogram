@@ -1,14 +1,15 @@
 import React from "react";
 import { Form, FormCheck } from "react-bootstrap";
 
-/**
+/** Form's text field
+ *
  * @param {string} value object value
  * @param {string} name object key
- * @param {string} placeholder Change state when CancleButton onClick
- * @param {function} changeFunction
+ * @param {string} placeholder text field placeholder
+ * @param {function} setState
  * @returns {component} FormTextField
  */
-export const FormTextField = ({ value, name, placeholder, changeFunction }) => {
+export function FormTextField({ value, name, placeholder, setState }) {
   return (
     <Form.Group className="mb-3" controlId="formTextField">
       <Form.Control
@@ -17,7 +18,7 @@ export const FormTextField = ({ value, name, placeholder, changeFunction }) => {
         name={name}
         placeholder={placeholder}
         onChange={(e) =>
-          changeFunction((prev) => ({
+          setState((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
           }))
@@ -25,19 +26,18 @@ export const FormTextField = ({ value, name, placeholder, changeFunction }) => {
       />
     </Form.Group>
   );
-};
+}
 
-/**
- * @param {function} setState Change state when plusButton onClick
- * @returns {component} PlusButton
+/** Form's checkbox field
+ *
+ * @param {string} label checkbox name
+ * @param {string} id checkbox id
+ * @param {string} value checkbox value
+ * @param {condition} checked condition to be checked
+ * @param {function} setState set state
+ * @returns {component} FormTextField
  */
-export const FormCheckField = ({
-  label,
-  id,
-  value,
-  checked,
-  checkFunction,
-}) => {
+export function FormCheckField({ label, id, value, checked, setState }) {
   return (
     <FormCheck
       inline
@@ -47,7 +47,13 @@ export const FormCheckField = ({
       name="position"
       value={value}
       checked={checked}
-      onChange={(e) => checkFunction(e.target.value)}
+      onChange={(e) => {
+        setState(e.target.value);
+      }}
     />
   );
-};
+}
+
+export function FormDateField() {
+  //DatePickForm 을 여기로 옮겼으면 합니다.
+}

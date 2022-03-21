@@ -10,8 +10,8 @@ import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
-import * as Api from "../api";
 import Projects from "./project/Projects";
+import * as Api from "../api";
 
 function Portfolio() {
   const navigate = useNavigate();

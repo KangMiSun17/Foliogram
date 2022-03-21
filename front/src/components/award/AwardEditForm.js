@@ -44,13 +44,13 @@ function AwardEditForm({ setIsEditing }) {
           placeholder="수상 내역"
           name="title"
           value={edit.title}
-          changeFunction={setEdit}
+          setState={setEdit}
         />
         <FormTextField
           placeholder="상세 내역"
           name="description"
           value={edit.description}
-          changeFunction={setEdit}
+          setState={setEdit}
         />
         <Row className="justify-content-center" xs="auto">
           <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />

@@ -5,8 +5,8 @@ import {
   AwardFetchContext,
   PortfolioOwnerContext,
 } from "../common/context/Context";
-import * as Api from "../../api";
 import { FormTextField } from "../common/Form";
+import * as Api from "../../api";
 
 /** Award add component
  *
@@ -18,6 +18,7 @@ function AwardAddForm() {
   const setReFetching = useContext(AwardFetchContext);
   //Whether adding or not
   const [isAdding, setIsAdding] = useState(false);
+  //initial award
   const init = {
     user_id: portfolioOwnerId,
     title: "",
@@ -53,13 +54,13 @@ function AwardAddForm() {
             placeholder="수상 내역"
             name="title"
             value={add.title}
-            changeFunction={setAdd}
+            setState={setAdd}
           />
           <FormTextField
             placeholder="상세 내역"
             name="description"
             value={add.description}
-            changeFunction={setAdd}
+            setState={setAdd}
           />
           <Row className="justify-content-center" xs="auto">
             <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
