@@ -47,14 +47,14 @@ const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
  * ## Methods
  * @method static resolvePaths(...paths)
  *  - Convenience path joining tool so that you don't need to.
- * @method log({ __level__ = 0 }, ...msgs)
+ * @method log({ __level__ = 3 }, ...msgs)
  *  - Log messages. Output may or may not appear on stdout depending on env.
  *
  * ## Properties
  * @prop {number} debug
- *  - (static) Stored value of `process.env.DEBUG`; Defaults to 3.
+ *  - Stored value of `process.env.DEBUG`; Defaults to 0.
  * @prop {number} stdout
- *  - (static) This is equal to `process.stdout.fd`.
+ *  - This is equal to `process.stdout.fd`.
  * @prop {string} name
  *  - This logger's name. Try to give it a reasonably descriptive one.
  * @prop {number[]} tee
@@ -65,7 +65,7 @@ const DEFAULT_LOG = path.resolve(LOGDIR, "unified.log");
  */
 class Logger {
     stdout = process.stdout.fd;
-    debug = process.env.DEBUG ? Number(process.env.DEBUG) : 3;
+    debug = process.env.DEBUG ? Number(process.env.DEBUG) : 0;
 
     name_ = "I AM TOO LAZY TO NAME MY LOGGER";
     tee = [];
@@ -141,7 +141,7 @@ class Logger {
         const msg = msgs.map((m) => util.inspect(m)).join(" ") + "\n";
         const consoleMsg = `${this.name_}$ ${msg}`;
         const fileMsg =
-            `${this.name_} @` +
+            `${this.name_} @ ` +
             `${date.toISOString().slice(2, 10)} / ` +
             `${date.toTimeString().slice(0, 8)} $\n${msg}\n`;
 
