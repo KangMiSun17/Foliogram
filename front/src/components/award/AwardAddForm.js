@@ -6,6 +6,7 @@ import {
   PortfolioOwnerContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
+import { FormTextField } from "../common/Form";
 
 /** Award add component
  *
@@ -49,22 +50,18 @@ function AwardAddForm() {
         </Row>
       ) : (
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Control
-              type="text"
-              placeholder="수상 내역"
-              value={addTitle}
-              onChange={(e) => setAddTitle(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Control
-              type="text"
-              placeholder="상세 내역"
-              value={addDescription}
-              onChange={(e) => setAddDescription(e.target.value)}
-            />
-          </Form.Group>
+          <FormTextField
+            type="text"
+            placeholder="수상 내역"
+            value={addTitle}
+            clickFunction={setAddDescription}
+          />
+          <FormTextField
+            type="text"
+            placeholder="상세 내역"
+            value={addDescription}
+            clickFunction={setAddDescription}
+          />
           <Row className="justify-content-center" xs="auto">
             <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
           </Row>
