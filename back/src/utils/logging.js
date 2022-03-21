@@ -143,7 +143,7 @@ class Logger {
         const fileMsg =
             `${this.name_} @` +
             `${date.toISOString().slice(2, 10)} / ` +
-            `${date.toTimeString().slice(0, 8)} $\n${msg}`;
+            `${date.toTimeString().slice(0, 8)} $\n${msg}\n`;
 
         // Write to the console. Will always follow rules.
         if (__level__ <= this.debug) {
