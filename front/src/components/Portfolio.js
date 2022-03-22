@@ -24,6 +24,16 @@ function Portfolio() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const userState = useContext(UserStateContext);
 
+  ///@ nav state
+  const [navList, setNavList] = useState([
+    { compo: <Educations />, navName: "학력", state: true },
+    { compo: <Awards />, navName: "수상이력", state: true },
+    { compo: <Projects />, navName: "프로젝트", state: true },
+    { compo: <Certificates />, navName: "자격증", state: true },
+    { compo: <Certificates />, navName: "경력", state: false },
+    { compo: <Certificates />, navName: "기술스택", state: false },
+  ]);
+
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
     const res = await Api.get("users", ownerId);
@@ -59,24 +69,26 @@ function Portfolio() {
     return "loading...";
   }
 
-  const compoAr = [<Educations />, <Awards />, <Projects />, <Certificates />];
-
   return (
     <EditTableContext.Provider value={portfolioOwner.id === userState.user?.id}>
       <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
         <Container fluid>
           <Row>
-            <Col xl="3">
-              여기도 뭐가 필요함
+            {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
+            <Col xl="3" style={{ marginTop: 54 }}>
               <User
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
               />
             </Col>
             <Col>
-              <NavBar />
+              <NavBar navList={navList} setNavList={setNavList} />
               {/* 컴포넌트도 배열에 넣어 맵을 돌릴 수 있군요! */}
-              {compoAr.map((compo) => compo)}
+              {navList.map((compAr, index) => {
+                if (compAr.state === true) {
+                  return <div key={index}>{compAr.compo}</div>;
+                }
+              })}
             </Col>
           </Row>
         </Container>

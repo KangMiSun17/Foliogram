@@ -2,35 +2,92 @@ import React, { useContext, useState, useEffect } from "react";
 import { Stack, Dropdown } from "react-bootstrap";
 import styled from "styled-components";
 
-function NavBar() {
+function NavBar({ navList, setNavList }) {
+  function addHandleNav(e) {
+    const name = e.target.name;
+
+    navList.map((compAr, index, array) => {
+      if (compAr.navName === name) {
+        compAr.state = true;
+        console.log(array);
+        array.splice(index, 1, compAr);
+      }
+    });
+
+    const newArray = [...navList];
+    console.log(newArray);
+    setNavList(newArray);
+  }
+
+  function delHandleNav(e) {
+    const name = e.target.name;
+
+    navList.map((compAr, index, array) => {
+      if (compAr.navName === name) {
+        compAr.state = false;
+        console.log(array);
+        array.splice(index, 1, compAr);
+      }
+    });
+
+    const newArray = [...navList];
+    console.log(newArray);
+    setNavList(newArray);
+  }
+
   return (
     <>
-      <Stack direction="horizontal" gap={2} className="ms-2 me-4 mb-3">
-        <StyledDiv>학력</StyledDiv>
-        <StyledDiv>수상이력</StyledDiv>
-        <StyledDiv>프로젝트</StyledDiv>
-        <StyledDiv>자격증</StyledDiv>
-        <StyledDiv>경력</StyledDiv>
-        <StyledDiv>기술스텍</StyledDiv>
+      <Stack direction="horizontal" gap={2} className="ms-2 me-2 mb-3">
+        {navList.map((compAr, index) => {
+          if (compAr.state === true) {
+            return <StyledDiv key={index}>{compAr.navName}</StyledDiv>;
+          }
+        })}
 
         <Dropdown className="ms-auto">
           <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
-            +
+            추가+
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+            {navList.map((compAr, index) => {
+              if (compAr.state === false) {
+                return (
+                  <Dropdown.Item
+                    key={index}
+                    name={compAr.navName}
+                    onClick={addHandleNav}
+                  >
+                    {compAr.navName}
+                  </Dropdown.Item>
+                );
+              }
+            })}
+            {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
         <Dropdown>
           <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
-            -
+            삭제-
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+            {navList.map((compAr, index) => {
+              if (compAr.state === true) {
+                return (
+                  <Dropdown.Item
+                    key={index}
+                    name={compAr.navName}
+                    onClick={delHandleNav}
+                  >
+                    {compAr.navName}
+                  </Dropdown.Item>
+                );
+              }
+            })}
+            {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
       </Stack>
