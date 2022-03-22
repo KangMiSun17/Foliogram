@@ -22,7 +22,7 @@ function Certificate({ certificate, index, setCertificateList }) {
    * @description isEditable {type: boolean} if isEditable true and isEditing false show EditButton
    */
   return (
-    <Row className="align-items-center row">
+    <Row className="align-items-center row p-3 pb-0">
       {isEditing ? (
         <CertificateEditForm
           certificate={certificate}
@@ -31,7 +31,7 @@ function Certificate({ certificate, index, setCertificateList }) {
           index={index}
         />
       ) : (
-        <Col className="mb-3">
+        <Col>
           <span>{title}</span>
           <br />
           <span style={{ color: "gray" }}>{description}</span>

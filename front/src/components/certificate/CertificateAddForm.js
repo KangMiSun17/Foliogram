@@ -43,7 +43,7 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
   };
 
   return (
-    <Form>
+    <Form className="mt-4">
       <Form.Group className="mb-3" controlId="certificateAddName">
         <Form.Control
           type="addName"

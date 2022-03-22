@@ -40,13 +40,13 @@ function Certificates() {
   return (
     <Card className="me-4 mt-3 mb-3">
       <Card.Body>
-        <Card.Title>자격증</Card.Title>
+        <Card.Title className="mb-3">자격증</Card.Title>
         <CertificateCard
           certificateList={certificateList}
           setCertificateList={setCertificateList}
         />
         {isEditable && (
-          <Row className="justify-content-center mb-4" xs="auto">
+          <Row className="justify-content-center" xs="auto">
             <PlusButton setState={setIsAdding} />
           </Row>
         )}
