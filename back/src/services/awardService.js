@@ -1,6 +1,6 @@
 import { Award } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { SubrecordService } from "./BaseService";
-import { Logger, LOGDIR, DEFAULT_LOG } from "../utils/logging";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 class AwardService extends SubrecordService {
     // Inherit from BaseService
@@ -42,8 +42,13 @@ class AwardService extends SubrecordService {
 }
 
 const logger = new Logger({
-    name_: "awardService",
-    tee: [DEFAULT_LOG, Logger.resolvePaths(LOGDIR, "awardservice.log")],
+    name: "awardService",
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath("award.log"),
+        Logger.generateLogPath("service.log"),
+        Logger.generateLogPath("awardservice.log"),
+    ],
 });
 
 const awardService = new AwardService({ logger });

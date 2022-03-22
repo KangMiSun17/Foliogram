@@ -4,7 +4,7 @@ import { login_required } from "../middlewares/login_required";
 import { awardService } from "../services/awardService";
 import { RequestError } from "../utils/errors";
 import * as status from "../utils/status";
-import { Logger, LOGDIR, DEFAULT_LOG } from "../utils/logging";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 const awardRouter = Router();
 
@@ -16,8 +16,14 @@ const ROUTER = awardRouter;
 const ROUTE_TOP = "award";
 
 const logger = new Logger({
-    name_: `${ROUTE_TOP}Router`,
-    tee: [DEFAULT_LOG, Logger.resolvePaths(LOGDIR, `${ROUTE_TOP}router.log`)],
+    name: `${ROUTE_TOP}Router`,
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath(`${ROUTE_TOP}.log`),
+        Logger.generateLogPath(`router.log`),
+        Logger.generateLogPath(`${ROUTE_TOP}router.log`),
+    ],
+    default_level: 2,
 });
 
 ROUTER.post(
@@ -25,7 +31,7 @@ ROUTER.post(
     login_required,
     async function (req, res, next) {
         try {
-            logger.log({ __level__: 2 }, `POST /${ROUTE_TOP}/create`);
+            logger.log({}, `POST /${ROUTE_TOP}/create`);
 
             if (is.emptyObject(req.body)) {
                 throw new RequestError(
@@ -60,7 +66,7 @@ ROUTER.get(
         // Here we get the id of an award and give back a single award.
         try {
             const id = req.params.id;
-            logger.log({ __level__: 2 }, `GET /${ROUTE_TOP}s/${id}`);
+            logger.log({}, `GET /${ROUTE_TOP}s/${id}`);
 
             const found = await SERVICE.get({ id });
             if ("errorMessage" in found) {
@@ -83,7 +89,7 @@ awardRouter.get(
     async function (req, res, next) {
         try {
             const user_id = req.params.user_id;
-            logger.log({ __level__: 2 }, `GET /${ROUTE_TOP}list/${user_id}`);
+            logger.log({}, `GET /${ROUTE_TOP}list/${user_id}`);
 
             const found = await SERVICE.getSiblings({ user_id });
 
@@ -105,10 +111,7 @@ ROUTER.put(
                 ...req.body,
             };
 
-            logger.log(
-                { __level__: 2 },
-                `PUT /${ROUTE_TOP}s/:${req.params.id}`
-            );
+            logger.log({}, `PUT /${ROUTE_TOP}s/:${req.params.id}`);
             logger.log({}, `payload =`, payload);
 
             const updated = await SERVICE.set(payload);
@@ -136,15 +139,12 @@ ROUTER.delete(
                 currentUserId: req.currentUserId,
             };
 
-            logger.log(
-                { __level__: 2 },
-                `DELETE /${ROUTE_TOP}s/:${payload.id}`
-            );
+            logger.log({}, `DELETE /${ROUTE_TOP}s/:${payload.id}`);
 
             const deleted = await SERVICE.del(payload);
             if ("errorMessage" in deleted) {
                 throw new RequestError(
-                    { status: deleted.statusCode, payload: { result: false } },
+                    { status: deleted.statusCode },
                     deleted.errorMessage
                 );
             }
