@@ -27,7 +27,6 @@ function AwardAddForm() {
   };
   //Added award title
   const [add, setAdd] = useState(init);
-  const [able, setAble] = useState(true);
 
   //Click OK button, add award
   const handleSubmit = async (e) => {
