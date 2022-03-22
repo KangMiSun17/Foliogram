@@ -105,7 +105,7 @@ class BaseService {
     async add(record) {
         this.logger.log({}, `${this.name}.add >`, arguments[0]);
 
-        const nonUniqueField = await this.#_notUnique(record);
+        const nonUniqueField = await this._notUnique(record);
         if (nonUniqueField) {
             return {
                 errorMessage:
@@ -116,7 +116,7 @@ class BaseService {
         }
 
         // Squash unnecessary fields.
-        const data = this.#_tidy({ reference: this.allFields, ...record });
+        const data = this._tidy({ reference: this.allFields, ...record });
 
         // Then see if it has all we need.
         // These fields are required.
@@ -176,7 +176,12 @@ class BaseService {
     async set({ id, currentUserId, ...record }) {
         this.logger.log({}, `${this.name}.set > `, arguments[0]);
 
-        const nonUniqueField = await this.#_notUnique(record);
+        const errorInfo = this._auth({ currentUserId, ...record });
+        if ("errorMessage" in errorInfo) {
+            return errorInfo;
+        }
+
+        const nonUniqueField = await this._notUnique(record);
         if (nonUniqueField) {
             return {
                 errorMessage:
@@ -187,7 +192,7 @@ class BaseService {
         }
 
         // We're picking out uneditable entries here.
-        const toUpdate = this.#_tidy({
+        const toUpdate = this._tidy({
             reference: this.settableFields,
             ...record,
         });
@@ -222,7 +227,7 @@ class BaseService {
      * @param {record} record
      * @returns {?field} nonUniqueField
      */
-    async #_notUnique(record) {
+    async _notUnique(record) {
         if (this.uniqueFields.length) {
             const checkJobs = this.uniqueFields
                 .filter((k) => k in record)
@@ -244,13 +249,31 @@ class BaseService {
      * @param {{reference: field[], record: record}} payload
      * @returns {record} tidied
      */
-    #_tidy({ reference, ...record }) {
+    _tidy({ reference, ...record }) {
         const tidied = Object.fromEntries(
             Object.entries(record).filter(([k, v]) => {
                 return this.settableFields.includes(k);
             })
         );
         return tidied;
+    }
+
+    /** Only owner may modify his own records.
+     *
+     * @param {{currentUserId: uuid, record: record}} payload
+     * @returns {Object|errorinfo}
+     *  - Returns `{}` when good to go.
+     */
+    _auth({ currentUserId, ...record }) {
+        if (currentUserId !== record[this.authField]) {
+            return {
+                errorMessage:
+                    `User {${currentUserId}} is not allwed to ` +
+                    `modify data of user {${record[this.authField]}}`,
+                statusCode: status.STATUS_403_FORBIDDEN,
+            };
+        }
+        return {};
     }
 }
 
@@ -293,16 +316,10 @@ class SubrecordService extends BaseService {
     ownerField = "user_id";
 
     async add({ currentUserId, ...record }) {
-        // Only owner may add to his own records.
-        if (currentUserId !== record[this.authField]) {
-            return {
-                errorMessage:
-                    `User {${currentUserId}} is not allwed to ` +
-                    `modify data of user {${record[this.authField]}}`,
-                statusCode: status.STATUS_403_FORBIDDEN,
-            };
+        const errorInfo = this._auth({ currentUserId, ...record });
+        if ("errorMessage" in errorInfo) {
+            return errorInfo;
         }
-
         return super.add(record);
     }
 
