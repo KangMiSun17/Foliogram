@@ -190,7 +190,8 @@ class BaseService {
             {},
             `${this.name}.set > `,
             arguments[0],
-            `\npeek = `,
+            `\n`,
+            `peek = `,
             peek
         );
         if (!peek) {

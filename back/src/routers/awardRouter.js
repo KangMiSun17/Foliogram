@@ -83,7 +83,7 @@ ROUTER.get(
     }
 );
 
-awardRouter.get(
+ROUTER.get(
     `/${ROUTE_TOP}list/:user_id`,
     login_required,
     async function (req, res, next) {
