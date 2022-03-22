@@ -180,7 +180,13 @@ class Logger {
      */
     log({ __level__ = this.default_level }, ...msgs) {
         const date = new Date();
-        const msg = msgs.map((m) => util.inspect(m)).join(" ") + "\n";
+        const msg =
+            msgs
+                .map((m) => {
+                    const s = util.inspect(m);
+                    return typeof m === "string" ? s.slice(1, s.length - 1) : s;
+                })
+                .join(" ") + "\n";
         const consoleMsg = `${this.name}$ ${msg}`;
         const fileMsg =
             `${this.name} @ ` +
@@ -203,18 +209,12 @@ class Logger {
         const padding = " ".repeat(parseInt((79 - now.length) / 2));
         const msg = `\n\n${"=".repeat(79)}\n${padding}${now}\n${"=".repeat(
             79
-        )}\n`;
+        )}\n\n`;
 
         this.#_tee.forEach((fd, idx) => {
             let filelike = this.tee[idx];
             if (!Logger.#_initDone[filelike]) {
                 fs.writeSync(fd, msg, "utf-8");
-                console.log(
-                    this.name,
-                    "init",
-                    filelike,
-                    Logger.#_initDone[filelike]
-                );
                 Logger.#_initDone[filelike] = true;
             }
         });
