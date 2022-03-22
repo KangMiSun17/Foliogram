@@ -3,7 +3,7 @@ import { BaseModel } from "./BaseModelWrapper";
 
 /** Base class for Models. Implements simple CRUD interface.
  *
- * @prop {BaseModel} Model
+ * @prop {AwardModel} Model
  * @method static async create(record)
  *  - Create new record.
  * @method static async find(query)
