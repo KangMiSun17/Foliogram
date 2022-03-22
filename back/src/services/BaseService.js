@@ -1,4 +1,3 @@
-import { query } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { BaseModel } from "../db";
 import { Logger } from "../utils/logging";
@@ -9,7 +8,7 @@ import { Logger } from "../utils/logging";
  * @typedef {Object.<string, string>} populator
  * @typedef {[string, any]} kvpair
  * @typedef {string} uuid
- * @typedef {{errorMessage: string, statusCode: number}} reqerror
+ * @typedef {{errorMessage: string, statusCode: number}} errorinfo
  */
 
 /** Base class for Services. Mainly verifies the data fields passing through.
