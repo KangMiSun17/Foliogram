@@ -9,6 +9,7 @@ import Awards from "./award/Awards";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
 import Projects from "./project/Projects";
+import UserDelete from "./user/UserDelete";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -75,6 +76,7 @@ function Portfolio() {
           </Col>
         </Row>
       </Container>
+      <UserDelete />
     </OwnerContext.Provider>
   );
 }
