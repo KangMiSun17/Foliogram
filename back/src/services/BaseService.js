@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { BaseModel } from "../db";
 import { Logger } from "../utils/logging";
+import * as status from "../utils/status";
 
 /**
  * @typedef {string} field
@@ -17,11 +18,19 @@ import { Logger } from "../utils/logging";
  *
  * ## Constructor
  * @constructor
- * @param {Logger} logger
+ * @param {{Logger}} logger
+ * ```js
+ * { logger: Logger = console}
+ * ```
  *  - logger instance to use. Defaults to console.
  *
  * ## Methods
- * @constructor constructor({ logger })
+ * Service layer doesn't directly throws error.
+ * Instead they silently hand you an `errorinfo` object, which looks like:
+ * ```js
+ * {errorMessage: string, statusCode: number}
+ * ```
+ * ---
  * @method async add(record)
  *  - Add a record to the user.
  * @method async get({ id, ...query })
@@ -31,7 +40,7 @@ import { Logger } from "../utils/logging";
  * @method async del({ id, ...query })
  *  - Remove a project.
  *
- * ## Static properties
+ * ## properties
  * @prop {BaseModel} Model
  * @prop {string} name
  *  - The record kind's general name.
@@ -49,20 +58,17 @@ import { Logger } from "../utils/logging";
  *  - Field names that are searchable with substring.
  * @prop {populator} refFields
  *  - Indicates that KEY fields need to be populated with VALUEs.
- * @prop {field[]} allFields - All existing fields, only these are allowed in.
- *
- * ## Properties
+ * @prop {field[]} allFields
+ *  - All existing fields, only these are allowed in.
  * @prop {Logger} logger
  *  - Instance of logger; Defaults to console.
+ * @prop {field} authField
+ *  - Used to check if any modification attempt is made by the record owner.
+ *    Such as user_id.
  */
 class BaseService {
     Model = BaseModel;
 
-    // name = "base";
-    // #_user_id_amend silently amends the mistake in Award, Project schemas
-    // whose owner field names are set to some overcomplicated names instead of
-    // just 'user_id'.
-    // static #_user_id_amend = null;
     deletable = true;
 
     requiredFields = Object.freeze([]);
@@ -71,6 +77,7 @@ class BaseService {
     uniqueFields = Object.freeze([]);
     searchableFields = Object.freeze([]);
 
+    authField = "user_id";
     refFields = Object.freeze({});
 
     allFields = Object.freeze([...this.requiredFields, ...this.optionalFields]);
@@ -78,7 +85,7 @@ class BaseService {
     logger;
 
     /**
-     *
+     * @constructor
      * @param {{logger: Logger}} logger
      */
     constructor({ logger }) {
@@ -90,17 +97,26 @@ class BaseService {
      * @static
      * @async
      * @param {record} record
-     * @returns {record} added
+     * @returns {?record|errorinfo} added
+     *  - `record` when addition was successful.
+     *  - `errorinfo` when something went south in a known way.
+     *  - `null` when addtion was a failure for unexpected reason.
      */
     async add(record) {
-        console.log(`${this.name}.add >`, arguments[0]);
+        this.logger.log({}, `${this.name}.add >`, arguments[0]);
 
-        // Squash unnecessary fields first.
-        const data = Object.fromEntries(
-            Object.entries(record).filter(([k, v]) => {
-                return this.allFields.includes(k);
-            })
-        );
+        const nonUniqueField = await this.#_notUnique(record);
+        if (nonUniqueField) {
+            return {
+                errorMessage:
+                    `${nonUniqueField}: ` +
+                    `${record[nonUniqueField]} already exists`,
+                statusCode: status.STATUS_403_FORBIDDEN,
+            };
+        }
+
+        // Squash unnecessary fields.
+        const data = this.#_tidy({ reference: this.allFields, ...record });
 
         // Then see if it has all we need.
         // These fields are required.
@@ -126,19 +142,14 @@ class BaseService {
      * @static
      * @async
      * @param {{id: uuid, query: record}} payload
-     * @returns {record|null} found - If not found, just null.
-     *      It will not emit error message.
+     * @returns {?record|errorinfo} found - If not found, just null.
+     *  It will not emit error message.
+     *  - `record` when finding was successful.
+     *  - `errorinfo` when something went south in a known way.
+     *  - `null` when record could not be found.
      */
     async get({ id, ...query }) {
-        console.log(`${this.name}Service.get > `, arguments[0]);
-
-        // Confirmed, null query is ok.
-        // Probably because we don't have any null in the db.
-        // Yet.
-        // Hmm
-        // if (!id) {
-        //     throw new Error(`Bad query: ${arguments[0]}`)
-        // }
+        this.logger.log({}, `${this.name}.get > `, arguments[0]);
 
         const found = await this.Model.find({ id, ...query });
 
@@ -156,20 +167,32 @@ class BaseService {
      *
      * @static
      * @async
-     * @param {{id: uuid, record: record}} payload
-     * @returns {record|null} updated
+     * @param {{id: uuid, currentUserId: uuid, record: record}} payload
+     * @returns {?record|errorinfo} updated
+     *  - `record` when update was successful.
+     *  - `errorinfo` when something went south in a known way.
+     *  - `null` when update was a failure for unexpected reason.
      */
-    async set({ id, ...record }) {
-        console.log(`${this.name}Service.set > `, arguments[0]);
+    async set({ id, currentUserId, ...record }) {
+        this.logger.log({}, `${this.name}.set > `, arguments[0]);
+
+        const nonUniqueField = await this.#_notUnique(record);
+        if (nonUniqueField) {
+            return {
+                errorMessage:
+                    `${nonUniqueField}: ` +
+                    `${record[nonUniqueField]} already exists`,
+                statusCode: status.STATUS_403_FORBIDDEN,
+            };
+        }
 
         // We're picking out uneditable entries here.
-        const toUpdate = Object.fromEntries(
-            Object.entries(record).filter(([k, v]) => {
-                return this.settableFields.includes(k);
-            })
-        );
+        const toUpdate = this.#_tidy({
+            reference: this.settableFields,
+            ...record,
+        });
 
-        const updated = await this.Model.update({ id, ...record });
+        const updated = await this.Model.update({ id, ...toUpdate });
 
         return updated;
     }
@@ -192,6 +215,42 @@ class BaseService {
         } else {
             throw new Error(`${this.name} is not deletable`);
         }
+    }
+
+    /** Check fields that should be unique.
+     *
+     * @param {record} record
+     * @returns {?field} nonUniqueField
+     */
+    async #_notUnique(record) {
+        if (this.uniqueFields.length) {
+            const checkJobs = this.uniqueFields
+                .filter((k) => k in record)
+                .map((k) => {
+                    return this.Model.find({ [k]: record[k] }).then((found) => {
+                        return found ? k : null;
+                    });
+                });
+
+            const nonUniqueField = await Promise.any(checkJobs);
+            return nonUniqueField;
+        } else {
+            return null;
+        }
+    }
+
+    /** Tidy up a record, removing unncecessary fields.
+     *
+     * @param {{reference: field[], record: record}} payload
+     * @returns {record} tidied
+     */
+    #_tidy({ reference, ...record }) {
+        const tidied = Object.fromEntries(
+            Object.entries(record).filter(([k, v]) => {
+                return this.settableFields.includes(k);
+            })
+        );
+        return tidied;
     }
 }
 
@@ -232,6 +291,20 @@ class ToprecordService extends BaseService {
  */
 class SubrecordService extends BaseService {
     ownerField = "user_id";
+
+    async add({ currentUserId, ...record }) {
+        // Only owner may add to his own records.
+        if (currentUserId !== record[this.authField]) {
+            return {
+                errorMessage:
+                    `User {${currentUserId}} is not allwed to ` +
+                    `modify data of user {${record[this.authField]}}`,
+                statusCode: status.STATUS_403_FORBIDDEN,
+            };
+        }
+
+        return super.add(record);
+    }
 
     /** Find and return the *parent* of the found record.
      *
