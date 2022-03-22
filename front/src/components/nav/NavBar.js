@@ -37,7 +37,7 @@ function NavBar({ navList, setNavList }) {
 
   return (
     <>
-      <Stack direction="horizontal" gap={2} className="ms-2 me-2 mb-3">
+      <Stack direction="horizontal" gap={2} className="ms-1 me-1 mb-3">
         {navList.map((compAr, index) => {
           if (compAr.state === true) {
             return <StyledDiv key={index}>{compAr.navName}</StyledDiv>;
@@ -67,7 +67,7 @@ function NavBar({ navList, setNavList }) {
             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
-        <Dropdown>
+        <Dropdown style={{ marginRight: 20 }}>
           <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
             삭제-
           </Dropdown.Toggle>
