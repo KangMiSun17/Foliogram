@@ -176,7 +176,7 @@ class BaseService {
     async set({ id, currentUserId, ...record }) {
         this.logger.log({}, `${this.name}.set > `, arguments[0]);
 
-        const errorInfo = this._auth({ currentUserId, ...record });
+        const errorInfo = this._auth({ currentUserId, ...peek });
         if ("errorMessage" in errorInfo) {
             return errorInfo;
         }
@@ -206,19 +206,35 @@ class BaseService {
      *
      * @static
      * @async
-     * @param {{id: uuid, query: record}} payload
+     * @param {{id: uuid, currentUserId: uuid, query: record}} payload
      * @returns {record|null} removed
      *
      * It is an error to attempt to delete an undeletable record.
      */
-    async del({ id, ...query }) {
-        console.log(`${this.name}.del > `, arguments[0]);
+    async del({ id, currentUserId, ...query }) {
+        this.logger.log({}, `${this.name}.del > `, arguments[0]);
         if (this.deletable) {
+            const peek = await this.Model.find({ id });
+            if (!peek) {
+                return {
+                    errorMessage: `record {${id}} not found`,
+                    statusCode: status.STATUS_404_NOTFOUND,
+                };
+            }
+
+            const errorInfo = this._auth({ currentUserId, ...peek });
+            if ("errorMessage" in errorInfo) {
+                return errorInfo;
+            }
+
             const removed = await this.Model.delete({ id, ...query });
 
             return removed;
         } else {
-            throw new Error(`${this.name} is not deletable`);
+            return {
+                errorMessage: `${this.name} is not deletable`,
+                statusCode: status.STATUS_405_METHODNOTALLOWED,
+            };
         }
     }
 
