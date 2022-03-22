@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
-import { DatePickForm } from "../common/DateUtil";
 import { toStringDate } from "../common/DateUtil";
 import { UserStateContext } from "../../App";
 import * as Api from "../../api";
+import DatePicker from "react-datepicker";
 
 /**
  * This component can add certification item
@@ -15,9 +15,11 @@ import * as Api from "../../api";
  */
 function CertificateAddForm({ setCertificateList, setIsAdding }) {
   const { user } = useContext(UserStateContext);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
+  const [add, setAdd] = useState({
+    title: "",
+    description: "",
+    when_date: new Date(),
+  });
 
   // Request certificate item add api
   const handleAddSubmit = async (event) => {
@@ -26,9 +28,9 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
     try {
       const res = await Api.post("certificates/create", {
         user_id: user.id,
-        title,
-        description,
-        when_date: toStringDate(startDate),
+        title: add.title,
+        description: add.description,
+        when_date: toStringDate(add.when_date),
       });
 
       setCertificateList((cur) => {
@@ -44,23 +46,30 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
 
   return (
     <Form className="mt-4">
-      <Form.Group className="mb-3" controlId="certificateAddName">
+      <Form.Group className="mb-3" controlId="title">
         <Form.Control
-          type="addName"
-          value={title}
+          type="addTitle"
+          value={add.title}
           placeholder="자격증 제목"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) =>
+            setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="certificateAddDescription">
+      <Form.Group className="mb-3" controlId="description">
         <Form.Control
           type="addDescription"
-          value={description}
+          value={add.description}
           placeholder="상세내역"
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
       </Form.Group>
-      <DatePickForm startDate={startDate} setState={setStartDate} />
+      <DatePicker
+        selected={add.when_date}
+        onChange={(date) => setAdd((prev) => ({ ...prev, when_date: date }))}
+      />
       <BundleButton submitHandler={handleAddSubmit} setState={setIsAdding} />
     </Form>
   );
