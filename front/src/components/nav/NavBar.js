@@ -9,13 +9,11 @@ function NavBar({ navList, setNavList }) {
     navList.map((compAr, index, array) => {
       if (compAr.navName === name) {
         compAr.state = true;
-        console.log(array);
         array.splice(index, 1, compAr);
       }
     });
 
     const newArray = [...navList];
-    console.log(newArray);
     setNavList(newArray);
   }
 
@@ -25,13 +23,11 @@ function NavBar({ navList, setNavList }) {
     navList.map((compAr, index, array) => {
       if (compAr.navName === name) {
         compAr.state = false;
-        console.log(array);
         array.splice(index, 1, compAr);
       }
     });
 
     const newArray = [...navList];
-    console.log(newArray);
     setNavList(newArray);
   }
 
