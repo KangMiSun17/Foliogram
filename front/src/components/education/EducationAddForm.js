@@ -1,10 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import {
-  PortfolioOwnerContext,
-  EducationFetchContext,
-} from "../common/context/Context";
+import { OwnerContext, EducationFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 학력을 추가하는 컴포넌트입니다.
@@ -12,7 +9,7 @@ import * as Api from "../../api";
  * @returns {component} EducationAddForm
  */
 function EducationAddForm() {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(EducationFetchContext);
   const [addSchool, setAddSchool] = useState("");
   const [addMajor, setAddMajor] = useState("");

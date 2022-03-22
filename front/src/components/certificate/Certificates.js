@@ -1,9 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Card, Row } from "react-bootstrap";
-import {
-  EditTableContext,
-  PortfolioOwnerContext,
-} from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import CertificateCard from "./CertificateCard";
 import { PlusButton } from "../common/Button";
@@ -16,8 +13,7 @@ import * as Api from "../../api";
 function Certificates() {
   const [certificateList, setCertificateList] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
 
   // All certificate list get API request
   useEffect(() => {

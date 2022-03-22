@@ -3,16 +3,14 @@ import { Card } from "react-bootstrap";
 import ProjectAddForm from "./ProjectAddForm";
 import Project from "./Project";
 import {
-  EditTableContext,
-  PortfolioOwnerContext,
   ProjectFetchContext,
   ProjectContext,
+  OwnerContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
 
 function Projects() {
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
   const [projects, setProjects] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 
