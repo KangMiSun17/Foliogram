@@ -9,15 +9,18 @@ import { STATUS_400_BADREQUEST } from "./status";
  * ```js
  *  {
  *      status: number = 400,
- *      data: any = null
+ *      payload: any = { result: false }
  *  }, ...params
  * ```
  *  - `status`: This is sent to errorMiddleware and then sent to the browser.
- *  - `data` holds response data to send it even in the brink of erroring out.
+ *  - `payload` holds res data to send it even in the brink of erroring out.
  *  - `params`: Anything that you would otherwise pass to an Error.
  */
 class RequestError extends Error {
-    constructor({ status = STATUS_400_BADREQUEST, payload = {} }, ...params) {
+    constructor(
+        { status = STATUS_400_BADREQUEST, payload = { result: false } },
+        ...params
+    ) {
         super(...params);
 
         if (Error.captureStackTrace) {
@@ -26,6 +29,7 @@ class RequestError extends Error {
 
         this.name = "RequestError";
         this.status = status;
+        this.payload = payload;
     }
 }
 
