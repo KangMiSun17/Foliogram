@@ -2,171 +2,156 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { awardService } from "../services/awardService";
-// import { userAuthService } from "../services/userService";
+import { RequestError } from "../utils/errors";
+import * as status from "../utils/status";
+import { Logger, LOGDIR, DEFAULT_LOG } from "../utils/logging";
 
 const awardRouter = Router();
 
-/** /award/create post router
- *
- * @implements POST /award/create
- * @returns {award} created
- *
- * headers = { "authorization": bearer }
- * body = {
- *  "user_id",
- *  "title",
- *  ["description",]
- * }
- *
- * Sample req.body = {
- *  "user_id":"af4ff0af-2a5f-4eea-99f2-d18b42aba419",
- *  "title":"개근상 수상",
- *  "description":"하루도 빠짐없이 출석하였습니다."
- * }
- */
-awardRouter.post(
-    "/award/create",
+/* ==========================================================================
+ * -------------            CopyPasta Constants here            -------------
+ * ========================================================================== */
+const SERVICE = awardService;
+const ROUTER = awardRouter;
+const ROUTE_TOP = "award";
+
+const logger = new Logger({
+    name_: `${ROUTE_TOP}Router`,
+    tee: [DEFAULT_LOG, Logger.resolvePaths(LOGDIR, `${ROUTE_TOP}router.log`)],
+});
+
+ROUTER.post(
+    `/${ROUTE_TOP}/create`,
     login_required,
     async function (req, res, next) {
         try {
+            logger.log({ __level__: 2 }, `POST /${ROUTE_TOP}/create`);
+
             if (is.emptyObject(req.body)) {
-                throw new Error(
-                    "headers의 Content-Type을 application/json으로 설정해주세요"
+                throw new RequestError(
+                    `headers["Content-Type] needs to be "application/json"`
                 );
             }
 
-            // These fields are required.
-            ["user_id", "title"].forEach((k) => {
-                if (!(k in req.body)) {
-                    throw new Error(`${k} field is required`);
-                }
+            const payload = { ...req.body };
+            const created = await SERVICE.add({
+                currentUserId: req.currentUserId,
+                ...payload,
             });
-
-            if (req.body.user_id !== req.currentUserId) {
-                throw new Error("Trying to create different user's award");
+            // See if the create contains errorinfo instead.
+            if ("errorMessage" in created) {
+                throw new RequestError(
+                    { status: created.statusCode },
+                    created.errorMessage
+                );
             }
 
-            const payload = { ...req.body };
-            payload.awardee_id = payload.user_id;
-            delete payload.user_id;
-
-            const newAward = await awardService.addAward(payload);
-
-            res.status(201).json(newAward);
-        } catch (why) {
-            next(why);
+            res.status(status.STATUS_201_CREATED).json(created);
+        } catch (error) {
+            next(error);
         }
     }
 );
 
-/** /awards/:id get router
- *
- * @implements GET /awards/:id
- * @returns {award|null} award
- */
-awardRouter.get("/awards/:id", login_required, async function (req, res, next) {
-    // Here we get the id of an award and give back a single award.
-    // It's possible to try first by exact name and retry with the id,
-    // but it's a bit awkward.
-    // On reflection, writing findByTitle wasn't all that smart after all.
-    try {
-        const award_id = req.params.id;
-        console.log(`GET /awards/${award_id}`);
-        const found = await awardService.getAward({ award_id });
-        res.status(200).json(found);
-    } catch (why) {
-        next(why);
-    }
-});
+ROUTER.get(
+    `/${ROUTE_TOP}s/:id`,
+    login_required,
+    async function (req, res, next) {
+        // Here we get the id of an award and give back a single award.
+        try {
+            const id = req.params.id;
+            logger.log({ __level__: 2 }, `GET /${ROUTE_TOP}s/${id}`);
 
-/** /awards/:id put router
- *
- * @implements PUT /awards/:id
- * @returns {award} updated
- *
- * Sample body = {
- *  "title": "행복한 상",
- *  "description":"행복해서 상을 받았습니다."
- * }
- */
-awardRouter.put("/awards/:id", login_required, async function (req, res, next) {
-    try {
-        const award_id = req.params.id;
-        const user_id = req.currentUserId;
+            const found = await SERVICE.get({ id });
+            if ("errorMessage" in found) {
+                throw new RequestError(
+                    { status: found.statusCode },
+                    found.errorMessage
+                );
+            }
 
-        const award = await awardService.getAward({ award_id });
-        if (!award) {
-            throw new Error(`Award id ${award_id} not found`);
-        } else if (award.awardee_id !== user_id) {
-            throw new Error(`User is not an owner of the award id ${award_id}`);
+            res.status(status.STATUS_200_OK).json(found);
+        } catch (error) {
+            next(error);
         }
-
-        console.log(
-            `PUT /awards/:${award_id},
-user_id=${user_id},
-awardee_id=${award.awardee_id}`
-        );
-        console.log(req.body);
-
-        const updated = await awardService.setAward({
-            award_id,
-            pairs: Object.entries(req.body),
-        });
-
-        res.status(200).json(updated);
-    } catch (why) {
-        next(why);
     }
-});
+);
 
-/** /awardlist/:user_id get router
- *
- * @implements GET /awardlist/:user_id
- * @returns {[award]} awards
- */
 awardRouter.get(
-    "/awardlist/:user_id",
+    `/${ROUTE_TOP}list/:user_id`,
     login_required,
     async function (req, res, next) {
         try {
             const user_id = req.params.user_id;
-            const awards = await awardService.getUserAwards({
-                awardee_id: user_id,
-            });
+            logger.log({ __level__: 2 }, `GET /${ROUTE_TOP}list/${user_id}`);
 
-            res.status(200).json(awards);
-        } catch (why) {
-            next(why);
+            const found = await SERVICE.getSiblings({ user_id });
+
+            res.status(status.STATUS_200_OK).json(found);
+        } catch (error) {
+            next(error);
         }
     }
 );
 
-/** /awards/:id delete router
- *
- * @implements DELETE /awards/:id
- * @returns {Object} payload
- * @returns {Boolean} payload.result
- *
- * @todo The control layer must respond as {result: true/false}.
- */
-awardRouter.delete(
-    "/awards/:id",
+ROUTER.put(
+    `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
         try {
-            const award_id = req.params.id;
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+                ...req.body,
+            };
 
-            console.log(`DELETE /awards/:${award_id}`);
+            logger.log(
+                { __level__: 2 },
+                `PUT /${ROUTE_TOP}s/:${req.params.id}`
+            );
+            logger.log({}, `payload =`, payload);
 
-            const deleted = await awardService.removeAward({ award_id });
-
-            if (!deleted) {
-                throw new Error(`Award id ${award_id} not found`);
+            const updated = await SERVICE.set(payload);
+            if ("errorMessage" in updated) {
+                throw new RequestError(
+                    { status: updated.statusCode },
+                    updated.errorMessage
+                );
             }
 
-            res.status(200).json({ result: true });
-        } catch (why) {
-            next(why);
+            res.status(status.STATUS_200_OK).json(updated);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+ROUTER.delete(
+    `/${ROUTE_TOP}s/:id`,
+    login_required,
+    async function (req, res, next) {
+        try {
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+            };
+
+            logger.log(
+                { __level__: 2 },
+                `DELETE /${ROUTE_TOP}s/:${payload.id}`
+            );
+
+            const deleted = await SERVICE.del(payload);
+            if ("errorMessage" in deleted) {
+                throw new RequestError(
+                    { status: deleted.statusCode, payload: { result: false } },
+                    deleted.errorMessage
+                );
+            }
+
+            res.status(status.STATUS_200_OK).json({ result: true });
+        } catch (error) {
+            next(error);
         }
     }
 );

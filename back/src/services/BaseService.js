@@ -88,6 +88,7 @@ class BaseService {
      */
     constructor({ logger }) {
         this.logger = logger ?? console;
+        this.name = this.constructor.name;
     }
 
     /** Add a record to the user.
@@ -116,6 +117,9 @@ class BaseService {
         // Squash unnecessary fields.
         const data = this._tidy({ reference: this.allFields, ...record });
 
+        // So far, so good.
+        data.id = uuidv4();
+
         // Then see if it has all we need.
         // These fields are required.
         this.requiredFields.forEach((k) => {
@@ -125,9 +129,6 @@ class BaseService {
                 );
             }
         });
-
-        // So far, so good.
-        data.id = uuidv4();
 
         const added = await this.Model.create(data);
         console.log(`${this.name}.add > added=`, added);
@@ -177,9 +178,26 @@ class BaseService {
      *  - `null` when update was a failure for unexpected reason.
      */
     async set({ id, currentUserId, ...record }) {
-        this.logger.log({}, `${this.name}.set > `, arguments[0]);
+        const peek = await this.Model.find({ id });
 
-        const errorInfo = this._auth({ currentUserId, ...peek });
+        this.logger.log(
+            {},
+            `${this.name}.set > `,
+            arguments[0],
+            `\npeek = `,
+            peek
+        );
+        if (!peek) {
+            return {
+                errorMessage: `record {${id}} not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+
+        const errorInfo = this._auth({
+            currentUserId,
+            [this.authField]: peek[this.authField],
+        });
         if ("errorMessage" in errorInfo) {
             return errorInfo;
         }
@@ -225,7 +243,10 @@ class BaseService {
                 };
             }
 
-            const errorInfo = this._auth({ currentUserId, ...peek });
+            const errorInfo = this._auth({
+                currentUserId,
+                [this.authField]: peek[this.authField],
+            });
             if ("errorMessage" in errorInfo) {
                 return errorInfo;
             }
@@ -271,7 +292,7 @@ class BaseService {
     _tidy({ reference, ...record }) {
         const tidied = Object.fromEntries(
             Object.entries(record).filter(([k, v]) => {
-                return this.settableFields.includes(k);
+                return reference.includes(k);
             })
         );
         return tidied;
@@ -284,6 +305,7 @@ class BaseService {
      *  - Returns `{}` when good to go.
      */
     _auth({ currentUserId, ...record }) {
+        this.logger.log({}, `${this.name}._auth >`, arguments[0]);
         if (currentUserId !== record[this.authField]) {
             return {
                 errorMessage:

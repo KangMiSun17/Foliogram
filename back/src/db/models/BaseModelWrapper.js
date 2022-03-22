@@ -7,12 +7,17 @@
 
 /** Base class for Models. Implements simple CRUD interface.
  *
- * @prop {Model} Model - static
- * @method static async create(record) - Create new record.
- * @method static async find(query) - Find a record by the given query.
- * @method static async findAll(query) - Find multiple records by the given query.
- * @method static async update({ id, ...fields }) - Update a record.
- * @method static async delete({ id }) - Delete a record.
+ * @prop {Model} Model
+ * @method static async create(record)
+ *  - Create new record.
+ * @method static async find(query)
+ *  - Find a record by the given query.
+ * @method static async findAll(query)
+ *  - Find multiple records by the given query.
+ * @method static async update({ id, ...fields })
+ *  - Update a record.
+ * @method static async delete({ id })
+ *  - Delete a record.
  */
 class BaseModel {
     static Model;
@@ -49,11 +54,8 @@ class BaseModel {
      * @param {record} query
      * @returns {record[]} found
      */
-    static async findAll(query) {
-        if (!query) {
-            query = {};
-        }
-        const found = await this.Model.find({});
+    static async findAll(query = {}) {
+        const found = await this.Model.find(query);
         return found;
     }
 
