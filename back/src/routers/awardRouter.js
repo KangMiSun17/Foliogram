@@ -35,7 +35,7 @@ ROUTER.post(
 
             if (is.emptyObject(req.body)) {
                 throw new RequestError(
-                    `headers["Content-Type] needs to be "application/json"`
+                    `headers["Content-Type"] needs to be "application/json"`
                 );
             }
 
@@ -105,6 +105,12 @@ ROUTER.put(
     login_required,
     async function (req, res, next) {
         try {
+            if (is.emptyObject(req.body)) {
+                throw new RequestError(
+                    `headers["Content-Type"] needs to be "application/json"`
+                );
+            }
+
             const payload = {
                 id: req.params.id,
                 currentUserId: req.currentUserId,
