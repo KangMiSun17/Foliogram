@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Dropdown } from "react-bootstrap";
 import {
   PortfolioOwnerContext,
   EditTableContext,
@@ -9,6 +9,7 @@ import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
+import NavBar from "./nav/NavBar";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
 import Projects from "./project/Projects";
@@ -58,22 +59,24 @@ function Portfolio() {
     return "loading...";
   }
 
+  const compoAr = [<Educations />, <Awards />, <Projects />, <Certificates />];
+
   return (
     <EditTableContext.Provider value={portfolioOwner.id === userState.user?.id}>
       <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
         <Container fluid>
           <Row>
             <Col xl="3">
+              여기도 뭐가 필요함
               <User
                 portfolioOwnerId={portfolioOwner.id}
                 isEditable={portfolioOwner.id === userState.user?.id}
               />
             </Col>
             <Col>
-              <Educations />
-              <Awards />
-              <Projects />
-              <Certificates />
+              <NavBar />
+              {/* 컴포넌트도 배열에 넣어 맵을 돌릴 수 있군요! */}
+              {compoAr.map((compo) => compo)}
             </Col>
           </Row>
         </Container>

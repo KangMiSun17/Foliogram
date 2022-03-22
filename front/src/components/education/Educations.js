@@ -34,7 +34,7 @@ function Educations() {
   }, [reFetching, portfolioOwnerId]);
 
   return (
-    <Card className="me-4 mt-3 mb-3">
+    <Card className="me-4 mb-3">
       <Card.Body>
         <Card.Title className="mb-3">학력</Card.Title>
         <EducationFetchContext.Provider value={{ reFetching, setReFetching }}>
