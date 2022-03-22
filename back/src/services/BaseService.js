@@ -151,6 +151,12 @@ class BaseService {
         this.logger.log({}, `${this.name}.get > `, arguments[0]);
 
         const found = await this.Model.find({ id, ...query });
+        if (!found) {
+            return {
+                errorMessage: `record {${id}} not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
 
         return found;
     }
