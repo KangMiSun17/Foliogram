@@ -1,23 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Api from "../../api";
-import { SubmittableContext } from "./context/Context";
 
 /**
  * @param {function} submitHandler ConfirmButton onClick handler
  * @param {function} setState Change state when CancleButton onClick
  * @returns {component} Confirm Button and Cancle Button
  */
-export const BundleButton = ({ submitHandler, setState }) => {
-  const { subAble } = useContext(SubmittableContext);
+export const BundleButton = ({ subAble, submitHandler, setState }) => {
   return (
     <Row className="justify-content-center" xs="auto">
       <Button
         className="me-3"
         variant="primary"
         type="submit"
-        disabled={subAble}
+        disabled={!subAble}
         onClick={submitHandler}
       >
         확인

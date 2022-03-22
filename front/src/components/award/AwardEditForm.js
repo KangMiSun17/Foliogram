@@ -15,6 +15,7 @@ function AwardEditForm({ setIsEditing }) {
   //To re-render
   const setReFetching = useContext(AwardFetchContext);
   const award = useContext(AwardContext);
+  const [subAble, setSubAble] = useState(false);
   const [edit, setEdit] = useState({
     title: award.title,
     description: award.description,
@@ -53,9 +54,17 @@ function AwardEditForm({ setIsEditing }) {
           value={edit.description}
           setState={setEdit}
         />
-        <Submittable title={edit.title} description={edit.description} />
+        <Submittable
+          title={edit.title}
+          description={edit.description}
+          setState={setSubAble}
+        />
         <Row className="justify-content-center" xs="auto">
-          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
+          <BundleButton
+            subAble={subAble}
+            submitHandler={handleSubmit}
+            setState={setIsEditing}
+          />
         </Row>
       </Form.Group>
     </Form>

@@ -27,6 +27,7 @@ function AwardAddForm() {
   };
   //Added award title
   const [add, setAdd] = useState(init);
+  const [subAble, setSubAble] = useState(false);
 
   //Click OK button, add award
   const handleSubmit = async (e) => {
@@ -63,9 +64,17 @@ function AwardAddForm() {
             value={add.description}
             setState={setAdd}
           />
-          <Submittable title={add.title} description={add.description} />
+          <Submittable
+            title={add.title}
+            description={add.description}
+            setState={setSubAble}
+          />
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              subAble={subAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}
