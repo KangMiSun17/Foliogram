@@ -17,6 +17,7 @@ function User({ isEditable }) {
     // "users/유저id" 엔드포인트로 GET 요청을 하고, user를 response의 data로 세팅함.
     Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
   }, [portfolioOwnerId]);
+
   if (!user) {
     return (
       <>
@@ -24,38 +25,32 @@ function User({ isEditable }) {
       </>
     );
   }
-  if (isEditing) {
-    return (
-      <>
+
+  return (
+    <>
+      {isEditing && (
         <UserEditForm
           user={user}
           setIsEditing={setIsEditing}
           setUser={setUser}
         />
-      </>
-    );
-  } else if (profileImage) {
-    return (
-      <>
+      )}
+      {profileImage && (
         <ProfileImage
           user={user}
           setProfileImage={setProfileImage}
           setUser={setUser}
         />
-      </>
-    );
-  } else {
-    return (
-      <>
+      )}
+      {!isEditing && !profileImage && (
         <UserCard
           user={user}
           setIsEditing={setIsEditing}
           setProfileImage={setProfileImage}
           isEditable={isEditable}
         />
-      </>
-    );
-  }
+      )}
+    </>
+  );
 }
-
 export default User;
