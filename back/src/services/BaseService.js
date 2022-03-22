@@ -35,15 +35,13 @@ import * as status from "../utils/status";
  *  - Add a record to the user.
  * @method async get({ id, ...query })
  *  - Find the first record that exactly matches the id.
- * @method async set({ id, ...record })
+ * @method async set({ id, currentUserId, ...record })
  *  - Modify a record.
- * @method async del({ id, ...query })
+ * @method async del({ id, currentUserId, ...query })
  *  - Remove a project.
  *
  * ## properties
  * @prop {BaseModel} Model
- * @prop {string} name
- *  - The record kind's general name.
  * @prop {boolean} deletable
  *  - If true, this Service allows deletion of records.
  * @prop {field[]} requiredFields
@@ -159,9 +157,14 @@ class BaseService {
     /** This is a placeholder to get populated? not? child refs.
      *
      * @param {field} path
-     * @returns {record|record[]} children
+     * @returns {record|record[]|errorinfo} children
      */
-    async getChildren({ path }) {}
+    async getChildren({ path }) {
+        return {
+            errorMessage: `getChildren is not implemented`,
+            statusCode: status.STATUS_500_INTERNALSERVERERROR,
+        };
+    }
 
     /** Modify a record.
      *
@@ -308,10 +311,10 @@ class ToprecordService extends BaseService {
      * @async
      * @param {record} [query]
      * @returns {record[]} found - If none, return an empty Array.
-     *      It will not emit error message.
+     *  It will not emit error message.
      */
     async getAll(query = {}) {
-        console.log(`${this.name}Service.getAll > `, arguments[0]);
+        this.logger.log({}, `${this.name}.getAll > `, arguments[0]);
         const found = await this.Model.findAll(query);
         return found;
     }
@@ -327,6 +330,10 @@ class ToprecordService extends BaseService {
  *  - Find and return the *parent* of the found record.
  * @method async getSiblings({ user_id })
  *  - Find all records that belong to the owner, who isn't necessarily user.
+ *
+ * ## Properties
+ * @prop {string} ownerField
+ *  - Field name that indicaes this record's parent.
  */
 class SubrecordService extends BaseService {
     ownerField = "user_id";
@@ -348,13 +355,14 @@ class SubrecordService extends BaseService {
      *  - Error: The record was not found.
      */
     async getParent({ id, ...query }) {
-        console.log(`${this.name}Service.getParent > `, arguments[0]);
+        this.logger.log({}, `${this.name}.getParent > `, arguments[0]);
 
         const me = await this.Model.find({ id, ...query });
         if (!me) {
-            throw new Error(
-                `${this.name} with query ${artuments[0]} not found`
-            );
+            return {
+                errorMessage: `parent record {${id}} not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
         }
 
         const parent = await this.Model.find({
@@ -375,7 +383,7 @@ class SubrecordService extends BaseService {
      *  - If none, return an empty Array. It will not emit error message.
      */
     async getSiblings({ user_id }) {
-        console.log(`${this.name}Service.getSiblings > `, arguments[0]);
+        this.logger.log({}, `${this.name}.getSiblings > `, arguments[0]);
 
         const query = { [this.ownerField]: user_id };
         const found = await this.Model.findAll(query);
