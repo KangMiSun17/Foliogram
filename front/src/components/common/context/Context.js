@@ -8,8 +8,4 @@ export const AwardFetchContext = createContext(null);
 export const AwardContext = createContext(null);
 export const EducationFetchContext = createContext(null);
 export const EducationContext = createContext(null);
-<<<<<<< HEAD
-export const SubmittableContext = createContext(null);
-=======
 export const CertificateContext = createContext(null);
->>>>>>> dev
