@@ -22,6 +22,7 @@ function errorMiddleware(error, req, res, next) {
     } else {
         res.status(status.STATUS_500_INTERNALSERVERERROR).json({
             errorMessage: error.message,
+            payload: { result: false },
         });
     }
 }
