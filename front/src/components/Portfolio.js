@@ -1,10 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
-import {
-  PortfolioOwnerContext,
-  EditTableContext,
-} from "./common/context/Context";
+import { UserContext } from "./common/context/Context";
 import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
@@ -58,29 +55,29 @@ function Portfolio() {
   if (!isFetchCompleted) {
     return "loading...";
   }
+  const userContext = {
+    isEditable: portfolioOwner.id === userState.user?.id,
+    portfolioOwnerId: portfolioOwner.id,
+    user_id: userState.user?.id,
+  };
 
   return (
-    <EditTableContext.Provider value={portfolioOwner.id === userState.user?.id}>
-      <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
-        <Container fluid>
-          <Row>
-            <Col xl="3">
-              <User
-                portfolioOwnerId={portfolioOwner.id}
-                isEditable={portfolioOwner.id === userState.user?.id}
-              />
-              <Comment user_id={userState.user?.id} />
-            </Col>
-            <Col>
-              <Educations />
-              <Awards />
-              <Projects />
-              <Certificates />
-            </Col>
-          </Row>
-        </Container>
-      </PortfolioOwnerContext.Provider>
-    </EditTableContext.Provider>
+    <UserContext.Provider value={userContext}>
+      <Container fluid>
+        <Row>
+          <Col xl="3">
+            <User />
+            <Comment user_id={userState.user?.id} />
+          </Col>
+          <Col>
+            <Educations />
+            <Awards />
+            <Projects />
+            <Certificates />
+          </Col>
+        </Row>
+      </Container>
+    </UserContext.Provider>
   );
 }
 

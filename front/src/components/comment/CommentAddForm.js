@@ -1,13 +1,10 @@
 import { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import * as Api from "../../api";
-import {
-  CommentFetchContext,
-  PortfolioOwnerContext,
-} from "../common/context/Context";
+import { CommentFetchContext, UserContext } from "../common/context/Context";
 
-function CommentAddForm({ user_id }) {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+function CommentAddForm() {
+  const { portfolioOwnerId, user_id } = useContext(UserContext);
   const { setComments } = useContext(CommentFetchContext);
   const [content, setContent] = useState("");
   const addComment = async () => {

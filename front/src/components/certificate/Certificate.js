@@ -1,10 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import {
-  CertificateContext,
-  EditTableContext,
-} from "../common/context/Context";
+import { CertificateContext, UserContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
@@ -15,7 +12,7 @@ import CertificateEditForm from "./CertificateEditForm";
  * @returns {component} Certificate information or EditForm
  */
 function Certificate({ certificate, index }) {
-  const isEditable = useContext(EditTableContext);
+  const { isEditable } = useContext(UserContext);
   const { setCertificateList } = useContext(CertificateContext);
   const [isEditing, setIsEditing] = useState(false);
   const { id, title, description, when_date } = certificate;

@@ -1,10 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import {
-  PortfolioOwnerContext,
-  EducationFetchContext,
-} from "../common/context/Context";
+import { UserContext, EducationFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 import { FormCheckField } from "../common/Form";
 
@@ -13,7 +10,7 @@ import { FormCheckField } from "../common/Form";
  * @returns {component} EducationAddForm
  */
 function EducationAddForm() {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { portfolioOwnerId } = useContext(UserContext);
   const { setReFetching } = useContext(EducationFetchContext);
   const [addSchool, setAddSchool] = useState("");
   const [addMajor, setAddMajor] = useState("");

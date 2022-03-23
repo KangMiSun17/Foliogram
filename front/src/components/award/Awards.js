@@ -3,10 +3,9 @@ import { Card } from "react-bootstrap";
 import AwardAddForm from "./AwardAddForm";
 import Award from "./Award";
 import {
-  EditTableContext,
-  PortfolioOwnerContext,
   AwardFetchContext,
   AwardContext,
+  UserContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
 
@@ -16,8 +15,7 @@ import * as Api from "../../api";
  */
 function Awards() {
   //editable
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(UserContext);
   //award list object
   const [awards, setAwards] = useState([]);
   //to re-render

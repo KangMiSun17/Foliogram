@@ -1,12 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
-import { CommentFetchContext } from "../common/context/Context";
+import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
 import * as Api from "../../api";
 
-function CommentCard({ comment, user_id, index }) {
+/** comment card component
+ *
+ * @param {object} comment each comment
+ * @returns comment edit form or comment content
+ */
+function CommentCard({ comment }) {
   const [isEditing, setIsEditing] = useState(false);
   const { setReFetching } = useContext(CommentFetchContext);
+  const { user_id } = useContext(UserContext);
   const handleDelete = async () => {
     await Api.delete("comments", comment.id);
     setReFetching(new Date());
