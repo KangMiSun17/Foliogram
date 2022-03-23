@@ -19,7 +19,7 @@ function Projects() {
   useEffect(() => {
     try {
       const getTechStacksList = async () => {
-        const res = await Api.get("TechStacklist/" + portfolioOwnerId);
+        const res = await Api.get("techstacklist/" + portfolioOwnerId);
         setTechStacks(res.data);
       };
 
