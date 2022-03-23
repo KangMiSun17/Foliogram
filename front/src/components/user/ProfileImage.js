@@ -39,7 +39,6 @@ function ProfileImage({ user, setUser, setProfileImage }) {
       }
     }
   };
-
   return (
     <Card className="mb-2">
       <Card.Body>
