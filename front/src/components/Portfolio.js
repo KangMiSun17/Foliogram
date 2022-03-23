@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Col, Row, Dropdown } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import {
   PortfolioOwnerContext,
   EditTableContext,
@@ -26,13 +26,16 @@ function Portfolio() {
 
   ///@ nav state
   const [navList, setNavList] = useState([
-    { compo: <Educations />, navName: "학력", state: true },
-    { compo: <Awards />, navName: "수상이력", state: true },
-    { compo: <Projects />, navName: "프로젝트", state: true },
-    { compo: <Certificates />, navName: "자격증", state: true },
-    { compo: <Certificates />, navName: "경력", state: false },
-    { compo: <Certificates />, navName: "기술스택", state: false },
+    { compo: <Educations />, navName: "학력", state: true, show: false },
+    { compo: <Awards />, navName: "수상이력", state: true, show: false },
+    { compo: <Projects />, navName: "프로젝트", state: true, show: false },
+    { compo: <Certificates />, navName: "자격증", state: true, show: false },
+    { compo: <Certificates />, navName: "경력", state: false, show: false },
+    { compo: <Certificates />, navName: "기술스택", state: false, show: false },
   ]);
+
+  ///@ toggle between showing components which have true state and showing only one component when navBar button is clicked(not the add or del button on the right side.)
+  const [togglePage, setTogglePage] = useState(true);
 
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
@@ -82,13 +85,25 @@ function Portfolio() {
               />
             </Col>
             <Col>
-              <NavBar navList={navList} setNavList={setNavList} />
-              {/* 컴포넌트도 배열에 넣어 맵을 돌릴 수 있군요! */}
-              {navList.map((compAr, index) => {
-                if (compAr.state === true) {
-                  return <div key={index}>{compAr.compo}</div>;
-                }
-              })}
+              <NavBar
+                navList={navList}
+                setNavList={setNavList}
+                setTogglePage={setTogglePage}
+              />
+              {togglePage
+                ? navList.map((compAr, index) => {
+                    if (compAr.state === true) {
+                      return <div key={index}>{compAr.compo}</div>;
+                    }
+                    //just added this return like that because eslint bordered me
+                    return null;
+                  })
+                : navList.map((compAr, index) => {
+                    if (compAr.show === true) {
+                      return <div key={index}>{compAr.compo}</div>;
+                    }
+                    return null;
+                  })}
             </Col>
           </Row>
         </Container>
