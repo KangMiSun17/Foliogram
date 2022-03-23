@@ -15,8 +15,8 @@ import { BaseModel } from "./BaseModelWrapper";
  * @method static async delete({ id })
  *  - Delete a record.
  */
-class TeckStack extends BaseModel {
+class TechStack extends BaseModel {
     static Model = TechStackModel;
 }
 
-export { TeckStack };
+export { TechStack };
