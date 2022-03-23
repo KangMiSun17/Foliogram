@@ -10,7 +10,7 @@ import * as Api from "../../api";
  */
 export const BundleButton = ({ disabled, submitHandler, setState }) => {
   return (
-    <Row className="justify-content-center" xs="auto">
+    <Row className="justify-content-center mb-3" xs="auto">
       <Button
         className="me-3"
         variant="primary"

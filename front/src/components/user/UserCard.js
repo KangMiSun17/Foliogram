@@ -12,7 +12,7 @@ function UserCard({
   }
   const navigate = useNavigate();
   return (
-    <Card className="mb-3">
+    <Card className="mb-3" style={{ height: "330px" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
@@ -22,7 +22,12 @@ function UserCard({
             alt="프로필 사진"
           />
         </Row>
-        <Card.Title>{user?.name}</Card.Title>
+        <Card.Title>
+          {user?.name}
+          <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
+            개발자
+          </span>
+        </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
         <Card.Text>{user?.description}</Card.Text>
 

@@ -34,7 +34,7 @@ function Network() {
         <Dropdown.Item href="#/action-2">예술가</Dropdown.Item>
         <Dropdown.Item href="#/action-3">마피아</Dropdown.Item>
       </DropdownButton>
-      <Row xs="auto" className="jusify-content-center">
+      <Row xs="auto">
         {users.map((user) => (
           <Col sm={2}>
             <UserCard key={user.id} user={user} isNetwork />
