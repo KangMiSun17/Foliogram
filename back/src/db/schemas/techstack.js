@@ -32,6 +32,6 @@ const TechStackSchema = new Schema(
     }
 );
 
-const TeckStackModel = model("TechStack", TechStackSchema);
+const TechStackModel = model("TechStack", TechStackSchema);
 
-export { TeckStackModel };
+export { TechStackModel };
