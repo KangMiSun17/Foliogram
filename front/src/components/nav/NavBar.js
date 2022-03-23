@@ -116,12 +116,9 @@ function NavBar({ navList, setNavList, setTogglePage }) {
               //just added this return like that because eslint bordered me
               return null;
             })}
-            {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
-        <Dropdown style={{ marginRight: 20 }}>
+        <Dropdown>
           <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
             삭제-
           </Dropdown.Toggle>
@@ -142,22 +139,12 @@ function NavBar({ navList, setNavList, setTogglePage }) {
               //just added this return like that because eslint bordered me
               return null;
             })}
-            {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
+        <Button style={{ marginRight: 20 }}>저장</Button>
       </Stack>
     </>
   );
 }
-
-//styled-components
-// let StyledDiv = styled.div`
-//   font-size: 22px;
-//   font-weight: 500;
-
-//   cursor: pointer;
-// `;
 
 export default NavBar;
