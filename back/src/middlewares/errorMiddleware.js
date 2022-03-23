@@ -17,12 +17,13 @@ function errorMiddleware(error, req, res, next) {
     if (error instanceof RequestError) {
         res.status(error.status ?? status.STATUS_400_BADREQUEST).json({
             errorMessage: error.message,
-            payload: error.payload,
+            // payload: error.payload,
+            ...error.payload,
         });
     } else {
         res.status(status.STATUS_500_INTERNALSERVERERROR).json({
             errorMessage: error.message,
-            payload: { result: false },
+            result: false,
         });
     }
 }
