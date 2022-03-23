@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Form, Row } from "react-bootstrap";
+import { Alert, Form, Row } from "react-bootstrap";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
 import { AwardFetchContext, AwardContext } from "../common/context/Context";
 import { FormTextField } from "../common/Form";
-import Submittable from "../common/Submittable";
 
 /** Edit award component
  *
@@ -15,11 +14,11 @@ function AwardEditForm({ setIsEditing }) {
   //To re-render
   const setReFetching = useContext(AwardFetchContext);
   const award = useContext(AwardContext);
-  const [subAble, setSubAble] = useState(false);
   const [edit, setEdit] = useState({
     title: award.title,
     description: award.description,
   });
+  const notSubAble = edit.title.length === 0 || edit.description.length === 0;
 
   //Click OK button, edit award
   const handleSubmit = async (e) => {
@@ -54,14 +53,14 @@ function AwardEditForm({ setIsEditing }) {
           value={edit.description}
           setState={setEdit}
         />
-        <Submittable
-          title={edit.title}
-          description={edit.description}
-          setState={setSubAble}
-        />
+        {notSubAble ? (
+          <Alert variant="danger">
+            <p>내용을 입력해주세요.</p>
+          </Alert>
+        ) : null}
         <Row className="justify-content-center" xs="auto">
           <BundleButton
-            subAble={subAble}
+            disabled={notSubAble}
             submitHandler={handleSubmit}
             setState={setIsEditing}
           />
