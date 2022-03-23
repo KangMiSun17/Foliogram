@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
+import { validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
 
@@ -13,15 +14,16 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     confirmPassword: "",
   });
 
-  const validPassword = (password) => {
-    const passwordRule =
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
-    return passwordRule.test(password);
-  };
-
-  const isPasswordValid = validPassword(userEdit.newPassword);
+  const isPasswordValid = validatePassword(userEdit.newPassword);
   const isPasswordSame = userEdit.newPassword === userEdit.confirmPassword;
   const isFormValid = isPasswordValid && isPasswordSame;
+
+  const onChangeHandler = (e) => {
+    setUserEdit((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,24 +86,14 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                 id="password"
                 placeholder="기존 비밀번호"
                 value={userEdit.password}
-                onChange={(e) =>
-                  setUserEdit((prev) => ({
-                    ...prev,
-                    [e.target.id]: e.target.value,
-                  }))
-                }
+                onChange={onChangeHandler}
               />
               <Form.Control
                 type="password"
                 id="newPassword"
                 placeholder="새 비밀번호"
                 value={userEdit.newPassword}
-                onChange={(e) =>
-                  setUserEdit((prev) => ({
-                    ...prev,
-                    [e.target.id]: e.target.value,
-                  }))
-                }
+                onChange={onChangeHandler}
               />
               {!isPasswordValid && (
                 <Form.Text>
@@ -114,12 +106,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                 id="confirmPassword"
                 placeholder="새 비밀번호 확인"
                 value={userEdit.confirmPassword}
-                onChange={(e) =>
-                  setUserEdit((prev) => ({
-                    ...prev,
-                    [e.target.id]: e.target.value,
-                  }))
-                }
+                onChange={onChangeHandler}
               />
               {!isPasswordSame && (
                 <Form.Text>비밀번호가 일치하지 않습니다.</Form.Text>

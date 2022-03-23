@@ -37,10 +37,12 @@ function Certificates() {
     <Card className="me-4 mt-3 mb-3">
       <Card.Body>
         <Card.Title className="mb-3">자격증</Card.Title>
-        <CertificateCard
-          certificateList={certificateList}
-          setCertificateList={setCertificateList}
-        />
+        <Card.Body>
+          <CertificateCard
+            certificateList={certificateList}
+            setCertificateList={setCertificateList}
+          />
+        </Card.Body>
         {isEditable && (
           <Row className="justify-content-center" xs="auto">
             <PlusButton setState={setIsAdding} />
