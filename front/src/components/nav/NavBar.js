@@ -29,6 +29,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
     navList.map((compAr, index, array) => {
       if (compAr.navName === name) {
         compAr.state = false;
+        compAr.show = false;
         array.splice(index, 1, compAr);
       }
       //just added this return like that because eslint bordered me

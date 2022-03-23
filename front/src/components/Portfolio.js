@@ -9,6 +9,8 @@ import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
+import Career from "./career/Careers";
+import TechStacks from "./techstack/TechStacks";
 import NavBar from "./nav/NavBar";
 import { UserStateContext } from "../App";
 import * as Api from "../api";
@@ -30,8 +32,8 @@ function Portfolio() {
     { compo: <Awards />, navName: "수상이력", state: true, show: false },
     { compo: <Projects />, navName: "프로젝트", state: true, show: false },
     { compo: <Certificates />, navName: "자격증", state: true, show: false },
-    { compo: <Certificates />, navName: "경력", state: false, show: false },
-    { compo: <Certificates />, navName: "기술스택", state: false, show: false },
+    { compo: <Career />, navName: "경력", state: false, show: false },
+    { compo: <TechStacks />, navName: "기술스택", state: false, show: false },
   ]);
 
   ///@ toggle between showing components which have true state and showing only one component when navBar button is clicked(not the add or del button on the right side.)
