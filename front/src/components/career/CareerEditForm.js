@@ -23,7 +23,7 @@ function CareerEditForm({ setIsEditing }) {
     e.preventDefault();
     //편집된 projects 업데이트 하기위해 서버로 put 요청
     try {
-      await Api.put(`career/${id}`, {
+      await Api.put(`careers/${id}`, {
         title: editTitle,
         description: editDescription,
         from_date: toStringDate(startDate),

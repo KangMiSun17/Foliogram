@@ -35,7 +35,7 @@ function CareerCard({ setIsEditing }) {
           </Col>
           <Col sm={1}>
             <DeleteButton
-              endpoint={"career"}
+              endpoint={"careers"}
               id={id}
               setState={setReFetching}
             />

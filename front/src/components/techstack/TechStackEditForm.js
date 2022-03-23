@@ -26,7 +26,7 @@ function ProjectEditForm({ setIsEditing }) {
     e.preventDefault();
     //편집된 projects 업데이트 하기위해 서버로 put 요청
     try {
-      await Api.put(`techstack/${id}`, {
+      await Api.put(`techstacks/${id}`, {
         title: editTitle,
         description: editDescription,
         // from_date: toStringDate(startDate),

@@ -35,7 +35,7 @@ function TechStackCard({ setIsEditing }) {
           </Col>
           <Col sm={1}>
             <DeleteButton
-              endpoint={"techstack"}
+              endpoint={"techstacks"}
               id={id}
               setState={setReFetching}
             />

@@ -6,7 +6,7 @@ import TechStackEditForm from "./TechStackEditForm";
  *
  * @returns ProjectEditForm or ProjectCard
  */
-function TeckStack() {
+function TechStack() {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -20,4 +20,4 @@ function TeckStack() {
   );
 }
 
-export default TeckStack;
+export default TechStack;
