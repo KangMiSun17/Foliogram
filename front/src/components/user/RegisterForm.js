@@ -25,10 +25,16 @@ function RegisterForm() {
       );
   };
 
+  const validPassword = (password) => {
+    const passwordRule =
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+    return passwordRule.test(password);
+  };
+
   //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
   const isEmailValid = validateEmail(email);
   // 비밀번호가 4글자 이상인지 여부를 확인함.
-  const isPasswordValid = password.length >= 4;
+  const isPasswordValid = validPassword(password);
   // 비밀번호와 확인용 비밀번호가 일치하는지 여부를 확인함.
   const isPasswordSame = password === confirmPassword;
   // 이름이 2글자 이상인지 여부를 확인함.
@@ -86,7 +92,7 @@ function RegisterForm() {
               />
               {!isPasswordValid && (
                 <Form.Text className="text-success">
-                  비밀번호는 4글자 이상으로 설정해 주세요.
+                  비밀번호는 8자리 이상 특수문자, 영어, 숫자로 설정해 주세요.
                 </Form.Text>
               )}
             </Form.Group>
