@@ -25,7 +25,7 @@ function UserCard({
         <Card.Title>
           {user?.name}
           <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
-            개발자
+            {user?.user_category}
           </span>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>

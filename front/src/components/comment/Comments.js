@@ -33,7 +33,7 @@ function Comments() {
           {comments.map((comment) => (
             <CommentCard key={comment.id} comment={comment} />
           ))}
-          <CommentAddForm />
+          <CommentAddForm comments={comments} />
         </Card.Body>
       </Card>
     </CommentFetchContext.Provider>
