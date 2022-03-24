@@ -1,20 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
 
-function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
+function UserCard({
+  user,
+  setIsEditing,
+  isEditable,
+  isNetwork,
+  setProfileImage,
+}) {
+  if (!user) {
+  }
   const navigate = useNavigate();
   return (
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "18rem" }}>
+    <Card className="mb-3" style={{ height: "330px" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
             style={{ width: "10rem", height: "8rem" }}
             className="mb-3"
-            src="http://placekitten.com/200/200"
-            alt="랜덤 고양이 사진 (http://placekitten.com API 사용)"
+            src={user.profileImage}
+            alt="프로필 사진"
           />
         </Row>
-        <Card.Title>{user?.name}</Card.Title>
+        <Card.Title>
+          {user?.name}
+          <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
+            {user?.user_category}
+          </span>
+        </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
         <Card.Text>{user?.description}</Card.Text>
 
@@ -27,7 +40,14 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
                   size="sm"
                   onClick={() => setIsEditing(true)}
                 >
-                  편집
+                  정보 편집
+                </Button>
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={() => setProfileImage(true)}
+                >
+                  프로필사진 편집
                 </Button>
               </Col>
             </Row>

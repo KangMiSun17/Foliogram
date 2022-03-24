@@ -6,19 +6,19 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   //useState로 name 상태를 생성함.
   const [name, setName] = useState(user.name);
   //useState로 email 상태를 생성함.
-  const [email, setEmail] = useState(user.email);
+  const [user_category, setUserCategory] = useState(user.user_category);
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // "users/유저id" 엔드포인트로 PUT 요청함.
+    // "users/유저id" 엔드포인트로 PUT 요청함.;
     const res = await Api.put(`users/${user.id}`, {
       name,
-      email,
+      user_category,
       description,
     });
+    console.log(res.data);
     // 유저 정보는 response의 data임.
     const updatedUser = res.data;
     // 해당 유저 정보로 user을 세팅함.
@@ -40,14 +40,17 @@ function UserEditForm({ user, setIsEditing, setUser }) {
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
-
           <Form.Group controlId="userEditEmail" className="mb-3">
-            <Form.Control
-              type="email"
-              placeholder="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Form.Select
+              aria-label="Default select example"
+              defaultValue={user_category}
+              onChange={(e) => setUserCategory(e.target.value)}
+            >
+              <option value="">카테고리를 설정해주세요</option>
+              <option value="개발자">개발자</option>
+              <option value="예술가">예술가</option>
+              <option value="마피아">마피아</option>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group controlId="userEditDescription">

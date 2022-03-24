@@ -1,8 +1,5 @@
 import { Schema, model } from "mongoose";
-
-const RE_DATE_PATTERN = new RegExp(
-    /^(?<year>[0-9]{4})-(?<month>[01][0-9])-(?<day>[0-3][0-9])$/
-);
+import { RE_DATE_PATTERN } from "../../utils/regexTools";
 
 const dateValidator = {
     // Needs to be YYYY-MM-DD format.
@@ -42,7 +39,7 @@ const ProjectSchema = new Schema(
             type: String,
             required: true,
         },
-        participant_id: {
+        user_id: {
             type: String,
             required: true,
         },

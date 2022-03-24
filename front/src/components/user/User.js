@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
+import ProfileImage from "./ProfileImage";
 import * as Api from "../../api";
+import { UserContext } from "../common/context/Context";
 
-function User({ portfolioOwnerId, isEditable }) {
+function User() {
+  const { isEditable, portfolioOwnerId } = useContext(UserContext);
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState(false);
   // useState 훅을 통해 user 상태를 생성함.
   const [user, setUser] = useState(null);
 
@@ -13,24 +17,45 @@ function User({ portfolioOwnerId, isEditable }) {
     // "users/유저id" 엔드포인트로 GET 요청을 하고, user를 response의 data로 세팅함.
     Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
   }, [portfolioOwnerId]);
-
-  return (
-    <>
-      {isEditing ? (
+  if (!user) {
+    return (
+      <>
+        <p>......Loading</p>
+      </>
+    );
+  }
+  if (isEditing) {
+    return (
+      <>
         <UserEditForm
           user={user}
           setIsEditing={setIsEditing}
           setUser={setUser}
         />
-      ) : (
+      </>
+    );
+  } else if (profileImage) {
+    return (
+      <>
+        <ProfileImage
+          user={user}
+          setProfileImage={setProfileImage}
+          setUser={setUser}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
         <UserCard
           user={user}
           setIsEditing={setIsEditing}
+          setProfileImage={setProfileImage}
           isEditable={isEditable}
         />
-      )}
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default User;

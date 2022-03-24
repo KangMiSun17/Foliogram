@@ -4,16 +4,17 @@ import { BundleButton } from "../common/Button";
 import { DatePickForm } from "../common/DateUtil";
 import { toStringDate } from "../common/DateUtil";
 import { UserStateContext } from "../../App";
+import { CertificateContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /**
  * This component can add certification item
  * @param {Object} props
- * @param {function} props.setCertificateList function to change the state of a list of certificates
  * @param {function} props.setIsAdding This State is select show add screen or not show add screen
  * @returns {component} Certificate add Form
  */
-function CertificateAddForm({ setCertificateList, setIsAdding }) {
+function CertificateAddForm({ setIsAdding }) {
+  const { setCertificateList } = useContext(CertificateContext);
   const { user } = useContext(UserStateContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,7 +25,7 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
     event.preventDefault();
 
     try {
-      const res = await Api.post("certificates/create", {
+      const res = await Api.post("certificate/create", {
         user_id: user.id,
         title,
         description,

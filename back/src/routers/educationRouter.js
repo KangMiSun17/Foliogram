@@ -2,157 +2,160 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { educationService } from "../services/educationService";
+import { RequestError } from "../utils/errors";
+import * as status from "../utils/status";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 const educationRouter = Router();
 
-educationRouter.post(
-    "/education/create",
+/* ==========================================================================
+ * -------------            CopyPasta Constants here            -------------
+ * ========================================================================== */
+const SERVICE = educationService;
+const ROUTER = educationRouter;
+const ROUTE_TOP = "education";
+
+const logger = new Logger({
+    name: `${ROUTE_TOP}Router`,
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath(`${ROUTE_TOP}.log`),
+        Logger.generateLogPath(`router.log`),
+        Logger.generateLogPath(`${ROUTE_TOP}router.log`),
+    ],
+    default_level: 2,
+});
+
+ROUTER.post(
+    `/${ROUTE_TOP}/create`,
     login_required,
     async function (req, res, next) {
         try {
-            //if req.body is not exist,return Error message
+            logger.log({}, `POST /${ROUTE_TOP}/create`);
+
             if (is.emptyObject(req.body)) {
-                throw new Error(
-                    "headers의 Content-Type을 application/json으로 설정해주세요"
+                throw new RequestError(
+                    `headers["Content-Type"] needs to be "application/json"`
                 );
             }
 
-            // get informate from req
-            const school = req.body.school ?? null;
-            const major = req.body.major ?? null;
-            const position = req.body.position ?? null;
-            const user_id = req.body.user_id ?? null;
-            // school,major,position and user_id is required
-            if (!school || !major || !position || !user_id) {
-                throw new Error(
-                    "school,major,position and user_id are required."
-                );
-            }
-            //if user have not correct user_id,return error
-            if (user_id !== req.currentUserId) {
-                throw new Error("Trying to create different user's education");
-            }
-            // add a education with new information
-            const newEducation = await educationService.addEducation({
-                school,
-                major,
-                position,
-                user_id,
+            const payload = { ...req.body };
+            const created = await SERVICE.add({
+                currentUserId: req.currentUserId,
+                ...payload,
             });
-
-            res.status(201).json(newEducation);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-educationRouter.get(
-    "/educations/:id",
-    login_required,
-    async function (req, res, next) {
-        try {
-            //get id from req.params
-            const id = req.params.id;
-            //get one education with id of education
-            const education = await educationService.getEducation({ id });
-            //if education is not exist,return error message
-            if (education.errorMessage) {
-                throw new Error(education.errorMessage);
+            // See if the create contains errorinfo instead.
+            if ("errorMessage" in created) {
+                throw new RequestError(
+                    { status: created.statusCode },
+                    created.errorMessage
+                );
             }
-            res.status(200).send(education);
+
+            res.status(status.STATUS_201_CREATED).json(created);
         } catch (error) {
             next(error);
         }
     }
 );
 
-educationRouter.get(
-    "/educationlist/:user_id",
+ROUTER.get(
+    `/${ROUTE_TOP}s/:id`,
+    login_required,
+    async function (req, res, next) {
+        // Here we get the id of an award and give back a single award.
+        try {
+            const id = req.params.id;
+            logger.log({}, `GET /${ROUTE_TOP}s/${id}`);
+
+            const found = await SERVICE.get({ id });
+            if ("errorMessage" in found) {
+                throw new RequestError(
+                    { status: found.statusCode },
+                    found.errorMessage
+                );
+            }
+
+            res.status(status.STATUS_200_OK).json(found);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+ROUTER.get(
+    `/${ROUTE_TOP}list/:user_id`,
     login_required,
     async function (req, res, next) {
         try {
-            //get id of user from req.params
             const user_id = req.params.user_id;
-            //get user's certificates with id of user
-            const educations = await educationService.getEducations({
-                user_id,
-            });
-            res.status(200).send(educations);
+            logger.log({}, `GET /${ROUTE_TOP}list/${user_id}`);
+
+            const found = await SERVICE.getSiblings({ user_id });
+
+            res.status(status.STATUS_200_OK).json(found);
         } catch (error) {
             next(error);
         }
     }
 );
 
-educationRouter.delete(
-    "/educations/:id",
+ROUTER.put(
+    `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
         try {
-            //get id of education from req.params
-            const id = req.params.id;
-            const user_id = req.currentUserId;
-            const education = await educationService.getEducation({ id });
-            //if education is not exist,throw errorMessage
-            if (education.errorMessage) {
-                throw new Error(
-                    `이미 삭제 되었거나 존재하지 않아 삭제에 실패하였습니다.`
+            if (is.emptyObject(req.body)) {
+                throw new RequestError(
+                    `headers["Content-Type"] needs to be "application/json"`
                 );
             }
-            //if user have correct user_id,process delete
-            if (user_id === education.user_id) {
-                //get user's educations with id of user
-                const result = await educationService.deleteEducation({
-                    id,
-                });
-                res.status(200).send(result);
-            } else {
-                throw new Error(
-                    `User is not an owner of the education id ${id}`
+
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+                ...req.body,
+            };
+
+            logger.log({}, `PUT /${ROUTE_TOP}s/:${req.params.id}`);
+            logger.log({}, `payload =`, payload);
+
+            const updated = await SERVICE.set(payload);
+            if ("errorMessage" in updated) {
+                throw new RequestError(
+                    { status: updated.statusCode },
+                    updated.errorMessage
                 );
             }
+
+            res.status(status.STATUS_200_OK).json(updated);
         } catch (error) {
             next(error);
         }
     }
 );
 
-educationRouter.put(
-    "/educations/:id",
+ROUTER.delete(
+    `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
         try {
-            //get information from req
-            const id = req.params.id;
-            const user_id = req.currentUserId;
-            const education = await educationService.getEducation({ id });
-            //if education is not exist,return error
-            if (education.errorMessage) {
-                throw new Error(
-                    `이미 삭제된 또는 존재하지 않아 수정에 실패하였습니다.`
-                );
-            }
-            //if user have correct user_id,process update
-            if (user_id === education.user_id) {
-                const school = req.body.school ?? null;
-                const major = req.body.major ?? null;
-                const position = req.body.position ?? null;
-                const toUpdate = { school, major, position };
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+            };
 
-                //update and get one education with id of education
-                const updatedEducation = await educationService.setEducation({
-                    id,
-                    toUpdate,
-                    education,
-                });
-                res.status(200).send(updatedEducation);
-            } else {
-                //if user have not correct user_id,return error
-                throw new Error(
-                    `User is not an owner of the education id ${id}`
+            logger.log({}, `DELETE /${ROUTE_TOP}s/:${payload.id}`);
+
+            const deleted = await SERVICE.del(payload);
+            if ("errorMessage" in deleted) {
+                throw new RequestError(
+                    { status: deleted.statusCode },
+                    deleted.errorMessage
                 );
             }
+
+            res.status(status.STATUS_200_OK).json({ result: true });
         } catch (error) {
             next(error);
         }

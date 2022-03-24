@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import { EditTableContext } from "../common/context/Context";
+import { CertificateContext, UserContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
@@ -9,11 +9,11 @@ import CertificateEditForm from "./CertificateEditForm";
  * @param {Object} props
  * @param {object} props.certificate Item in the Certification List
  * @param {number} props.index Index in the Certification List
- * @param {function} props.setCertificateList function to change the state of a list of certificates
  * @returns {component} Certificate information or EditForm
  */
-function Certificate({ certificate, index, setCertificateList }) {
-  const isEditable = useContext(EditTableContext);
+function Certificate({ certificate, index }) {
+  const { isEditable } = useContext(UserContext);
+  const { setCertificateList } = useContext(CertificateContext);
   const [isEditing, setIsEditing] = useState(false);
   const { id, title, description, when_date } = certificate;
 
@@ -27,7 +27,6 @@ function Certificate({ certificate, index, setCertificateList }) {
         <CertificateEditForm
           certificate={certificate}
           setIsEdit={setIsEditing}
-          setCertificateList={setCertificateList}
           index={index}
         />
       ) : (
