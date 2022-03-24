@@ -1,5 +1,10 @@
 import { Dropdown, DropdownButton } from "react-bootstrap";
 
+/** category list dropdown
+ *
+ * @param {string} setCategory -category state
+ * @returns {component} Category dropdown
+ */
 function Category({ setCategory }) {
   return (
     <DropdownButton

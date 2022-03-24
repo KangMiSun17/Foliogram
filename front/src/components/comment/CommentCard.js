@@ -11,9 +11,9 @@ import { int } from "nunjucks/src/filters";
  * @param {object} comment each comment
  * @returns comment edit form or comment content
  */
-function CommentCard({ comment }) {
+function CommentCard({ comment, index }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { setReFetching } = useContext(CommentFetchContext);
+  const setComments = useContext(CommentFetchContext);
   const { user_id } = useContext(UserContext);
   const [hour, setHour] = useState(
     int(comment.createdAt.split("T")[1].split(".")[0].split(":")[0]) + 9
@@ -25,23 +25,31 @@ function CommentCard({ comment }) {
 
   const minute = comment.createdAt.split("T")[1].split(".")[0].split(":")[1];
 
-  const handleDelete = async () => {
+  const deleteHandler = async () => {
     await Api.delete("comments", comment.id);
-    setReFetching(new Date());
+    setComments((cur) => {
+      const newComment = [...cur];
+      newComment.splice(index, 1);
+      return newComment;
+    });
   };
 
   const selectOption = (e) => {
     if (e.target.tabIndex === 1) {
       return setIsEditing(true);
     } else if (e.target.tabIndex === 2) {
-      return handleDelete();
+      return deleteHandler();
     }
   };
   return (
     <Card className="mb-3" key={comment.id}>
       <Row className="align-items-center">
         {isEditing ? (
-          <CommentEditForm comment={comment} setIsEditing={setIsEditing} />
+          <CommentEditForm
+            comment={comment}
+            setIsEditing={setIsEditing}
+            index={index}
+          />
         ) : (
           <>
             <Col sm={1} className="ms-1">

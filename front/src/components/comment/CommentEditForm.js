@@ -4,16 +4,27 @@ import { BundleButton } from "../common/Button";
 import * as Api from "../../api";
 import { CommentFetchContext } from "../common/context/Context";
 
-function CommentEditForm({ comment, setIsEditing }) {
+/**
+ *
+ * @param {object} comment each comment object
+ * @param {boolean} setIsEditing whether editing or not
+ * @returns
+ */
+function CommentEditForm({ comment, setIsEditing, index }) {
+  const setComments = useContext(CommentFetchContext);
   const [editContent, setEditContent] = useState(comment.content);
-  const { setReFetching } = useContext(CommentFetchContext);
-  const handleSubmit = async (e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await Api.put(`comments/${comment.id}`, {
+      const res = await Api.put(`comments/${comment.id}`, {
         content: editContent,
       });
-      setReFetching(new Date());
+      setComments((cur) => {
+        cur[index] = res.data;
+        const newComment = [...cur];
+        return newComment;
+      });
     } catch (err) {
       console.log("Error: award put request fail", err);
     }
@@ -48,7 +59,7 @@ function CommentEditForm({ comment, setIsEditing }) {
       <BundleButton
         disabled={editContent.length === 0}
         setState={setIsEditing}
-        submitHandler={handleSubmit}
+        submitHandler={submitHandler}
       />
     </Row>
   );

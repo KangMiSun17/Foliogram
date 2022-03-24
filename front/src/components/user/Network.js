@@ -12,6 +12,7 @@ function Network() {
   const userState = useContext(UserStateContext);
   // useState 훅을 통해 users 상태를 생성함.
   const [users, setUsers] = useState([]);
+  //selected category
   const [category, setCategory] = useState("all");
 
   useEffect(() => {

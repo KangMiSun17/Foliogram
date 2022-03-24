@@ -12,8 +12,8 @@ import { FormTextField } from "../common/Form";
  */
 function AwardEditForm({ setIsEditing }) {
   //To re-render
-  const setReFetching = useContext(AwardFetchContext);
-  const award = useContext(AwardContext);
+  const setAwards = useContext(AwardFetchContext);
+  const { award, index } = useContext(AwardContext);
   const [edit, setEdit] = useState({
     title: award.title,
     description: award.description,
@@ -25,11 +25,15 @@ function AwardEditForm({ setIsEditing }) {
     e.preventDefault();
     //Put request to update edited award
     try {
-      await Api.put(`awards/${award.id}`, {
+      const res = await Api.put(`awards/${award.id}`, {
         title: edit.title,
         description: edit.description,
       });
-      setReFetching(new Date());
+      setAwards((cur) => {
+        cur[index] = res.data;
+        const newComment = [...cur];
+        return newComment;
+      });
     } catch (err) {
       console.log("Error: award put request fail", err);
     }

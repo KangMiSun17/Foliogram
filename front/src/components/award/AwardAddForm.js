@@ -12,7 +12,7 @@ import * as Api from "../../api";
 function AwardAddForm() {
   const { portfolioOwnerId } = useContext(UserContext);
   //To re-render
-  const setReFetching = useContext(AwardFetchContext);
+  const setAwards = useContext(AwardFetchContext);
   //Whether adding or not
   const [isAdding, setIsAdding] = useState(false);
   //initial award
@@ -30,9 +30,8 @@ function AwardAddForm() {
     e.preventDefault();
     //Post request to update added award'
     try {
-      await Api.post(`award/create`, add);
-      setAdd(init);
-      setReFetching(new Date());
+      const res = await Api.post(`award/create`, add);
+      setAwards((cur) => [...cur, res.data]);
     } catch (err) {
       console.log("Error: award post request fail", err);
     }
