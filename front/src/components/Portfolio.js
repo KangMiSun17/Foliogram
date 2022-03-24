@@ -66,7 +66,7 @@ function Portfolio() {
       <Container fluid>
         <Row>
           <Col xl="3">
-            <User isEditable={portfolioOwner.id === userState.user?.id} />
+            <User />
           </Col>
           <Col>
             <Educations />

@@ -1,13 +1,10 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
+import { OwnerContext } from "./../common/context/Context";
 
-function UserCard({
-  isEditable,
-  user,
-  setIsEditing,
-  isNetwork,
-  setProfileImage,
-}) {
+function UserCard({ user, setIsEditing, isNetwork, setProfileImage }) {
+  const { isEditable } = useContext(OwnerContext);
   const navigate = useNavigate();
 
   return (

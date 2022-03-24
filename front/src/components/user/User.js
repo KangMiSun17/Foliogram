@@ -5,8 +5,8 @@ import UserCard from "./UserCard";
 import ProfileImage from "./ProfileImage";
 import * as Api from "../../api";
 
-function User({ isEditable }) {
-  const { portfolioOwnerId } = useContext(OwnerContext);
+function User() {
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(false);
@@ -47,7 +47,6 @@ function User({ isEditable }) {
           user={user}
           setIsEditing={setIsEditing}
           setProfileImage={setProfileImage}
-          isEditable={isEditable}
         />
       )}
     </>
