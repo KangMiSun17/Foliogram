@@ -17,6 +17,7 @@ function ProjectCard({ setIsEditing }) {
   const { isEditable } = useContext(UserContext);
   const { id, title, description, from_date, to_date } =
     useContext(ProjectContext);
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">

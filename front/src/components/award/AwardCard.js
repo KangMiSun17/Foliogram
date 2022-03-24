@@ -17,6 +17,7 @@ function AwardCard({ setIsEditing }) {
   const setAwards = useContext(AwardFetchContext);
   //Each award
   const { award, index } = useContext(AwardContext);
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">

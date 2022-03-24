@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Form } from "react-bootstrap";
-import { DatePickForm } from "../common/DateUtil";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import { CertificateContext } from "../common/context/Context";
 import * as Api from "../../api";
+import DatePicker from "react-datepicker";
 
 /**
  * This component can edit certification item
@@ -17,9 +17,11 @@ import * as Api from "../../api";
 function CertificateEditForm({ setIsEdit, certificate, index }) {
   const { setCertificateList } = useContext(CertificateContext);
   const { id, title, description, when_date } = certificate;
-  const [editTitle, setEditTitle] = useState(title);
-  const [editDescription, setEditDescription] = useState(description);
-  const [startDate, setStartDate] = useState(toObjectDate(when_date));
+  const [edit, setEdit] = useState({
+    title,
+    description,
+    when_date: toObjectDate(when_date),
+  });
 
   // Request certificate item modification api
   const handleEditSubmit = async (event) => {
@@ -27,15 +29,14 @@ function CertificateEditForm({ setIsEdit, certificate, index }) {
 
     try {
       const res = await Api.put("certificates/" + id, {
-        title: editTitle,
-        description: editDescription,
-        when_date: toStringDate(startDate),
+        title: edit.title,
+        description: edit.description,
+        when_date: toStringDate(edit.when_date),
       });
 
       setCertificateList((cur) => {
         cur[index] = res.data;
-        const newCertificateList = [...cur];
-        return newCertificateList;
+        return [...cur];
       });
     } catch (err) {
       console.log("Error: certificates put request fail", err);
@@ -46,23 +47,30 @@ function CertificateEditForm({ setIsEdit, certificate, index }) {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="certificateEditName">
+      <Form.Group className="mb-3" controlId="title">
         <Form.Control
-          type="editName"
-          value={editTitle}
+          type="editTitle"
+          value={edit.title}
           placeholder="자격증 제목"
-          onChange={(e) => setEditTitle(e.target.value)}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="certificateEditDescription">
+      <Form.Group className="mb-3" controlId="description">
         <Form.Control
           type="editDescription"
-          value={editDescription}
+          value={edit.description}
           placeholder="상세내역"
-          onChange={(e) => setEditDescription(e.target.value)}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
       </Form.Group>
-      <DatePickForm startDate={startDate} setState={setStartDate} />
+      <DatePicker
+        selected={edit.when_date}
+        onChange={(date) => setEdit((prev) => ({ ...prev, when_date: date }))}
+      />
       <BundleButton submitHandler={handleEditSubmit} setState={setIsEdit} />
     </Form>
   );

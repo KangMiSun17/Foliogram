@@ -17,6 +17,7 @@ import {
 import Projects from "./project/Projects";
 import Comment from "./comment/Comments";
 import * as Api from "../api";
+import UserDelete from "./user/UserDelete";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -91,6 +92,7 @@ function Portfolio() {
     portfolioOwnerId: portfolioOwner.id,
     user_id: userState.user?.id,
   };
+
   return (
     <UserContext.Provider value={userContext}>
       <EditTableContext.Provider
@@ -130,6 +132,7 @@ function Portfolio() {
               </Col>
             </Row>
           </Container>
+          <UserDelete />
         </PortfolioOwnerContext.Provider>
       </EditTableContext.Provider>
     </UserContext.Provider>

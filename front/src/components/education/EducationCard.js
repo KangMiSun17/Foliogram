@@ -16,6 +16,7 @@ function EducationCard({ setIsEditing }) {
   const { setReFetching } = useContext(EducationFetchContext);
   const { isEditable } = useContext(UserContext);
   const { id, school, major, position } = useContext(EducationContext);
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">

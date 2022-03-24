@@ -2,17 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
 
 function UserCard({
+  isEditable,
   user,
   setIsEditing,
-  isEditable,
   isNetwork,
   setProfileImage,
 }) {
-  if (!user) {
-  }
   const navigate = useNavigate();
+
   return (
-    <Card className="mb-3" style={{ height: "330px" }}>
+    <Card className="mb-2 ms-3 mr-5" style={{ width: "18rem" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
@@ -22,12 +21,7 @@ function UserCard({
             alt="프로필 사진"
           />
         </Row>
-        <Card.Title>
-          {user?.name}
-          <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
-            {user?.user_category}
-          </span>
-        </Card.Title>
+        <Card.Title>{user?.name}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
         <Card.Text>{user?.description}</Card.Text>
 

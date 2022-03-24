@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import { DatePickForm, toStringDate } from "../common/DateUtil";
+import { toStringDate } from "../common/DateUtil";
 import { UserContext, ProjectFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
+import DatePicker from "react-datepicker";
 
 /** 프로젝트 추가하는 컴포넌트입니다.
  *
@@ -12,11 +13,13 @@ import * as Api from "../../api";
 function ProjectAddForm() {
   const { portfolioOwnerId } = useContext(UserContext);
   const { setReFetching } = useContext(ProjectFetchContext);
-  const [addTitle, setAddTitle] = useState("");
-  const [addDescription, setAddDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const [isAdding, setIsAdding] = useState(false);
+  const [add, setAdd] = useState({
+    title: "",
+    description: "",
+    startDate: new Date(),
+    endDate: new Date(),
+  });
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -26,21 +29,23 @@ function ProjectAddForm() {
     try {
       await Api.post(`project/create`, {
         user_id: portfolioOwnerId,
-        title: addTitle,
-        description: addDescription,
-        from_date: toStringDate(startDate),
-        to_date: toStringDate(endDate),
+        title: add.title,
+        description: add.description,
+        from_date: toStringDate(add.startDate),
+        to_date: toStringDate(add.endDate),
       });
 
-      setAddTitle("");
-      setAddDescription("");
+      setAdd({
+        title: "",
+        description: "",
+        startDate: new Date(),
+        endDate: new Date(),
+      });
     } catch (err) {
       console.log(err);
     }
 
     setReFetching(new Date());
-    setStartDate(new Date());
-    setEndDate(new Date());
     setIsAdding(false);
   };
 
@@ -52,30 +57,44 @@ function ProjectAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="title">
             <Form.Control
               type="text"
               placeholder="프로젝트 제목"
-              value={addTitle}
-              onChange={(e) => setAddTitle(e.target.value)}
+              value={add.title}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="description">
             <Form.Control
               type="text"
               placeholder="상세내역"
-              value={addDescription}
-              onChange={(e) => setAddDescription(e.target.value)}
+              value={add.description}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
           <Form.Group className="mt-3">
             <Row>
               <Col xs={3}>
-                <DatePickForm startDate={startDate} setState={setStartDate} />
+                <DatePicker
+                  selected={add.startDate}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, startDate: date }))
+                  }
+                />
               </Col>
               <Col xs={3}>
-                <DatePickForm startDate={endDate} setState={setEndDate} />
+                <DatePicker
+                  selected={add.endDate}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, endDate: date }))
+                  }
+                />
               </Col>
             </Row>
           </Form.Group>

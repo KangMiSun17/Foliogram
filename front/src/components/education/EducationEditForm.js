@@ -14,19 +14,22 @@ import * as Api from "../../api";
 function EducationEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(EducationFetchContext);
   const { id, school, major, position } = useContext(EducationContext);
-  const [editSchool, setEditSchool] = useState(school);
-  const [editMajor, setEditMajor] = useState(major);
-  const [editPosition, setEditPosition] = useState(position);
+  const [edit, setEdit] = useState({
+    school,
+    major,
+    position,
+  });
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(edit.position);
     //편집된 education 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`educations/${id}`, {
-        school: editSchool,
-        major: editMajor,
-        position: editPosition,
+        school: edit.school,
+        major: edit.major,
+        position: edit.position,
       });
     } catch (err) {
       console.log(err);
@@ -44,15 +47,21 @@ function EducationEditForm({ setIsEditing }) {
         <Form.Label>수정할 내용</Form.Label>
         <Form.Control
           type="text"
+          name="school"
           className="mb-3"
-          value={editSchool}
-          onChange={(e) => setEditSchool(e.target.value)}
+          value={edit.school}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+          }
         />
         <Form.Control
           type="text"
+          name="major"
           className="mb-3"
-          value={editMajor}
-          onChange={(e) => setEditMajor(e.target.value)}
+          value={edit.major}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+          }
         />
       </Form.Group>
 
@@ -67,8 +76,13 @@ function EducationEditForm({ setIsEditing }) {
               type="radio"
               name="position"
               value={graduate}
-              checked={editPosition === graduate}
-              onChange={(e) => setEditPosition(e.target.value)}
+              checked={edit.position === graduate}
+              onChange={(e) =>
+                setEdit((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
             ></FormCheck>
           );
         })}

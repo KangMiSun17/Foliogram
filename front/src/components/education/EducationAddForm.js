@@ -12,9 +12,11 @@ import { FormCheckField } from "../common/Form";
 function EducationAddForm() {
   const { portfolioOwnerId } = useContext(UserContext);
   const { setReFetching } = useContext(EducationFetchContext);
-  const [addSchool, setAddSchool] = useState("");
-  const [addMajor, setAddMajor] = useState("");
-  const [addPosition, setAddPosition] = useState("재학중");
+  const [add, setAdd] = useState({
+    school: "",
+    major: "",
+    position: "재학중",
+  });
   const [isAdding, setIsAdding] = useState(false);
 
   //확인 버튼 누를 시 실행
@@ -25,14 +27,16 @@ function EducationAddForm() {
     try {
       await Api.post(`education/create`, {
         user_id: portfolioOwnerId,
-        school: addSchool,
-        major: addMajor,
-        position: addPosition,
+        school: add.school,
+        major: add.major,
+        position: add.position,
       });
 
-      setAddSchool("");
-      setAddMajor("");
-      setAddPosition("재학중");
+      setAdd({
+        school: "",
+        major: "",
+        position: "재학중",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -51,20 +55,24 @@ function EducationAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="school">
             <Form.Control
               type="text"
               placeholder="학교 이름"
-              value={addSchool}
-              onChange={(e) => setAddSchool(e.target.value)}
+              value={add.school}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="major">
             <Form.Control
               type="text"
               placeholder="전공"
-              value={addMajor}
-              onChange={(e) => setAddMajor(e.target.value)}
+              value={add.major}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
@@ -79,8 +87,13 @@ function EducationAddForm() {
                   type="radio"
                   name="position"
                   value={graduate}
-                  checked={addPosition === graduate}
-                  onChange={(e) => setAddPosition(e.target.value)}
+                  checked={add.position === graduate}
+                  onChange={(e) =>
+                    setAdd((prev) => ({
+                      ...prev,
+                      [e.target.name]: e.target.value,
+                    }))
+                  }
                 ></FormCheck>
               );
             })}
