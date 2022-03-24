@@ -38,7 +38,7 @@ userAuthRouter.post(
                 ContentType: "image/png",
             }).promise();
             //return image url
-            res.status(200).json({
+            res.status(status.STATUS_200_OK).json({
                 imageLink: `${process.env.IMAGE_ENDPOINT}/${process.env.IMAGE_BUCKET}/${imageName}.PNG`,
             });
         } catch (error) {
@@ -155,17 +155,14 @@ userAuthRouter.put(
                     `Trying to set different user's Info`
                 );
             }
+            //이메일은 고정값이며 비밀번호는 라우터를 따로한다.
             const name = req.body.name ?? null;
-            const email = req.body.email ?? null;
-            const password = req.body.password ?? null;
             const description = req.body.description ?? null;
             const profileImage = req.body.profileImage ?? null;
             const user_category = req.body.user_category ?? null;
             const user_mvp = req.body.user_mvp ?? null;
             const toUpdate = {
                 name,
-                email,
-                password,
                 description,
                 profileImage,
                 user_category,
@@ -191,7 +188,43 @@ userAuthRouter.put(
         }
     }
 );
+userAuthRouter.put(
+    "/users/:id/password",
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const user_id = req.params.id;
+            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            if (user_id !== req.currentUserId) {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    `Trying to set different user's Password`
+                );
+            }
+            const password = req.body.password ?? null;
+            const passwordReset = req.body.passwordReset ?? null;
+            if (!password || !passwordReset) {
+                throw new Error(`password and passwordReset is required`);
+            }
+            const updatedUser = await userAuthService.setUserPassword({
+                user_id,
+                password,
+                passwordReset,
+            });
 
+            if ("errorMessage" in updatedUser) {
+                throw new RequestError(
+                    { status: updatedUser.statusCode },
+                    updatedUser.errorMessage
+                );
+            }
+            res.status(status.STATUS_200_OK).json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 userAuthRouter.get(
     "/users/:id",
     login_required,
