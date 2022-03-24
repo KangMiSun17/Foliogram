@@ -97,8 +97,8 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         // sendMail은 콜백을 등록하지 않으면 프로미스를 반환합니다.
         // 사용자가 이메일을 확인하는데 시간이 좀 필요할 것이므로 굳이 기다리지 않습니다.
         const activationPath =
-            `${process.env.SERVER_URL}:${process.env.SERVER_PORT}/users/` +
-            `activate/${newUser.id}/${activationKey}`;
+            `${process.env.SERVER_URL}:${process.env.SERVER_PORT}/users` +
+            `/${newUser.id}/activate/${activationKey}`;
         transport.sendMail({
             from: "team5portfolioservice@gmail.com",
             to: email,
