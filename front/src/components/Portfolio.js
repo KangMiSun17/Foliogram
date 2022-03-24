@@ -6,7 +6,14 @@ import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
 import Awards from "./award/Awards";
+import Career from "./career/Careers";
+import TechStacks from "./techstack/TechStacks";
+import NavBar from "./nav/NavBar";
 import { UserStateContext } from "../App";
+import {
+  PortfolioOwnerContext,
+  EditTableContext,
+} from "./common/context/Context";
 import Projects from "./project/Projects";
 import Comment from "./comment/Comments";
 import * as Api from "../api";
@@ -21,11 +28,35 @@ function Portfolio() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const userState = useContext(UserStateContext);
 
+  ///@ nav state
+  // const [navFromBack, setNavFromBack] = useState([]);
+
+  const newAr = [];
+  const [navList, setNavList] = useState(newAr);
+
+  ///@ toggle between showing components which have true state and showing only one component when navBar button is clicked(not the add or del button on the right side.)
+  const [togglePage, setTogglePage] = useState(true);
+
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
+    // setNavFromBack(navData);
+    let fromBack = res.data.user_mvp;
+    const compo = [
+      { compo: <Educations />, show: false },
+      { compo: <Awards />, show: false },
+      { compo: <Projects />, show: false },
+      { compo: <Certificates />, show: false },
+      { compo: <Career />, show: false },
+      { compo: <TechStacks />, show: false },
+    ];
+
+    for (let i = 0; i < compo.length; i++) {
+      newAr.push({ ...compo[i], ...fromBack[i] });
+    }
+    setNavList(newAr);
     // portfolioOwner을 해당 사용자 정보로 세팅함.
     setPortfolioOwner(ownerData);
     // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
@@ -62,20 +93,45 @@ function Portfolio() {
   };
   return (
     <UserContext.Provider value={userContext}>
-      <Container fluid>
-        <Row>
-          <Col xl="3">
-            <User />
-            <Comment />
-          </Col>
-          <Col>
-            <Educations />
-            <Awards />
-            <Projects />
-            <Certificates />
-          </Col>
-        </Row>
-      </Container>
+      <EditTableContext.Provider
+        value={portfolioOwner.id === userState.user?.id}
+      >
+        <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
+          <Container fluid>
+            <Row>
+              {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
+              <Col xl="3" style={{ marginTop: 54 }}>
+                <User
+                  portfolioOwnerId={portfolioOwner.id}
+                  isEditable={portfolioOwner.id === userState.user?.id}
+                />
+                <Comment />
+              </Col>
+              <Col>
+                <NavBar
+                  navList={navList}
+                  setNavList={setNavList}
+                  setTogglePage={setTogglePage}
+                />
+                {togglePage
+                  ? navList.map((compAr, index) => {
+                      if (compAr.state === true) {
+                        return <div key={index}>{compAr.compo}</div>;
+                      }
+                      //just added this return like that because eslint bordered me
+                      return null;
+                    })
+                  : navList.map((compAr, index) => {
+                      if (compAr.show === true) {
+                        return <div key={index}>{compAr.compo}</div>;
+                      }
+                      return null;
+                    })}
+              </Col>
+            </Row>
+          </Container>
+        </PortfolioOwnerContext.Provider>
+      </EditTableContext.Provider>
     </UserContext.Provider>
   );
 }

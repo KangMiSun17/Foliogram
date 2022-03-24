@@ -41,6 +41,8 @@ function EducationAddForm() {
     setIsAdding(false);
   };
 
+  const radioList = ["재학중", "졸업", "학사졸업", "석사졸업", "박사졸업"];
+
   return (
     <>
       {!isAdding ? (
@@ -67,34 +69,21 @@ function EducationAddForm() {
           </Form.Group>
 
           <Form.Group className="mt-3">
-            <FormCheckField
-              label="재학중"
-              id="radio1"
-              value="재학중"
-              checked={addPosition === "재학중"}
-              setState={setAddPosition}
-            />
-            <FormCheckField
-              label="학사졸업"
-              id="radio2"
-              value="학사졸업"
-              checked={addPosition === "학사졸업"}
-              setState={setAddPosition}
-            />
-            <FormCheckField
-              label="석사졸업"
-              id="radio3"
-              value="석사졸업"
-              checked={addPosition === "석사졸업"}
-              setState={setAddPosition}
-            />
-            <FormCheckField
-              label="박사졸업"
-              id="radio4"
-              value="박사졸업"
-              checked={addPosition === "박사졸업"}
-              setState={setAddPosition}
-            />
+            {radioList.map((graduate, index) => {
+              return (
+                <FormCheck
+                  inline
+                  label={graduate}
+                  key={index}
+                  id={index}
+                  type="radio"
+                  name="position"
+                  value={graduate}
+                  checked={addPosition === graduate}
+                  onChange={(e) => setAddPosition(e.target.value)}
+                ></FormCheck>
+              );
+            })}
           </Form.Group>
           <Row className="justify-content-center" xs="auto">
             <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
