@@ -6,6 +6,8 @@ require("dotenv").config();
 const multer = require("multer");
 const AWS = require("aws-sdk");
 const { v4: uuidv4 } = require("uuid");
+import * as status from "../utils/status";
+import { RequestError } from "../utils/errors";
 
 const userAuthRouter = Router();
 
@@ -48,7 +50,7 @@ userAuthRouter.post(
 userAuthRouter.post("/user/register", async function (req, res, next) {
     try {
         if (is.emptyObject(req.body)) {
-            throw new Error(
+            throw new RequestError(
                 "headers의 Content-Type을 application/json으로 설정해주세요"
             );
         }
@@ -65,11 +67,14 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
             password,
         });
 
-        if (newUser.errorMessage) {
-            throw new Error(newUser.errorMessage);
+        if ("errorMessage" in newUser) {
+            throw new RequestError(
+                { status: newUser.statusCode },
+                newUser.errorMessage
+            );
         }
 
-        res.status(201).json(newUser);
+        res.status(status.STATUS_201_CREATED).json(newUser);
     } catch (error) {
         next(error);
     }
@@ -84,11 +89,14 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
         // 위 데이터를 이용하여 유저 db에서 유저 찾기
         const user = await userAuthService.getUser({ email, password });
 
-        if (user.errorMessage) {
-            throw new Error(user.errorMessage);
+        if ("errorMessage" in user) {
+            throw new RequestError(
+                { status: user.statusCode },
+                user.errorMessage
+            );
         }
 
-        res.status(200).send(user);
+        res.status(status.STATUS_200_OK).json(user);
     } catch (error) {
         next(error);
     }
@@ -101,7 +109,7 @@ userAuthRouter.get(
         try {
             // 전체 사용자 목록을 얻음
             const users = await userAuthService.getUsers();
-            res.status(200).send(users);
+            res.status(status.STATUS_200_OK).json(users);
         } catch (error) {
             next(error);
         }
@@ -119,11 +127,14 @@ userAuthRouter.get(
                 user_id,
             });
 
-            if (currentUserInfo.errorMessage) {
-                throw new Error(currentUserInfo.errorMessage);
+            if ("errorMessage" in currentUserInfo) {
+                throw new RequestError(
+                    { status: currentUserInfo.statusCode },
+                    currentUserInfo.errorMessage
+                );
             }
 
-            res.status(200).send(currentUserInfo);
+            res.status(status.STATUS_200_OK).json(currentUserInfo);
         } catch (error) {
             next(error);
         }
@@ -138,17 +149,27 @@ userAuthRouter.put(
             // URI로부터 사용자 id를 추출함.
             const user_id = req.params.id;
             // body data 로부터 업데이트할 사용자 정보를 추출함.
+            if (user_id !== req.currentUserId) {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    `Trying to set different user's Info`
+                );
+            }
             const name = req.body.name ?? null;
             const email = req.body.email ?? null;
             const password = req.body.password ?? null;
             const description = req.body.description ?? null;
             const profileImage = req.body.profileImage ?? null;
+            const user_category = req.body.user_category ?? null;
+            const user_mvp = req.body.user_mvp ?? null;
             const toUpdate = {
                 name,
                 email,
                 password,
                 description,
                 profileImage,
+                user_category,
+                user_mvp,
             };
 
             // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
@@ -157,11 +178,14 @@ userAuthRouter.put(
                 toUpdate,
             });
 
-            if (updatedUser.errorMessage) {
-                throw new Error(updatedUser.errorMessage);
+            if ("errorMessage" in updatedUser) {
+                throw new RequestError(
+                    { status: updatedUser.statusCode },
+                    updatedUser.errorMessage
+                );
             }
 
-            res.status(200).json(updatedUser);
+            res.status(status.STATUS_200_OK).json(updatedUser);
         } catch (error) {
             next(error);
         }
@@ -174,21 +198,54 @@ userAuthRouter.get(
     async function (req, res, next) {
         try {
             const user_id = req.params.id;
-            const currentUserInfo = await userAuthService.getUserInfo({
+            const userInfo = await userAuthService.getUserInfo({
                 user_id,
             });
 
-            if (currentUserInfo.errorMessage) {
-                throw new Error(currentUserInfo.errorMessage);
+            if ("errorMessage" in userInfo) {
+                throw new RequestError(
+                    { status: userInfo.statusCode },
+                    userInfo.errorMessage
+                );
             }
 
-            res.status(200).send(currentUserInfo);
+            res.status(status.STATUS_200_OK).json(userInfo);
         } catch (error) {
             next(error);
         }
     }
 );
+userAuthRouter.delete(
+    "/users/:id",
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const user_id = req.params.id;
+            if (user_id !== req.currentUserId) {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    `Trying to set different user's comments`
+                );
+            }
 
+            const currentUserInfo = await userAuthService.getUserInfo({
+                user_id,
+            });
+
+            if ("errorMessage" in currentUserInfo) {
+                throw new RequestError(
+                    { status: currentUserInfo.statusCode },
+                    currentUserInfo.errorMessage
+                );
+            }
+            const result = await userAuthService.deleteUser({ user_id });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
 userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
     res.status(200).send(
