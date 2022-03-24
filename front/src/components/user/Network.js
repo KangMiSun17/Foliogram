@@ -49,6 +49,7 @@ function Network() {
                 </Col>
               );
             }
+            return null;
           })}
         </Row>
       )}
@@ -62,6 +63,7 @@ function Network() {
                 </Col>
               );
             }
+            return null;
           })}
         </Row>
       )}
@@ -75,6 +77,7 @@ function Network() {
                 </Col>
               );
             }
+            return null;
           })}
         </Row>
       )}
