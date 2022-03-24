@@ -90,10 +90,10 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         // 윤성준: 이메일 인증용 코드입니다.
         // crypto 로 128비트 무작위 문자열을 생성해 그 주소로 메일을 보냅니다.
         // 계정 활성화 키는 일단 db에 저장합니다.
-        let activationKey;
-        crypto.generateKey("aes", { length: 128 }, (err, key) => {
-            activationKey = key.export().toString("hex");
-        });
+        let activationKey = crypto
+            .generateKeySync("aes", { length: 128 })
+            .export()
+            .toString("hex");
         // sendMail은 콜백을 등록하지 않으면 프로미스를 반환합니다.
         // 사용자가 이메일을 확인하는데 시간이 좀 필요할 것이므로 굳이 기다리지 않습니다.
         const activationPath =
@@ -111,6 +111,8 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
                         <a href="${activationPath}">
                             이 링크로 들어와 계정을 활성화해주세요
                         </a>
+                        <br>
+                        ${activationPath}
                     </body>
                 </html>
                 `,
@@ -282,9 +284,10 @@ userAuthRouter.get(
     "/users/:id/activate/:activationKey",
     async function (req, res, next) {
         try {
+            const id = req.params.id;
             const activationKey = req.params.activationKey;
             const user = await userAuthService.getUserInfo({
-                user_id: req.params.id,
+                user_id: id,
             });
             if ("errorMessage" in user) {
                 throw new RequestError(

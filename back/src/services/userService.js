@@ -126,7 +126,6 @@ class userAuthService {
         }
 
         user = await User.update({ user_id, newValue: { active } });
-
         return user.active === active;
     }
 
