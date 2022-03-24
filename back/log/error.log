@@ -1586,3 +1586,41 @@ RequestError: Trying to set different user's Info
   payload: { result: false }
 }
 
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:29:37 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 18:33:02 $
+RequestError: Trying to set different user's Info
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:153:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 18:45:30 $
+RequestError: id : {7a282a61-d92a-464c-bbc4-4591dc751149} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:131:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 18:45:39 $
+RequestError: id : {c5f6ff51-2a31-46b7-91a5-f19e619245da} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:131:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
