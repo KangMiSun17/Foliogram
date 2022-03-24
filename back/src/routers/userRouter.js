@@ -1,3 +1,5 @@
+import * as crypto from "crypto";
+import * as nodemailer from "nodemailer";
 import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
@@ -12,6 +14,16 @@ import { RequestError } from "../utils/errors";
 const userAuthRouter = Router();
 
 const upload = multer();
+if (!process.env.MAILER_PASSWORD) {
+    throw new Error("U FORGOT TO ADD MAILER_PASSWORD IN YOUR ENV");
+}
+const transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+        user: "team5portfolioservice@gmail.com",
+        pass: process.env.MAILER_PASSWORD,
+    },
+});
 
 userAuthRouter.post(
     "/user/profileImage",
@@ -74,11 +86,85 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
             );
         }
 
+        /* */
+        // 윤성준: 이메일 인증용 코드입니다.
+        // crypto 로 128비트 무작위 문자열을 생성해 그 주소로 메일을 보냅니다.
+        // 계정 활성화 키는 일단 db에 저장합니다.
+        let activationKey;
+        crypto.generateKey("aes", { length: 128 }, (err, key) => {
+            activationKey = key.export().toString("hex");
+        });
+        // sendMail은 콜백을 등록하지 않으면 프로미스를 반환합니다.
+        // 사용자가 이메일을 확인하는데 시간이 좀 필요할 것이므로 굳이 기다리지 않습니다.
+        const activationPath =
+            `localhost:${process.env.SERVER_PORT}/user/` +
+            `activate/${newUser.id}/${activationKey}`;
+        transport.sendMail({
+            from: "team5portfolioservice@gmail.com",
+            to: email,
+            subject: "포트폴리오 서비스 계정 활성화 메일",
+            html: `
+                <html>
+                    <body>
+                        <a href="${activationPath}">
+                            이 링크로 들어와 계정을 활성화해주세요
+                        </a>
+                    </body>
+                </html>
+                `,
+        });
+        if (
+            !(await userAuthService.setActivation({
+                user_id: newUser.id,
+                active: activationKey,
+            }))
+        ) {
+            throw new Error(
+                `Failed storing activation code for user {${newUser.id}}`
+            );
+        }
+        /* */
+
         res.status(status.STATUS_201_CREATED).json(newUser);
     } catch (error) {
         next(error);
     }
 });
+
+// 윤성준: 이메일 인증용 라우터입니다.
+// 여기로 들어왔다는 건 이메일을 받았다는 소리이기 때문에 코드가 복잡할 필요는 없습니다.
+userAuthRouter.get(
+    "/user/activate/:id/:activationKey",
+    async function (req, res, next) {
+        try {
+            const activationKey = req.params.activationKey;
+            const user = await userAuthService.getUserInfo({
+                user_id: req.params.id,
+            });
+            if ("errorMessage" in user) {
+                throw new RequestError(
+                    { status: user.statusCode },
+                    user.errorMessage
+                );
+            }
+
+            if (activationKey === user.active) {
+                await userAuthService.setActivation({
+                    user_id: id,
+                    active: "y",
+                });
+                res.status(status.STATUS_200_OK).json({ result: true });
+            } else {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    "Mismatching activation code"
+                );
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 userAuthRouter.post("/user/login", async function (req, res, next) {
     try {
@@ -93,6 +179,13 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
             throw new RequestError(
                 { status: user.statusCode },
                 user.errorMessage
+            );
+        }
+
+        if (user.active !== "y") {
+            throw new RequestError(
+                { status: status.STATUS_403_FORBIDDEN },
+                "Account not activated"
             );
         }
 

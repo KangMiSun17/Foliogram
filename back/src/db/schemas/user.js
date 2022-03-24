@@ -18,6 +18,18 @@ const UserSchema = new Schema(
             type: String,
             required: true,
         },
+        // This is account activation state.
+        // will be activated by verification email.
+        // Decided to make it string instead of bool because...
+        // well, ciphertext tends to become inordinately long.
+        // So we just store user's activation key here(temporarily) and just
+        // find it later when the user tries to activate his account.
+        active: {
+            type: String,
+            required: false,
+            // Needs to be "y" to be activated.
+            default: "n",
+        },
         description: {
             type: String,
             required: false,

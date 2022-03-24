@@ -109,6 +109,27 @@ class userAuthService {
         return user;
     }
 
+    /** 윤성준: 이메일 인증 전용 update 메서드입니다.
+     * setUser 를 사용하지 않는 이유는 보안 때문입니다.
+     * setUser 는 PUT 요청으로 일반 사용자 데이터를 수정할 때도 사용되므로 거기에서 active
+     * 필드를 통과시켜 주면 악의적인 PUT 요청으로 계정 활성화 상태를 바꿀 수 있습니다.
+     * 그러니까 우리는 다른 데이터 필드는 허용하지 않는 전용 메서드를 사용합니다.
+     */
+    static async setActivation({ user_id, active }) {
+        let user = await User.findById({ user_id });
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!user) {
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+
+        user = await User.update({ user_id, newValue: { active } });
+
+        return user.active === active;
+    }
+
     static async getUserInfo({ user_id }) {
         const user = await User.findById({ user_id });
 
