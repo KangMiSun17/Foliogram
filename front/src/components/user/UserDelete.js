@@ -5,11 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { UserStateContext } from "./../../App";
 import * as Api from "../../api";
 
+/**
+ * Delete User component
+ */
 function UserDelete() {
   const { isEditable } = useContext(OwnerContext);
   const userState = useContext(UserStateContext);
   const navigate = useNavigate();
 
+  /**
+   * onClick handler
+   * This function to delete a user
+   */
   const handleUserDelete = (e) => {
     e.preventDefault();
 

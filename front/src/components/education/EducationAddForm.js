@@ -34,7 +34,7 @@ function EducationAddForm() {
       setAdd({
         school: "",
         major: "",
-        position: "",
+        position: "재학중",
       });
     } catch (err) {
       console.log(err);

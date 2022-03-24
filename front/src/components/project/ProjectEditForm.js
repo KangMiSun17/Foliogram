@@ -14,10 +14,6 @@ function ProjectEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(ProjectFetchContext);
   const { id, title, description, from_date, to_date } =
     useContext(ProjectContext);
-  // const [editTitle, setEditTitle] = useState(title);
-  // const [editDescription, setEditDescription] = useState(description);
-  // const [startDate, setStartDate] = useState(toObjectDate(from_date));
-  // const [endDate, setEndDate] = useState(toObjectDate(to_date));
   const [edit, setEdit] = useState({
     title,
     description,
