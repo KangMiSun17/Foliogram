@@ -33,10 +33,7 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
         when_date: toStringDate(add.when_date),
       });
 
-      setCertificateList((cur) => {
-        const newCertificateList = [...cur, res.data];
-        return newCertificateList;
-      });
+      setCertificateList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log("Error: certificates/create post request fail", err);
     }
