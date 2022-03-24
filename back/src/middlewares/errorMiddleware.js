@@ -4,7 +4,24 @@ import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 const logger = new Logger({
     name: "errorMiddleware",
-    tee: [UNIFIED_LOG, Logger.generateLogPath("error.log")],
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath("error.log"),
+        Logger.generateLogPath("router.log"),
+        Logger.generateLogPath("service.log"),
+        ...[
+            "award",
+            "career",
+            "certificate",
+            "education",
+            "project",
+            "techstack",
+        ]
+            .map((mvp) => {
+                return [`${mvp}.log`, `${mvp}service.log`, `${mvp}router.log`];
+            })
+            .flat(),
+    ],
     tee_ignore_level: true,
     // debug_override: Math.max(1, Number(process.env.DEBUG ?? 0)),
 });
