@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
-import { CertificateContext } from "../common/context/Context";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
 
@@ -14,8 +13,12 @@ import DatePicker from "react-datepicker";
  * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({ setIsEdit, certificate, index }) {
-  const { setCertificateList } = useContext(CertificateContext);
+function CertificateEditForm({
+  setCertificateList,
+  setIsEdit,
+  certificate,
+  index,
+}) {
   const { id, title, description, when_date } = certificate;
   const [edit, setEdit] = useState({
     title,

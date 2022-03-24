@@ -25,6 +25,7 @@ function Certificate({ certificate, index, setCertificateList }) {
       {isEditing ? (
         <CertificateEditForm
           certificate={certificate}
+          setCertificateList={setCertificateList}
           setIsEdit={setIsEditing}
           index={index}
         />

@@ -21,7 +21,12 @@ function UserCard({
             alt="프로필 사진"
           />
         </Row>
-        <Card.Title>{user?.name}</Card.Title>
+        <Card.Title>
+          {user?.name}
+          <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
+            {user?.user_category}
+          </span>
+        </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
         <Card.Text>{user?.description}</Card.Text>
 

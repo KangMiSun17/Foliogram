@@ -3,7 +3,6 @@ import { Form } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate } from "../common/DateUtil";
 import { UserStateContext } from "../../App";
-import { CertificateContext } from "../common/context/Context";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
 
@@ -13,8 +12,7 @@ import DatePicker from "react-datepicker";
  * @param {function} props.setIsAdding This State is select show add screen or not show add screen
  * @returns {component} Certificate add Form
  */
-function CertificateAddForm({ setIsAdding }) {
-  const { setCertificateList } = useContext(CertificateContext);
+function CertificateAddForm({ setCertificateList, setIsAdding }) {
   const { user } = useContext(UserStateContext);
   const [add, setAdd] = useState({
     title: "",

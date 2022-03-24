@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Container } from "react-bootstrap";
-import { OwnerContext } from "./../common/context/Context";
+import { UserContext } from "./../common/context/Context";
 import { useNavigate } from "react-router-dom";
 import { UserStateContext } from "./../../App";
 import * as Api from "../../api";
@@ -9,7 +9,7 @@ import * as Api from "../../api";
  * Delete User component
  */
 function UserDelete() {
-  const { isEditable } = useContext(OwnerContext);
+  const { isEditable } = useContext(UserContext);
   const userState = useContext(UserStateContext);
   const navigate = useNavigate();
 

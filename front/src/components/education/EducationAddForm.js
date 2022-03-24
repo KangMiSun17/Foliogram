@@ -3,7 +3,6 @@ import { Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { UserContext, EducationFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
-import { FormCheckField } from "../common/Form";
 
 /** 학력을 추가하는 컴포넌트입니다.
  *

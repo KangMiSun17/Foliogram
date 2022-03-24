@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
 import { validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
+import { useNavigate } from "react-router-dom";
+import { DispatchContext } from "../../App";
 
 function UserEditForm({ user, setIsEditing, setUser }) {
   const [isEditPassword, setIsEditPassword] = useState(false);
@@ -14,6 +16,8 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     confirmPassword: "",
   });
   const [user_category, setUserCategory] = useState(user.user_category);
+  const dispatch = useContext(DispatchContext);
+  const navigate = useNavigate();
 
   const isPasswordValid = validatePassword(userEdit.newPassword);
   const isPasswordSame = userEdit.newPassword === userEdit.confirmPassword;
@@ -62,14 +66,12 @@ function UserEditForm({ user, setIsEditing, setUser }) {
       const updatedUser = res.data;
       // 해당 유저 정보로 user을 세팅함.
       setUser(updatedUser);
-      setUserEdit((prev) => ({
-        ...prev,
-        password: "",
-        newPassword: "",
-        confirmPassword: "",
-      }));
+      alert("비밀번호가 변경되었습니다. 다시 로그인해주세요.");
 
-      alert("비밀번호가 변경되었습니다.");
+      // 로그아웃
+      sessionStorage.removeItem("userToken");
+      dispatch({ type: "LOGOUT" });
+      navigate("/");
     } catch (err) {
       alert(`비밀번호 변경 실패 ${err.response.data.errorMessage}`);
       return;
