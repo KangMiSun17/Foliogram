@@ -11,9 +11,11 @@ import * as Api from "../../api";
 function EducationAddForm() {
   const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(EducationFetchContext);
-  const [addSchool, setAddSchool] = useState("");
-  const [addMajor, setAddMajor] = useState("");
-  const [addPosition, setAddPosition] = useState("재학중");
+  const [add, setAdd] = useState({
+    school: "",
+    major: "",
+    position: "재학중",
+  });
   const [isAdding, setIsAdding] = useState(false);
 
   //확인 버튼 누를 시 실행
@@ -24,14 +26,16 @@ function EducationAddForm() {
     try {
       await Api.post(`education/create`, {
         user_id: portfolioOwnerId,
-        school: addSchool,
-        major: addMajor,
-        position: addPosition,
+        school: add.school,
+        major: add.major,
+        position: add.position,
       });
 
-      setAddSchool("");
-      setAddMajor("");
-      setAddPosition("재학중");
+      setAdd({
+        school: "",
+        major: "",
+        position: "",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -48,20 +52,24 @@ function EducationAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="school">
             <Form.Control
               type="text"
               placeholder="학교 이름"
-              value={addSchool}
-              onChange={(e) => setAddSchool(e.target.value)}
+              value={add.school}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="major">
             <Form.Control
               type="text"
               placeholder="전공"
-              value={addMajor}
-              onChange={(e) => setAddMajor(e.target.value)}
+              value={add.major}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
@@ -73,8 +81,10 @@ function EducationAddForm() {
               type="radio"
               name="position"
               value="재학중"
-              checked={addPosition === "재학중"}
-              onChange={(e) => setAddPosition(e.target.value)}
+              checked={add.position === "재학중"}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+              }
             ></FormCheck>
             <FormCheck
               inline
@@ -83,8 +93,10 @@ function EducationAddForm() {
               type="radio"
               name="position"
               value="학사졸업"
-              checked={addPosition === "학사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
+              checked={add.position === "학사졸업"}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+              }
             ></FormCheck>
             <FormCheck
               inline
@@ -93,8 +105,10 @@ function EducationAddForm() {
               type="radio"
               name="position"
               value="석사졸업"
-              checked={addPosition === "석사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
+              checked={add.position === "석사졸업"}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+              }
             ></FormCheck>
             <FormCheck
               inline
@@ -103,8 +117,10 @@ function EducationAddForm() {
               type="radio"
               name="position"
               value="박사졸업"
-              checked={addPosition === "박사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
+              checked={add.position === "박사졸업"}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+              }
             ></FormCheck>
           </Form.Group>
 

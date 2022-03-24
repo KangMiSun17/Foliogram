@@ -26,17 +26,14 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
     event.preventDefault();
 
     try {
-      const res = await Api.post("certificates/create", {
+      const res = await Api.post("certificate/create", {
         user_id: user.id,
         title: add.title,
         description: add.description,
         when_date: toStringDate(add.when_date),
       });
 
-      setCertificateList((cur) => {
-        const newCertificateList = [...cur, res.data];
-        return newCertificateList;
-      });
+      setCertificateList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log("Error: certificates/create post request fail", err);
     }

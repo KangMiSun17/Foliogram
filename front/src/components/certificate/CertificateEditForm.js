@@ -40,8 +40,7 @@ function CertificateEditForm({
 
       setCertificateList((cur) => {
         cur[index] = res.data;
-        const newCertificateList = [...cur];
-        return newCertificateList;
+        return [...cur];
       });
     } catch (err) {
       console.log("Error: certificates put request fail", err);
