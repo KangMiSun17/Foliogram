@@ -60,6 +60,17 @@ function NavBar({ navList, setNavList, setTogglePage }) {
     });
   }
 
+  function handleShowAll(e) {
+    setTogglePage(true);
+    navList.map((compAr, index, array) => {
+      compAr.show = false;
+      array.splice(index, 1, compAr);
+      return null;
+    });
+    const newArray = [...navList];
+    setNavList(newArray);
+  }
+
   ///@ to show only one page when users click each nav button
   function handleNavBtn(e) {
     const name = e.target.name;
@@ -71,18 +82,18 @@ function NavBar({ navList, setNavList, setTogglePage }) {
       setTogglePage(false);
       setPickSameName(name);
     } else if (pickSameName === name) {
-      setTogglePage((cur) => !cur);
-      setPickSameName(name);
+      // setTogglePage((cur) => !cur);
+      // setPickSameName(name);
     }
 
     //한페이지만 보여주는 로직
     navList.map((compAr, index, array) => {
       if (compAr.navName === name) {
-        compAr.show = true;
+        compAr.show = !compAr.show;
         array.splice(index, 1, compAr);
       } else {
-        compAr.show = false;
-        array.splice(index, 1, compAr);
+        // compAr.show = false;
+        // array.splice(index, 1, compAr);
       }
       return null;
     });
@@ -117,9 +128,12 @@ function NavBar({ navList, setNavList, setTogglePage }) {
           return null;
         })}
 
-        <Dropdown className="ms-auto">
+        <Button className="ms-auto" variant="light" onClick={handleShowAll}>
+          전체보기
+        </Button>
+        <Dropdown>
           <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
-            추가+
+            추가 +
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {navList.map((compAr, index) => {
@@ -144,14 +158,13 @@ function NavBar({ navList, setNavList, setTogglePage }) {
         </Dropdown>
         <Dropdown style={{ marginRight: 20 }}>
           <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
-            삭제-
+            삭제 -
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {navList.map((compAr, index) => {
               if (compAr.state === true) {
                 return (
                   <Dropdown.Item
-                    compAr={compAr}
                     key={index}
                     name={compAr.navName}
                     onClick={(e) => {
