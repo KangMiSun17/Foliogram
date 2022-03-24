@@ -31,11 +31,11 @@ function EducationAddForm() {
         position: add.position,
       });
 
-      // setAdd({
-      //   school: "",
-      //   major: "",
-      //   position: "",
-      // });
+      setAdd({
+        school: "",
+        major: "",
+        position: "",
+      });
     } catch (err) {
       console.log(err);
     }
