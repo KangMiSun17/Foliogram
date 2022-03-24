@@ -26,7 +26,7 @@ function CertificateAddForm({ setCertificateList, setIsAdding }) {
     event.preventDefault();
 
     try {
-      const res = await Api.post("certificates/create", {
+      const res = await Api.post("certificate/create", {
         user_id: user.id,
         title: add.title,
         description: add.description,
