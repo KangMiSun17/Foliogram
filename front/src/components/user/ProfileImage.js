@@ -46,7 +46,7 @@ function ProfileImage({ user, setUser, setProfileImage }) {
                 <Form onSubmit={onUploadImage}>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>한개의 사진을 추가해주세요.</Form.Label>
-                        <Form.Control type="file" name="File" single />
+                        <Form.Control type="file" name="File" single="true" />
                     </Form.Group>
                     <Form.Group as={Row} className="mt-3 text-center">
                         <Col sm={{ span: 20 }}>

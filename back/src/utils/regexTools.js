@@ -1,3 +1,8 @@
+/** @const {RegExp} RE_DATE_PATTERN - Matchs YYYY-MM-DD format. */
+const RE_DATE_PATTERN = new RegExp(
+    /^(?<year>[0-9]{4})-(?<month>[01][0-9])-(?<day>[0-3][0-9])$/
+);
+
 /** Escape regex special characters.
  *
  * @param {String} str - String you want to escape.
@@ -17,4 +22,4 @@ function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export default escapeRegex;
+export { escapeRegex, RE_DATE_PATTERN };

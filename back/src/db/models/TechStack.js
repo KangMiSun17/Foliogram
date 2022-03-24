@@ -1,9 +1,9 @@
-import { AwardModel } from "../schemas/award";
+import { TechStackModel } from "../schemas/techstack";
 import { BaseModel } from "./BaseModelWrapper";
 
 /** Base class for Models. Implements simple CRUD interface.
  *
- * @prop {AwardModel} Model
+ * @prop {TechStackModel} Model
  * @method static async create(record)
  *  - Create new record.
  * @method static async find(query)
@@ -15,8 +15,8 @@ import { BaseModel } from "./BaseModelWrapper";
  * @method static async delete({ id })
  *  - Delete a record.
  */
-class Award extends BaseModel {
-    static Model = AwardModel;
+class TechStack extends BaseModel {
+    static Model = TechStackModel;
 }
 
-export { Award };
+export { TechStack };

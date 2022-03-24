@@ -2,158 +2,160 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { certificateService } from "../services/certificateService";
+import { RequestError } from "../utils/errors";
+import * as status from "../utils/status";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 const certificateRouter = Router();
 
-certificateRouter.post(
-    "/certificates/create",
+/* ==========================================================================
+ * -------------            CopyPasta Constants here            -------------
+ * ========================================================================== */
+const SERVICE = certificateService;
+const ROUTER = certificateRouter;
+const ROUTE_TOP = "certificate";
+
+const logger = new Logger({
+    name: `${ROUTE_TOP}Router`,
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath(`${ROUTE_TOP}.log`),
+        Logger.generateLogPath(`router.log`),
+        Logger.generateLogPath(`${ROUTE_TOP}router.log`),
+    ],
+    default_level: 2,
+});
+
+ROUTER.post(
+    `/${ROUTE_TOP}/create`,
     login_required,
     async function (req, res, next) {
         try {
-            //if req.body is not exist,return Error message
+            logger.log({}, `POST /${ROUTE_TOP}/create`);
+
             if (is.emptyObject(req.body)) {
-                throw new Error(
-                    "headers의 Content-Type을 application/json으로 설정해주세요"
+                throw new RequestError(
+                    `headers["Content-Type"] needs to be "application/json"`
                 );
             }
 
-            // get informattion from req
-            const title = req.body.title ?? null;
-            const when_date = req.body.when_date ?? null;
-            const user_id = req.body.user_id ?? null;
-            // title,when_date,user_id are required
-            if (!title || !when_date || !user_id) {
-                throw new Error("title,when_date and user_id are required.");
-            }
-            //if user have not correct user_id,return error
-            if (user_id !== req.currentUserId) {
-                throw new Error(
-                    "Trying to create different user's certificate"
-                );
-            }
-            const description = req.body.description ?? null;
-
-            // add a certificate with new information
-            const newCertificate = await certificateService.addCertificate({
-                title,
-                description,
-                when_date,
-                user_id,
+            const payload = { ...req.body };
+            const created = await SERVICE.add({
+                currentUserId: req.currentUserId,
+                ...payload,
             });
-
-            res.status(201).json(newCertificate);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-certificateRouter.get(
-    "/certificates/:id",
-    login_required,
-    async function (req, res, next) {
-        try {
-            //get id from req.params
-            const id = req.params.id;
-            //get one certificate with id of certificate
-            const certificate = await certificateService.getCertificate({ id });
-            //if certificate is not exist,return error message
-            if (certificate.errorMessage) {
-                throw new Error(certificate.errorMessage);
+            // See if the create contains errorinfo instead.
+            if ("errorMessage" in created) {
+                throw new RequestError(
+                    { status: created.statusCode },
+                    created.errorMessage
+                );
             }
-            res.status(200).send(certificate);
+
+            res.status(status.STATUS_201_CREATED).json(created);
         } catch (error) {
             next(error);
         }
     }
 );
 
-certificateRouter.get(
-    "/certificatelist/:user_id",
+ROUTER.get(
+    `/${ROUTE_TOP}s/:id`,
+    login_required,
+    async function (req, res, next) {
+        // Here we get the id of an award and give back a single award.
+        try {
+            const id = req.params.id;
+            logger.log({}, `GET /${ROUTE_TOP}s/${id}`);
+
+            const found = await SERVICE.get({ id });
+            if ("errorMessage" in found) {
+                throw new RequestError(
+                    { status: found.statusCode },
+                    found.errorMessage
+                );
+            }
+
+            res.status(status.STATUS_200_OK).json(found);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+ROUTER.get(
+    `/${ROUTE_TOP}list/:user_id`,
     login_required,
     async function (req, res, next) {
         try {
-            //get id of user from req.params
             const user_id = req.params.user_id;
-            //get user's certificates with id of user
-            const certificates = await certificateService.getCertificates({
-                user_id,
-            });
-            res.status(200).send(certificates);
+            logger.log({}, `GET /${ROUTE_TOP}list/${user_id}`);
+
+            const found = await SERVICE.getSiblings({ user_id });
+
+            res.status(status.STATUS_200_OK).json(found);
         } catch (error) {
             next(error);
         }
     }
 );
 
-certificateRouter.delete(
-    "/certificates/:id",
+ROUTER.put(
+    `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
         try {
-            //get id of education from req.params
-            const id = req.params.id;
-            const user_id = req.currentUserId;
-            const certificate = await certificateService.getCertificate({ id });
-            //if certificate is not exist,throw errorMessage
-            if (certificate.errorMessage) {
-                throw new Error(
-                    `이미 삭제 되었거나 존재하지 않아 삭제에 실패하였습니다.`
+            if (is.emptyObject(req.body)) {
+                throw new RequestError(
+                    `headers["Content-Type"] needs to be "application/json"`
                 );
             }
-            //if user have correct user_id,process delete
-            if (user_id === certificate.user_id) {
-                //get user's certificates with id of user
-                const result = await certificateService.deleteCertificate({
-                    id,
-                });
-                res.status(200).send(result);
-            } else {
-                throw new Error(
-                    `User is not an owner of the certificate id ${id}`
+
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+                ...req.body,
+            };
+
+            logger.log({}, `PUT /${ROUTE_TOP}s/:${req.params.id}`);
+            logger.log({}, `payload =`, payload);
+
+            const updated = await SERVICE.set(payload);
+            if ("errorMessage" in updated) {
+                throw new RequestError(
+                    { status: updated.statusCode },
+                    updated.errorMessage
                 );
             }
+
+            res.status(status.STATUS_200_OK).json(updated);
         } catch (error) {
             next(error);
         }
     }
 );
 
-certificateRouter.put(
-    "/certificates/:id",
+ROUTER.delete(
+    `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
         try {
-            const id = req.params.id;
-            const user_id = req.currentUserId;
-            const certificate = await certificateService.getCertificate({ id });
-            //if certificate is not exist,return error
-            if (certificate.errorMessage) {
-                throw new Error(
-                    `이미 삭제된 또는 존재하지 않아 수정에 실패하였습니다.`
-                );
-            }
-            //if user have correct user_id,process update
-            if (user_id === certificate.user_id) {
-                const title = req.body.title ?? null;
-                const description = req.body.description ?? null;
-                const when_date = req.body.when_date ?? null;
-                const toUpdate = { title, description, when_date };
+            const payload = {
+                id: req.params.id,
+                currentUserId: req.currentUserId,
+            };
 
-                //update get one certificate with id of certificate
-                const updatedCertificate =
-                    await certificateService.setCertificate({
-                        id,
-                        toUpdate,
-                        certificate,
-                    });
-                res.status(200).send(updatedCertificate);
-            } else {
-                //if user have not correct user_id,return error
-                throw new Error(
-                    `User is not an owner of the certificate id ${id}`
+            logger.log({}, `DELETE /${ROUTE_TOP}s/:${payload.id}`);
+
+            const deleted = await SERVICE.del(payload);
+            if ("errorMessage" in deleted) {
+                throw new RequestError(
+                    { status: deleted.statusCode },
+                    deleted.errorMessage
                 );
             }
+
+            res.status(status.STATUS_200_OK).json({ result: true });
         } catch (error) {
             next(error);
         }

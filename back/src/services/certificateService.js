@@ -1,111 +1,56 @@
 import { Certificate } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { v4 as uuidv4 } from "uuid";
+import { SubrecordService } from "./BaseService";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
-class certificateService {
-    /**
-     * create new Certificate in DB using method of Certificate class
-     *
-     * @param {string} title title of certificate
-     * @param {string} description description of certificate
-     * @param {string} user_id id of user
-     * @param {string} when_date acquire date of certificate
-     * @return {object} return new created certificate
-     */
-    static async addCertificate({ title, description, user_id, when_date }) {
-        //give a unique string
-        const id = uuidv4();
-        const newCertificate = { id, user_id, title, when_date };
+class CertificateService extends SubrecordService {
+    // Inherit from BaseService
+    Model = Certificate;
 
-        // if description is null,store description field default string in schemas
-        if (description) {
-            newCertificate.description = description;
-        }
-        // store in DB
-        const createdNewCertificate = await Certificate.create({
-            newCertificate,
-        });
+    // deletable = true;
 
-        return createdNewCertificate;
+    requiredFields = Object.freeze(["id", "user_id", "title", "when_date"]);
+    optionalFields = Object.freeze(["description"]);
+    settableFields = Object.freeze(["title", "description", "when_date"]);
+    // uniqueFields = Object.freeze([]);
+    // searchableFields = Object.freeze([]);
+
+    // authField = "user_id";
+    // refFields = Object.freeze({});
+
+    allFields = Object.freeze([...this.requiredFields, ...this.optionalFields]);
+
+    // logger;
+
+    // Inherit from SubrecordService
+    // ownerField = "user_id";
+
+    // Here we override some methods to reduce degree of freedom.
+    // Too many choices can be bad if the routers get funny ideas.
+    // Freedom is very expensive indeed.
+
+    async get({ id }) {
+        return super.get({ id });
     }
 
-    /**
-     * find and get one Certificate in DB using method of Certificate class
-     *
-     * @param {string} id id of certificate
-     * @return {object} return finded certificate
-     */
-    static async getCertificate({ id }) {
-        const certificate = await Certificate.findById({ id });
-        //if certificate is not exist in DB,return error message
-        if (!certificate) {
-            const errorMessage = "삭제 되었거나 존재하지 않는 자격증입니다.";
-            return { errorMessage };
-        }
-        return certificate;
+    async del({ id, currentUserId }) {
+        return super.del({ id, currentUserId });
     }
 
-    /**
-     * delete one Certificate in DB using method of Certificate class
-     *
-     * @param {string} id id of certificate
-     * @return {object} return result of delete process
-     */
-    static async deleteCertificate({ id }) {
-        const { deletedCount } = await Certificate.delete({ id });
-        return { result: true };
-    }
-
-    /**
-     * find and get Certificates of user in DB using method of Certificate class
-     *
-     * @param {string} user_id id of user
-     * @return {object} return finded certificates
-     */
-    static async getCertificates({ user_id }) {
-        const certificates = await Certificate.searchByUserId({ user_id });
-        return certificates;
-    }
-
-    /**
-     * update and get one Certificate in DB using method of Certificate class
-     *
-     * @param {string} id id of certificate
-     * @param {object} toUpdate information to update with certificate
-     * @return {object} return updated certificate
-     */
-    static async setCertificate({ id, toUpdate, certificate }) {
-        // update with keys which is not null
-        if (toUpdate.title) {
-            const fieldToUpdate = "title";
-            const newValue = toUpdate.title;
-            certificate = await Certificate.update({
-                id,
-                fieldToUpdate,
-                newValue,
-            });
-        }
-
-        if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
-            certificate = await Certificate.update({
-                id,
-                fieldToUpdate,
-                newValue,
-            });
-        }
-
-        if (toUpdate.when_date) {
-            const fieldToUpdate = "when_date";
-            const newValue = toUpdate.when_date;
-            certificate = await Certificate.update({
-                id,
-                fieldToUpdate,
-                newValue,
-            });
-        }
-        return certificate;
+    async getParent({ id }) {
+        return super.getParent({ id });
     }
 }
+
+const logger = new Logger({
+    name: "certificateService",
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath("certificate.log"),
+        Logger.generateLogPath("service.log"),
+        Logger.generateLogPath("certificateservice.log"),
+    ],
+});
+
+const certificateService = new CertificateService({ logger });
 
 export { certificateService };
