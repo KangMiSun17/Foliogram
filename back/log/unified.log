@@ -951,3 +951,716 @@ RequestError: record {00ff58b6-77f5-472d-bad9-e44b9d91c177} not found
                  Thu Mar 24 2022 10:02:14 GMT+0900 (대한민국 표준시)
 ===============================================================================
 
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:25:51 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:31:25 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 14:35:31 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:144:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:38:24 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:41:51 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:42:38 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 14:54:17 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 15:50:15 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 15:59:41 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:00:10 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:00:36 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:19:43 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 16:25:00 $
+ReferenceError: r_mvp is not defined
+    at forEach (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\services\/userService.js:94:17)
+    at Array.forEach (<anonymous>)
+    at Function.setUser (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\services\/userService.js:89:34)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:168:33
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:25:26 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:26:30 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:27:53 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 16:32:31 $
+Error: 해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:90:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+errorMiddleware @ 22-03-24 / 16:33:06 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:144:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:36:58 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:37:39 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:37:51 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 16:39:05 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 16:41:49 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:212:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 16:41:56 $
+Error: 해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:223:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:12:37 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:14:32 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:15:37 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:15:46 $
+ReferenceError: Cannot access 'id' before initialization
+    at Function.addUser (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\services\/userService.js:13:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:64:25
+
+errorMiddleware @ 22-03-24 / 17:16:28 $
+ReferenceError: Cannot access 'id' before initialization
+    at Function.addUser (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\services\/userService.js:13:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:64:25
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:16:41 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:17:59 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:18:04 $
+Error: id : {test5@naver.com} is already exist
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:18:43 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:19:17 $
+ReferenceError: comment is not defined
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:72:27
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:19:38 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:19:41 $
+RequestError: id : {test5@naver.com} is already exist
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 400,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:20:28 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:20:34 $
+RequestError: id : {test5@naver.com} is already exist
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 400,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:20:45 $
+RequestError: null
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 400,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:22:03 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:22:51 $
+RequestError: id : {test5@naver.com} is already exist
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 400,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:25:22 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:26:40 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:28:11 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:28:14 $
+RequestError: id : {test5@naver.com} is already exist
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:71:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 401,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:28:55 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:29:09 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:29:14 $
+RequestError: id : {ktkim@elicer.com} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:29:24 $
+RequestError: password is not correct
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19 {
+  status: 401,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:29:30 $
+RequestError: password is not correct
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19 {
+  status: 401,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:29:34 $
+RequestError: null
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19 {
+  status: 400,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:29:44 $
+RequestError: password is not correct
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19 {
+  status: 401,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:30:37 $
+RequestError: null
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:93:19 {
+  status: 400,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:31:26 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:32:22 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:32:43 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:33:06 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:33:35 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:33:51 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:34:36 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:150:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:35:12 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:35:21 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:150:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:37:14 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:38:56 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:39:21 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:39:25 $
+RequestError: id : {7a282a61-d92a-464c-bbc4-4591dc751149} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:179:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:39:30 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:150:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:40:02 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:40:29 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:41:25 $
+RequestError: id : {7a282a61-d92a-464c-bbc4-4591dc751149} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:131:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:42:01 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:42:25 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:42:49 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:45:22 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:45:38 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 17:45:42 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:226:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+errorMiddleware @ 22-03-24 / 17:45:45 $
+RequestError: id : {c5f6ff51-2a31-46b7-91a5-f19e619245da} is not found
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:237:23
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  status: 404,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:51:00 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:52:05 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 17:59:43 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:00:10 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:01:14 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:03:08 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:03:48 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:10:20 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:11:26 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 18:12:59 $
+SyntaxError: Unexpected token } in JSON at position 74
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (node:events:532:35)
+    at IncomingMessage.emit (node:domain:475:12)
+    at endReadableNT (node:internal/streams/readable:1343:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  expose: true,
+  statusCode: 400,
+  status: 400,
+  body: '{\r\n' +
+    '    "user_mvp":{"navName":"학력","state":true},\r\n' +
+    '    "user_catefory:음악"\r\n' +
+    '}',
+  type: 'entity.parse.failed'
+}
+
+errorMiddleware @ 22-03-24 / 18:13:08 $
+SyntaxError: Unexpected token } in JSON at position 74
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (node:events:532:35)
+    at IncomingMessage.emit (node:domain:475:12)
+    at endReadableNT (node:internal/streams/readable:1343:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  expose: true,
+  statusCode: 400,
+  status: 400,
+  body: '{\r\n' +
+    '    "user_mvp":{"navName":"학력","state":true},\r\n' +
+    '    "user_category:음악"\r\n' +
+    '}',
+  type: 'entity.parse.failed'
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:15:56 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:16:06 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:16:16 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:16:30 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 18:18:09 $
+RequestError: Trying to set different user's comments
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:153:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
+
+
+===============================================================================
+                 Thu Mar 24 2022 18:18:39 GMT+0900 (대한민국 표준시)
+===============================================================================
+
+errorMiddleware @ 22-03-24 / 18:18:43 $
+RequestError: Trying to set different user's Info
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\routers\/userRouter.js:153:23
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at login_required (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\src\middlewares\/login_required.js:23:9)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:281:22
+    at param (C:\Users\정현\Desktop\개인프로젝트\MVP\portfolio\back\node_modules\express\lib\router\index.js:354:14) {
+  status: 403,
+  payload: { result: false }
+}
+
