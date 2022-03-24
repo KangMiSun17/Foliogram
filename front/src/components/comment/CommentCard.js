@@ -4,7 +4,7 @@ import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
 import * as Api from "../../api";
 import { toObjectDate, toStringDate } from "../common/DateUtil";
-import { int } from "nunjucks/src/filters";
+// import { int } from "nunjucks/src/filters";
 
 /** comment card component
  *
@@ -16,7 +16,7 @@ function CommentCard({ comment, index }) {
   const setComments = useContext(CommentFetchContext);
   const { user_id } = useContext(UserContext);
   const [hour, setHour] = useState(
-    int(comment.createdAt.split("T")[1].split(".")[0].split(":")[0]) + 9
+    Number(comment.createdAt.split("T")[1].split(".")[0].split(":")[0]) + 9
   );
 
   if (24 <= hour || hour < 10) {
