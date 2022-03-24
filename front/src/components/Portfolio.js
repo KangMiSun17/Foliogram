@@ -60,14 +60,13 @@ function Portfolio() {
     portfolioOwnerId: portfolioOwner.id,
     user_id: userState.user?.id,
   };
-
   return (
     <UserContext.Provider value={userContext}>
       <Container fluid>
         <Row>
           <Col xl="3">
             <User />
-            <Comment user_id={userState.user?.id} />
+            <Comment />
           </Col>
           <Col>
             <Educations />

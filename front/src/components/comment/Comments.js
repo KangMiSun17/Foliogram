@@ -11,7 +11,7 @@ import CommentAddForm from "./CommentAddForm";
  */
 function Comments() {
   const [reFetching, setReFetching] = useState(new Date());
-  const { portfolioOwnerId, user_id } = useContext(UserContext);
+  const { portfolioOwnerId } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   //get comment list
   useEffect(() => {
