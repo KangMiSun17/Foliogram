@@ -29,6 +29,41 @@ const UserSchema = new Schema(
             default:
                 "https://kr.object.ncloudstorage.com/team5/initialProfileImage.png",
         },
+        user_category: {
+            type: String,
+            required: false,
+            default: "전체",
+        },
+        user_mvp: {
+            type: Array,
+            required: false,
+            default: [
+                {
+                    navName: "학력",
+                    state: true,
+                },
+                {
+                    navName: "수상이력",
+                    state: true,
+                },
+                {
+                    navName: "프로젝트",
+                    state: true,
+                },
+                {
+                    navName: "자격증",
+                    state: true,
+                },
+                {
+                    navName: "경력",
+                    state: false,
+                },
+                {
+                    navName: "기술스택",
+                    state: false,
+                },
+            ],
+        },
     },
     {
         timestamps: true,
