@@ -2,15 +2,17 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import * as status from "../utils/status";
 
 class userAuthService {
     static async addUser({ name, email, password }) {
         // 이메일 중복 확인
         const user = await User.findByEmail({ email });
         if (user) {
-            const errorMessage =
-                "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
-            return { errorMessage };
+            return {
+                errorMessage: `id : {${email}} is already exist`,
+                statusCode: status.STATUS_401_UNAUTHORIZED,
+            };
         }
 
         // 비밀번호 해쉬화
@@ -22,7 +24,6 @@ class userAuthService {
 
         // db에 저장
         const createdNewUser = await User.create({ newUser });
-        createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
         return createdNewUser;
     }
@@ -31,9 +32,10 @@ class userAuthService {
         // 이메일 db에 존재 여부 확인
         const user = await User.findByEmail({ email });
         if (!user) {
-            const errorMessage =
-                "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
+            return {
+                errorMessage: `id : {${email}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
         }
 
         // 비밀번호 일치 여부 확인
@@ -43,9 +45,10 @@ class userAuthService {
             correctPasswordHash
         );
         if (!isPasswordCorrect) {
-            const errorMessage =
-                "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
+            return {
+                errorMessage: `password is not correct`,
+                statusCode: status.STATUS_401_UNAUTHORIZED,
+            };
         }
 
         // 로그인 성공 -> JWT 웹 토큰 생성
@@ -64,7 +67,6 @@ class userAuthService {
             email,
             name,
             description,
-            errorMessage: null,
         };
 
         return loginUser;
@@ -81,40 +83,28 @@ class userAuthService {
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
-            const errorMessage =
-                "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
         }
-
-        // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.name) {
-            const fieldToUpdate = "name";
-            const newValue = toUpdate.name;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.email) {
-            const fieldToUpdate = "email";
-            const newValue = toUpdate.email;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.password) {
-            const fieldToUpdate = "password";
-            const newValue = toUpdate.password;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
-        }
-        if (toUpdate.profileImage) {
-            const fieldToUpdate = "profileImage";
-            const newValue = toUpdate.profileImage;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
-        }
+        Object.entries(toUpdate).forEach(([key, item]) => {
+            //만약 업데이트내용이 없다면 업데이트할 데이터에 기존의 user데이터에 있던값으로 저장!
+            //업데이트할 내용이 있는데 그 내용이 user_mvp일때만 조건문실행!(업데이트할 내용이있는 다른 key들은 이미 toUpdate에 저장되어있어 기존내용필요 X)
+            if (item === null) {
+                toUpdate[key] = user[key];
+            } else if (key === "user_mvp") {
+                const updateUserMvp = toUpdate.user_mvp;
+                toUpdate.user_mvp = user.user_mvp.map(({ navName, state }) => {
+                    if (navName === updateUserMvp.navName) {
+                        return updateUserMvp;
+                    } else {
+                        return { navName, state };
+                    }
+                });
+            }
+        });
+        user = await User.update({ user_id, newValue: toUpdate });
 
         return user;
     }
@@ -124,12 +114,17 @@ class userAuthService {
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
-            const errorMessage =
-                "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
         }
 
         return user;
+    }
+    static async deleteUser({ user_id }) {
+        const { deletedCount } = await User.delete({ id: user_id });
+        return { result: true };
     }
 }
 
