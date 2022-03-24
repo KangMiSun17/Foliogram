@@ -60,6 +60,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
     });
   }
 
+  ///@ show all
   function handleShowAll(e) {
     setTogglePage(true);
     navList.map((compAr, index, array) => {
@@ -84,6 +85,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
     } else if (pickSameName === name) {
       // setTogglePage((cur) => !cur);
       // setPickSameName(name);
+      setTogglePage(false);
     }
 
     //한페이지만 보여주는 로직
