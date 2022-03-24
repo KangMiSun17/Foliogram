@@ -27,14 +27,10 @@ function Portfolio() {
   const userState = useContext(UserStateContext);
 
   ///@ nav state
-  const [navList, setNavList] = useState([
-    { compo: <Educations />, navName: "학력", state: true, show: false },
-    { compo: <Awards />, navName: "수상이력", state: true, show: false },
-    { compo: <Projects />, navName: "프로젝트", state: true, show: false },
-    { compo: <Certificates />, navName: "자격증", state: true, show: false },
-    { compo: <Career />, navName: "경력", state: false, show: false },
-    { compo: <TechStacks />, navName: "기술스택", state: false, show: false },
-  ]);
+  // const [navFromBack, setNavFromBack] = useState([]);
+
+  const newAr = [];
+  const [navList, setNavList] = useState(newAr);
 
   ///@ toggle between showing components which have true state and showing only one component when navBar button is clicked(not the add or del button on the right side.)
   const [togglePage, setTogglePage] = useState(true);
@@ -44,6 +40,21 @@ function Portfolio() {
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
+    // setNavFromBack(navData);
+    let fromBack = res.data.user_mvp;
+    const compo = [
+      { compo: <Educations />, show: false },
+      { compo: <Awards />, show: false },
+      { compo: <Projects />, show: false },
+      { compo: <Certificates />, show: false },
+      { compo: <Career />, show: false },
+      { compo: <TechStacks />, show: false },
+    ];
+
+    for (let i = 0; i < compo.length; i++) {
+      newAr.push({ ...compo[i], ...fromBack[i] });
+    }
+    setNavList(newAr);
     // portfolioOwner을 해당 사용자 정보로 세팅함.
     setPortfolioOwner(ownerData);
     // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.

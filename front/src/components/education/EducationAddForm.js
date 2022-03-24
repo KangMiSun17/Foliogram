@@ -76,6 +76,7 @@ function EducationAddForm() {
                 <FormCheck
                   inline
                   label={graduate}
+                  key={index}
                   id={index}
                   type="radio"
                   name="position"

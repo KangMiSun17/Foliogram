@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Stack, Dropdown, Button } from "react-bootstrap";
-import styled from "styled-components";
+import { PortfolioOwnerContext } from "../common/context/Context";
+import * as Api from "../../api";
 
 function NavBar({ navList, setNavList, setTogglePage }) {
+  const userId = useContext(PortfolioOwnerContext);
   const [pickSameName, setPickSameName] = useState("");
+
+  ///@ put addBtn request
+  async function addHandleNavState(e) {
+    const name = e.target.name;
+
+    await Api.put(`users/${userId}`, {
+      user_mvp: { navName: name, state: true },
+    });
+  }
 
   ///@ to make addBtn List
   function addHandleNav(e) {
@@ -40,9 +51,18 @@ function NavBar({ navList, setNavList, setTogglePage }) {
     setNavList(newArray);
   }
 
-  function handleNavBtn(e) {
+  ///@ put delBtn request
+  async function delHandleNavState(e) {
     const name = e.target.name;
 
+    await Api.put(`users/${userId}`, {
+      user_mvp: { navName: name, state: false },
+    });
+  }
+
+  ///@ to show only one page when users click each nav button
+  function handleNavBtn(e) {
+    const name = e.target.name;
     // 한번 더 누르면 전체보기로 변하는 로직
     if (pickSameName === "") {
       setTogglePage(false);
@@ -64,6 +84,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
         compAr.show = false;
         array.splice(index, 1, compAr);
       }
+      return null;
     });
     const newArray = [...navList];
     setNavList(newArray);
@@ -78,8 +99,8 @@ function NavBar({ navList, setNavList, setTogglePage }) {
               <Button
                 variant="none"
                 style={{
-                  paddingLeft: 30,
-                  paddingRight: 30,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                   fontSize: 18,
                   fontWeight: 500,
                   cursor: "pointer",
@@ -107,7 +128,10 @@ function NavBar({ navList, setNavList, setTogglePage }) {
                   <Dropdown.Item
                     key={index}
                     name={compAr.navName}
-                    onClick={addHandleNav}
+                    onClick={(e) => {
+                      addHandleNavState(e);
+                      addHandleNav(e);
+                    }}
                   >
                     {compAr.navName}
                   </Dropdown.Item>
@@ -118,7 +142,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
             })}
           </Dropdown.Menu>
         </Dropdown>
-        <Dropdown>
+        <Dropdown style={{ marginRight: 20 }}>
           <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
             삭제-
           </Dropdown.Toggle>
@@ -130,7 +154,10 @@ function NavBar({ navList, setNavList, setTogglePage }) {
                     compAr={compAr}
                     key={index}
                     name={compAr.navName}
-                    onClick={delHandleNav}
+                    onClick={(e) => {
+                      delHandleNavState(e);
+                      delHandleNav(e);
+                    }}
                   >
                     {compAr.navName}
                   </Dropdown.Item>
@@ -141,7 +168,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
             })}
           </Dropdown.Menu>
         </Dropdown>
-        <Button style={{ marginRight: 20 }}>저장</Button>
+        {/* <Button style={{ marginRight: 20 }}>저장</Button> */}
       </Stack>
     </>
   );

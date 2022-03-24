@@ -62,6 +62,7 @@ function EducationEditForm({ setIsEditing }) {
             <FormCheck
               inline
               label={graduate}
+              key={index}
               id={index}
               type="radio"
               name="position"
