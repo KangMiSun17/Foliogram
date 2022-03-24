@@ -27,7 +27,7 @@ class RequestError extends Error {
             Error.captureStackTrace(this, RequestError);
         }
 
-        this.name = "RequestError";
+        this.name = this.constructor.name;
         this.status = status;
         this.payload = payload;
     }
