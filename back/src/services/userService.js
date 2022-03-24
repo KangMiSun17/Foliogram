@@ -108,7 +108,32 @@ class userAuthService {
 
         return user;
     }
+    static async setUserPassword({ user_id, password, passwordReset }) {
+        // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
+        let user = await User.findById({ user_id });
 
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!user) {
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        console.log(isPasswordCorrect);
+        if (!isPasswordCorrect) {
+            return {
+                errorMessage: `password is not correct`,
+                statusCode: status.STATUS_401_UNAUTHORIZED,
+            };
+        }
+        const hashedPasswordReset = await bcrypt.hash(passwordReset, 10);
+        const updatedUser = await User.update({
+            user_id,
+            newValue: { password: hashedPasswordReset },
+        });
+        return updatedUser;
+    }
     static async getUserInfo({ user_id }) {
         const user = await User.findById({ user_id });
 
