@@ -16,7 +16,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
 
   const isPasswordValid = validatePassword(userEdit.newPassword);
   const isPasswordSame = userEdit.newPassword === userEdit.confirmPassword;
-  const isFormValid = isPasswordValid && isPasswordSame;
+  const isFormValid = userEdit.password && isPasswordValid && isPasswordSame;
 
   const onChangeHandler = (e) => {
     setUserEdit((prev) => ({
@@ -51,8 +51,9 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     e.preventDefault();
 
     try {
-      const res = await Api.put(`users/${user.id}`, {
-        password: userEdit.newPassword,
+      const res = await Api.put(`users/${user.id}/password`, {
+        password: userEdit.password,
+        passwordReset: userEdit.newPassword,
       });
 
       // 유저 정보는 response의 data임.
@@ -65,8 +66,11 @@ function UserEditForm({ user, setIsEditing, setUser }) {
         newPassword: "",
         confirmPassword: "",
       }));
+
+      alert("비밀번호가 변경되었습니다.");
     } catch (err) {
-      console.log("비밀번호 변경 실패", err);
+      alert(`비밀번호 변경 실패 ${err.response.data.errorMessage}`);
+      return;
     }
 
     // isEditing을 false로 세팅함.
