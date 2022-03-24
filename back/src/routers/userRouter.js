@@ -97,7 +97,7 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         // sendMail은 콜백을 등록하지 않으면 프로미스를 반환합니다.
         // 사용자가 이메일을 확인하는데 시간이 좀 필요할 것이므로 굳이 기다리지 않습니다.
         const activationPath =
-            `localhost:${process.env.SERVER_PORT}/user/` +
+            `${process.env.SERVER_URL}:${process.env.SERVER_PORT}/user/` +
             `activate/${newUser.id}/${activationKey}`;
         transport.sendMail({
             from: "team5portfolioservice@gmail.com",
@@ -106,6 +106,8 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
             html: `
                 <html>
                     <body>
+                        ${newUser.name} 님 환영합니다!
+                        <br>
                         <a href="${activationPath}">
                             이 링크로 들어와 계정을 활성화해주세요
                         </a>
@@ -130,41 +132,6 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         next(error);
     }
 });
-
-// 윤성준: 이메일 인증용 라우터입니다.
-// 여기로 들어왔다는 건 이메일을 받았다는 소리이기 때문에 코드가 복잡할 필요는 없습니다.
-userAuthRouter.get(
-    "/user/activate/:id/:activationKey",
-    async function (req, res, next) {
-        try {
-            const activationKey = req.params.activationKey;
-            const user = await userAuthService.getUserInfo({
-                user_id: req.params.id,
-            });
-            if ("errorMessage" in user) {
-                throw new RequestError(
-                    { status: user.statusCode },
-                    user.errorMessage
-                );
-            }
-
-            if (activationKey === user.active) {
-                await userAuthService.setActivation({
-                    user_id: id,
-                    active: "y",
-                });
-                res.status(status.STATUS_200_OK).json({ result: true });
-            } else {
-                throw new RequestError(
-                    { status: status.STATUS_403_FORBIDDEN },
-                    "Mismatching activation code"
-                );
-            }
-        } catch (error) {
-            next(error);
-        }
-    }
-);
 
 userAuthRouter.post("/user/login", async function (req, res, next) {
     try {
@@ -308,6 +275,42 @@ userAuthRouter.get(
         }
     }
 );
+
+// 윤성준: 이메일 인증용 라우터입니다.
+// 여기로 들어왔다는 건 이메일을 받았다는 소리이기 때문에 코드가 복잡할 필요는 없습니다.
+userAuthRouter.get(
+    "/users/:id/activate/:activationKey",
+    async function (req, res, next) {
+        try {
+            const activationKey = req.params.activationKey;
+            const user = await userAuthService.getUserInfo({
+                user_id: req.params.id,
+            });
+            if ("errorMessage" in user) {
+                throw new RequestError(
+                    { status: user.statusCode },
+                    user.errorMessage
+                );
+            }
+
+            if (activationKey === user.active) {
+                await userAuthService.setActivation({
+                    user_id: id,
+                    active: "y",
+                });
+                res.status(status.STATUS_200_OK).json({ result: true });
+            } else {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    "Mismatching activation code"
+                );
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 userAuthRouter.delete(
     "/users/:id",
     login_required,
