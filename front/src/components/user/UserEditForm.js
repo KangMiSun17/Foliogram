@@ -184,6 +184,9 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                     }))
                   }
                 />
+                {userEdit.description.length > 30 && (
+                  <Form.Text>30자 이하로 설정해 주세요.</Form.Text>
+                )}
               </Form.Group>
               <Button
                 type="button"
@@ -198,6 +201,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                   <BundleButton
                     submitHandler={handleSubmit}
                     setState={setIsEditing}
+                    disabled={userEdit.description.length > 30}
                   />
                 </Col>
               </Form.Group>

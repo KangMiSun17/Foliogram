@@ -52,7 +52,9 @@ function RegisterForm() {
   };
 
   return (
-    <Container>
+    <Container
+      style={{ height: "auto", minHeight: "100%", paddingBottom: "250px" }}
+    >
       <Row className="justify-content-md-center mt-5">
         <Col lg={8}>
           <Form onSubmit={handleSubmit}>

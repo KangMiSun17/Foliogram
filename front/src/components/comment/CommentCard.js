@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
 import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
@@ -19,9 +19,11 @@ function CommentCard({ comment, index }) {
     Number(comment.createdAt.split("T")[1].split(".")[0].split(":")[0]) + 9
   );
 
-  if (24 <= hour || hour < 10) {
-    setHour((cur) => "0" + String(cur - 24));
-  }
+  useEffect(() => {
+    if (24 <= hour) {
+      return setHour((cur) => "0" + String(cur - 24));
+    }
+  }, []);
 
   const minute = comment.createdAt.split("T")[1].split(".")[0].split(":")[1];
 
@@ -78,7 +80,7 @@ function CommentCard({ comment, index }) {
               </span>
             </Col>
             {comment.user_id.id === user_id && (
-              <Col sm={4}>
+              <Col className="me-2">
                 <DropdownButton
                   key={comment.id}
                   size="sm"
@@ -93,11 +95,11 @@ function CommentCard({ comment, index }) {
             <Row className="ms-1 mb-2">
               <span>{comment.content}</span>
             </Row>
-            <Row style={{ color: "gray" }}>
-              <Col sm={3} className="ms-4 mb-2 p-0">
+            <Row md={4} style={{ color: "gray" }}>
+              <Col xl={4} className="ms-4 mb-2 p-0">
                 {toStringDate(toObjectDate(comment.createdAt))}
               </Col>
-              <Col sm={3} className="p-0">
+              <Col xl={5} className="p-0">
                 {hour} : {minute}
               </Col>
             </Row>

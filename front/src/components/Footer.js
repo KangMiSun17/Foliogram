@@ -2,7 +2,13 @@ import { Col, Row } from "react-bootstrap";
 
 function Footer() {
   return (
-    <footer className="mt-5" style={{ width: "100%" }}>
+    <footer
+      className="mt-5"
+      style={{
+        width: "99%",
+        position: "relative",
+      }}
+    >
       <Row
         style={{
           padding: "16px 20px 15px",
