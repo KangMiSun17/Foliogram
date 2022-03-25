@@ -17,11 +17,17 @@ function UserCard({
   let linkStyle = {};
 
   if (hover) {
-    linkStyle = { color: "black", width: "40%", margin: "10px auto" };
+    linkStyle = {
+      color: "black",
+      textAlign: "center",
+      width: "100px",
+      margin: "10px auto",
+    };
   } else {
     linkStyle = {
       color: "black",
-      width: "40%",
+      textAlign: "center",
+      width: "100px",
       margin: "10px auto",
       textDecoration: "none",
     };

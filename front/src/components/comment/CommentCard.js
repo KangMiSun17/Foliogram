@@ -90,7 +90,7 @@ function CommentCard({ comment, index }) {
               </span>
             </Col>
             {comment.user_id.id === user_id && (
-              <Col className="me-2">
+              <Col sm={2} className="me-2">
                 <DropdownButton
                   key={comment.id}
                   size="sm"
@@ -103,7 +103,7 @@ function CommentCard({ comment, index }) {
               </Col>
             )}
             {isEditable && comment.user_id.id !== user_id && (
-              <Col className="me-2">
+              <Col sm={2} className="me-2">
                 <DropdownButton
                   key={comment.id}
                   size="sm"
@@ -119,10 +119,8 @@ function CommentCard({ comment, index }) {
             </Row>
             <Row style={{ color: "gray" }}>
               <Col className="ms-4 mb-2 p-0">
-                {toStringDate(toObjectDate(comment.createdAt))}
-              </Col>
-              <Col className="p-0">
-                {hour} : {minute}
+                {toStringDate(toObjectDate(comment.createdAt))} {hour} :{" "}
+                {minute}
               </Col>
             </Row>
           </>
