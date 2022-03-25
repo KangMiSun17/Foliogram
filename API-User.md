@@ -26,6 +26,12 @@
     -   [현재 사용자 정보 조회](#현재-사용자-정보-조회)
         -   [요청](#요청-5)
         -   [응답](#응답-5)
+    -   [현재 사용자 비밀번호 수정](#현재-사용자-비밀번호-수정)
+        -   [요청](#요청-6)
+        -   [응답](#응답-6)
+    -   [현재 사용자 좋아요 수정](#현재-사용자-좋아요-수정)
+        -   [요청](#요청-7)
+        -   [응답](#응답-7)
 
 <br>
 
@@ -718,3 +724,298 @@
 
     -   eamil이 DB에 존재하지 않는 경우
     -   password가 일치하지 않는 경우
+
+<br>
+
+---
+
+## 현재 사용자 비밀번호 수정
+
+<br>
+
+### 요청
+
+<br>
+
+> `PUT /users/:id/password`
+
+`id` 는 개별 사용자 정보의 `id`입니다.
+
+-   Headers
+
+    ```json
+    {
+        "Content-Type": "application/json"
+    }
+    ```
+
+-   Body
+
+    | <!-- -->  | <!-- -->                   |
+    | --------- | -------------------------- |
+    | 필수 필드 | `password`,`passwordReset` |
+
+    | <!-- -->    | <!-- --> |
+    | ----------- | -------- |
+    | 비필수 필드 | 없음     |
+
+    ```json
+    {
+        "password": "1234",
+        "passwordReset": "test7"
+    }
+    ```
+
+### 응답
+
+-   data
+
+    수정 전
+
+    ```json
+    {
+        "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
+        "email": "tjwjdgus970118@gmail.com",
+        "name": "테스트7",
+        "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
+        "active": "n",
+        "description": "설명이 아직 없습니다. 추가해 주세요.",
+        "profileImage": "https://kr.object.ncloudstorage.com/team5/initialProfileImage.png",
+        "user_category": "전체",
+        "user_mvp": [
+            {
+                "navName": "학력",
+                "state": true
+            },
+            {
+                "navName": "수상이력",
+                "state": true
+            },
+            {
+                "navName": "프로젝트",
+                "state": true
+            },
+            {
+                "navName": "자격증",
+                "state": true
+            },
+            {
+                "navName": "경력",
+                "state": false
+            },
+            {
+                "navName": "기술스택",
+                "state": false
+            }
+        ],
+        "following": [],
+        "follower": [],
+        "_id": "623dce51f260dc305a4c4862",
+        "createdAt": "2022-03-25T14:14:41.753Z",
+        "updatedAt": "2022-03-25T14:14:41.753Z",
+        "__v": 0
+    }
+    ```
+
+    수정 후
+
+    ```json
+    {
+        "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
+        "email": "tjwjdgus970118@gmail.com",
+        "name": "테스트7",
+        "password": "$2bqwrccqwr$5wqcr.OCkw8.kqwtqwvttvq/n1t.k7ovqwrv7UDeWqwrv",
+        "active": "n",
+        "description": "설명이 아직 없습니다. 추가해 주세요.",
+        "profileImage": "https://kr.object.ncloudstorage.com/team5/initialProfileImage.png",
+        "user_category": "전체",
+        "user_mvp": [
+            {
+                "navName": "학력",
+                "state": true
+            },
+            {
+                "navName": "수상이력",
+                "state": true
+            },
+            {
+                "navName": "프로젝트",
+                "state": true
+            },
+            {
+                "navName": "자격증",
+                "state": true
+            },
+            {
+                "navName": "경력",
+                "state": false
+            },
+            {
+                "navName": "기술스택",
+                "state": false
+            }
+        ],
+        "following": [],
+        "follower": [],
+        "_id": "623dce51f260dc305a4c4862",
+        "createdAt": "2022-03-25T14:14:41.753Z",
+        "updatedAt": "2022-03-25T14:14:41.753Z",
+        "__v": 0
+    }
+    ```
+
+-   Error
+
+    다음 상황에 에러가 발생합니다.
+
+    -   기존의 비밀번호와 다를경우
+    -   수정하려는 대상의 사용자 id와 로그인된 사용자가 다른 경우
+
+<br>
+
+---
+
+## 현재 사용자 좋아요 수정
+
+<br>
+
+### 요청
+
+<br>
+
+> `PUT /users/:id/likes`
+
+`id` 는 개별 사용자 정보의 `id`입니다.
+
+-   Headers
+
+    ```json
+    {
+        "Content-Type": "application/json"
+    }
+    ```
+
+-   Body
+
+    | <!-- -->  | <!-- -->            |
+    | --------- | ------------------- |
+    | 필수 필드 | `following`,`state` |
+
+    | <!-- -->    | <!-- --> |
+    | ----------- | -------- |
+    | 비필수 필드 | 없음     |
+
+    ```json
+    {
+        "following": "fb7283cd-9c93-424c-a735-777fec16110a",
+        "state": true
+    }
+    ```
+
+### 응답
+
+-   data
+
+    수정 전
+
+    ```json
+    {
+        "_id": "623dce51f260dc305a4c4862",
+        "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
+        "email": "tjwjdgus970118@gmail.com",
+        "name": "테스트7",
+        "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
+        "active": "y",
+        "description": "설명이 아직 없습니다. 추가해 주세요.",
+        "profileImage": "https://kr.object.ncloudstorage.com/team5/initialProfileImage.png",
+        "user_category": "전체",
+        "user_mvp": [
+            {
+                "navName": "학력",
+                "state": true
+            },
+            {
+                "navName": "수상이력",
+                "state": true
+            },
+            {
+                "navName": "프로젝트",
+                "state": true
+            },
+            {
+                "navName": "자격증",
+                "state": true
+            },
+            {
+                "navName": "경력",
+                "state": false
+            },
+            {
+                "navName": "기술스택",
+                "state": false
+            }
+        ],
+        "following": [],
+        "follower": [],
+        "createdAt": "2022-03-25T14:14:41.753Z",
+        "updatedAt": "2022-03-25T14:16:03.445Z",
+        "__v": 0
+    }
+    ```
+
+    수정 후
+
+    ```json
+    {
+        "_id": "623dce51f260dc305a4c4862",
+        "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
+        "email": "tjwjdgus970118@gmail.com",
+        "name": "테스트7",
+        "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
+        "active": "y",
+        "description": "설명이 아직 없습니다. 추가해 주세요.",
+        "profileImage": "https://kr.object.ncloudstorage.com/team5/initialProfileImage.png",
+        "user_category": "전체",
+        "user_mvp": [
+            {
+                "navName": "학력",
+                "state": true
+            },
+            {
+                "navName": "수상이력",
+                "state": true
+            },
+            {
+                "navName": "프로젝트",
+                "state": true
+            },
+            {
+                "navName": "자격증",
+                "state": true
+            },
+            {
+                "navName": "경력",
+                "state": false
+            },
+            {
+                "navName": "기술스택",
+                "state": false
+            }
+        ],
+        "following": ["fb7283cd-9c93-424c-a735-777fec16110a"],
+        "follower": [],
+        "createdAt": "2022-03-25T14:14:41.753Z",
+        "updatedAt": "2022-03-25T14:16:03.445Z",
+        "__v": 0
+    }
+    ```
+
+-   Error
+
+    다음 상황에 에러가 발생합니다.
+
+    -   수정하려는 대상의 사용자 id와 로그인된 사용자가 다른 경우
+    -   현재 로그인된 사용자가 또는 following하려는 사용자가 이미 회원탈퇴를 한경우
+    -   state가 true,또는 false값이 아닐경우
+    -   이미 좋아요를 했는데 좋아요요청을 보냈을경우
+    -   이미 좋아요를 안했는데 좋아요안함 요청을 보냈을 경우
