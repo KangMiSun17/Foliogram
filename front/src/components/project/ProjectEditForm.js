@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import { ProjectContext, ProjectFetchContext } from "../common/context/Context";
@@ -20,6 +20,7 @@ function ProjectEditForm({ setIsEditing }) {
     startDate: toObjectDate(from_date),
     endDate: toObjectDate(to_date),
   });
+  const notSubAble = edit.title.length === 0 || edit.description.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -64,7 +65,7 @@ function ProjectEditForm({ setIsEditing }) {
         />
       </Form.Group>
 
-      <Form.Group className="mt-3">
+      <Form.Group className="mt-3 mb-3">
         <Row>
           <Col xs={3}>
             <DatePicker
@@ -84,10 +85,18 @@ function ProjectEditForm({ setIsEditing }) {
           </Col>
         </Row>
       </Form.Group>
-
+      {notSubAble ? (
+        <Alert variant="danger">
+          <p>내용을 입력해주세요.</p>
+        </Alert>
+      ) : null}
       <Form.Group>
         <Row className="justify-content-center" xs="auto">
-          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
+          <BundleButton
+            disabled={notSubAble}
+            submitHandler={handleSubmit}
+            setState={setIsEditing}
+          />
         </Row>
       </Form.Group>
     </Form>

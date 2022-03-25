@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { UserContext } from "./../common/context/Context";
 import { useNavigate } from "react-router-dom";
 import { UserStateContext } from "./../../App";
@@ -50,7 +50,7 @@ function UserDelete() {
     <div>
       {isEditable ? (
         <Button
-          className="float-end me-1"
+          className="float-end me-4"
           size="sm"
           type="submit"
           variant="danger"

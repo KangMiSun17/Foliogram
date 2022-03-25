@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { DatePickForm, toStringDate } from "../common/DateUtil";
 import { UserContext, CareerFetchContext } from "../common/context/Context";
@@ -17,6 +17,7 @@ function CareerAddForm() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isAdding, setIsAdding] = useState(false);
+  const notSubAble = addTitle.length === 0 || addDescription.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -69,7 +70,7 @@ function CareerAddForm() {
             />
           </Form.Group>
 
-          <Form.Group className="mt-3">
+          <Form.Group className="mt-3 mb-3">
             <Row>
               <Col xs={3}>
                 <DatePickForm startDate={startDate} setState={setStartDate} />
@@ -79,9 +80,17 @@ function CareerAddForm() {
               </Col>
             </Row>
           </Form.Group>
-
+          {notSubAble ? (
+            <Alert variant="danger">
+              <p>내용을 입력해주세요.</p>
+            </Alert>
+          ) : null}
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              disabled={notSubAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}

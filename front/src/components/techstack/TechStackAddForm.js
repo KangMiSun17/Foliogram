@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import { DatePickForm, toStringDate } from "../common/DateUtil";
+
 import { UserContext, TechStackFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
@@ -17,7 +17,7 @@ function TechStackAddForm() {
   // const [startDate, setStartDate] = useState(new Date());
   // const [endDate, setEndDate] = useState(new Date());
   const [isAdding, setIsAdding] = useState(false);
-
+  const notSubAble = addTitle.length === 0 || addDescription.length === 0;
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +28,6 @@ function TechStackAddForm() {
         user_id: portfolioOwnerId,
         title: addTitle,
         description: addDescription,
-        // from_date: toStringDate(startDate),
-        // to_date: toStringDate(endDate),
       });
 
       setAddTitle("");
@@ -39,8 +37,7 @@ function TechStackAddForm() {
     }
 
     setReFetching(new Date());
-    // setStartDate(new Date());
-    // setEndDate(new Date());
+
     setIsAdding(false);
   };
 
@@ -52,6 +49,7 @@ function TechStackAddForm() {
         </Row>
       ) : (
         <Form>
+          <Form.Label>추가할 내용</Form.Label>
           <Form.Group className="mb-3" controlId="tech">
             <Form.Control
               type="text"
@@ -68,20 +66,17 @@ function TechStackAddForm() {
               onChange={(e) => setAddDescription(e.target.value)}
             />
           </Form.Group>
-
-          {/* <Form.Group className="mt-3">
-            <Row>
-              <Col xs={3}>
-                <DatePickForm startDate={startDate} setState={setStartDate} />
-              </Col>
-              <Col xs={3}>
-                <DatePickForm startDate={endDate} setState={setEndDate} />
-              </Col>
-            </Row>
-          </Form.Group> */}
-
+          {notSubAble ? (
+            <Alert variant="danger">
+              <p>내용을 입력해주세요.</p>
+            </Alert>
+          ) : null}
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              disabled={notSubAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}

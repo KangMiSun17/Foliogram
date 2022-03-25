@@ -1,9 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Row,
+} from "react-bootstrap";
 import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
 import * as Api from "../../api";
 import { toObjectDate, toStringDate } from "../common/DateUtil";
+import { DeleteButton } from "../common/Button";
 // import { int } from "nunjucks/src/filters";
 
 /** comment card component
@@ -12,6 +20,7 @@ import { toObjectDate, toStringDate } from "../common/DateUtil";
  * @returns comment edit form or comment content
  */
 function CommentCard({ comment, index }) {
+  const { isEditable } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const setComments = useContext(CommentFetchContext);
   const { user_id } = useContext(UserContext);
@@ -40,6 +49,7 @@ function CommentCard({ comment, index }) {
     if (e.target.tabIndex === 1) {
       return setIsEditing(true);
     } else if (e.target.tabIndex === 2) {
+      console.log("hi");
       return deleteHandler();
     }
   };
@@ -84,7 +94,7 @@ function CommentCard({ comment, index }) {
                 <DropdownButton
                   key={comment.id}
                   size="sm"
-                  title="수정/삭제"
+                  title=""
                   onClick={selectOption}
                 >
                   <Dropdown.Item tabIndex={1}>수정</Dropdown.Item>
@@ -92,14 +102,26 @@ function CommentCard({ comment, index }) {
                 </DropdownButton>
               </Col>
             )}
+            {isEditable && comment.user_id.id !== user_id && (
+              <Col className="me-2">
+                <DropdownButton
+                  key={comment.id}
+                  size="sm"
+                  title=""
+                  onClick={selectOption}
+                >
+                  <Dropdown.Item tabIndex={2}>삭제</Dropdown.Item>
+                </DropdownButton>
+              </Col>
+            )}
             <Row className="ms-1 mb-2">
               <span>{comment.content}</span>
             </Row>
-            <Row md={4} style={{ color: "gray" }}>
-              <Col xl={4} className="ms-4 mb-2 p-0">
+            <Row style={{ color: "gray" }}>
+              <Col className="ms-4 mb-2 p-0">
                 {toStringDate(toObjectDate(comment.createdAt))}
               </Col>
-              <Col xl={5} className="p-0">
+              <Col className="p-0">
                 {hour} : {minute}
               </Col>
             </Row>

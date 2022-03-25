@@ -44,15 +44,7 @@ function Certificates() {
           />
         </Card.Body>
         {isEditable && (
-          <Row className="justify-content-center" xs="auto">
-            <PlusButton setState={setIsAdding} />
-          </Row>
-        )}
-        {isAdding && (
-          <CertificateAddForm
-            setCertificateList={setCertificateList}
-            setIsAdding={setIsAdding}
-          />
+          <CertificateAddForm setCertificateList={setCertificateList} />
         )}
       </Card.Body>
     </Card>

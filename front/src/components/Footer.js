@@ -2,16 +2,11 @@ import { Col, Row } from "react-bootstrap";
 
 function Footer() {
   return (
-    <footer
-      className="mt-5"
-      style={{
-        width: "99%",
-        position: "relative",
-      }}
-    >
+    <footer>
       <Row
         style={{
-          padding: "16px 20px 15px",
+          padding: "10px 30px",
+          margin: "0 10px 30px",
           borderTop: "1px solid #C4C4C4",
           height: "200px",
         }}
@@ -28,10 +23,15 @@ function Footer() {
       </Row>
       <Row
         className="align-items-center"
-        style={{ background: "#EAEAEA", color: "#9F9F9F", height: "50px" }}
+        style={{
+          borderTop: "1px solid #C4C4C4",
+          color: "#9F9F9F",
+          height: "50px",
+          padding: "10px 30px",
+          margin: "0 10px 30px",
+        }}
       >
-        <Col className="ms-3">COPYRIGHT (C) 개발바닥 ALL RIGHTS RESERVED.</Col>
-        <Col sm={2}>서울시 개발구 개발동</Col>
+        <Col>COPYRIGHT (C) 개발바닥 ALL RIGHTS RESERVED.</Col>
       </Row>
     </footer>
   );

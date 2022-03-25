@@ -35,6 +35,7 @@ function AwardAddForm() {
     } catch (err) {
       console.log("Error: award post request fail", err);
     }
+    setAdd(init);
     setIsAdding((cur) => !cur);
   };
 
