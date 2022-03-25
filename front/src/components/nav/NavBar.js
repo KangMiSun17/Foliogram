@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
 import { Stack, Dropdown, Button } from "react-bootstrap";
-import { PortfolioOwnerContext } from "../common/context/Context";
+import { PortfolioOwnerContext, UserContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 function NavBar({ navList, setNavList, setTogglePage }) {
-  const userId = useContext(PortfolioOwnerContext);
+  const { portfolioOwnerId, isEditable } = useContext(UserContext);
   const [pickSameName, setPickSameName] = useState("");
 
   ///@ put addBtn request
   async function addHandleNavState(e) {
     const name = e.target.name;
 
-    await Api.put(`users/${userId}`, {
+    await Api.put(`users/${portfolioOwnerId}`, {
       user_mvp: { navName: name, state: true },
     });
   }
@@ -55,7 +55,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
   async function delHandleNavState(e) {
     const name = e.target.name;
 
-    await Api.put(`users/${userId}`, {
+    await Api.put(`users/${portfolioOwnerId}`, {
       user_mvp: { navName: name, state: false },
     });
   }
@@ -105,86 +105,94 @@ function NavBar({ navList, setNavList, setTogglePage }) {
 
   return (
     <>
-      <Stack direction="horizontal" gap={2} className="ms-1 me-1 mb-3">
-        {navList.map((compAr, index) => {
-          if (compAr.state === true) {
-            return (
-              <Button
-                variant="none"
-                style={{
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  fontSize: 18,
-                  fontWeight: 500,
-                  cursor: "pointer",
-                }}
-                key={index}
-                name={compAr.navName}
-                onClick={handleNavBtn}
-              >
-                {compAr.navName}
-              </Button>
-            );
-          }
-          //just added this return like that because eslint bordered me
-          return null;
-        })}
+      {isEditable ? (
+        <Stack direction="horizontal" gap={2} className="ms-1 me-1 mb-3">
+          {navList.map((compAr, index) => {
+            if (compAr.state === true) {
+              return (
+                <Button
+                  variant="none"
+                  style={{
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    fontSize: 18,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                  }}
+                  key={index}
+                  name={compAr.navName}
+                  onClick={handleNavBtn}
+                >
+                  {compAr.navName}
+                </Button>
+              );
+            }
+            //just added this return like that because eslint bordered me
+            return null;
+          })}
 
-        <Button className="ms-auto" variant="light" onClick={handleShowAll}>
-          전체보기
-        </Button>
-        <Dropdown>
-          <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
-            추가 +
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {navList.map((compAr, index) => {
-              if (compAr.state === false) {
-                return (
-                  <Dropdown.Item
-                    key={index}
-                    name={compAr.navName}
-                    onClick={(e) => {
-                      addHandleNavState(e);
-                      addHandleNav(e);
-                    }}
-                  >
-                    {compAr.navName}
-                  </Dropdown.Item>
-                );
-              }
-              //just added this return like that because eslint bordered me
-              return null;
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown style={{ marginRight: 20 }}>
-          <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
-            삭제 -
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {navList.map((compAr, index) => {
-              if (compAr.state === true) {
-                return (
-                  <Dropdown.Item
-                    key={index}
-                    name={compAr.navName}
-                    onClick={(e) => {
-                      delHandleNavState(e);
-                      delHandleNav(e);
-                    }}
-                  >
-                    {compAr.navName}
-                  </Dropdown.Item>
-                );
-              }
-              //just added this return like that because eslint bordered me
-              return null;
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
-        {/* <Button style={{ marginRight: 20 }}>저장</Button> */}
-      </Stack>
+          <Button className="ms-auto" variant="light" onClick={handleShowAll}>
+            전체보기
+          </Button>
+          <Dropdown>
+            <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
+              추가 +
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {navList.map((compAr, index) => {
+                if (compAr.state === false) {
+                  return (
+                    <Dropdown.Item
+                      key={index}
+                      name={compAr.navName}
+                      onClick={(e) => {
+                        addHandleNavState(e);
+                        addHandleNav(e);
+                      }}
+                    >
+                      {compAr.navName}
+                    </Dropdown.Item>
+                  );
+                }
+                //just added this return like that because eslint bordered me
+                return null;
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown style={{ marginRight: 20 }}>
+            <Dropdown.Toggle variant="outline-warning" id="dropdown-basic">
+              삭제 -
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {navList.map((compAr, index) => {
+                if (compAr.state === true) {
+                  return (
+                    <Dropdown.Item
+                      key={index}
+                      name={compAr.navName}
+                      onClick={(e) => {
+                        delHandleNavState(e);
+                        delHandleNav(e);
+                      }}
+                    >
+                      {compAr.navName}
+                    </Dropdown.Item>
+                  );
+                }
+                //just added this return like that because eslint bordered me
+                return null;
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
+          {/* <Button style={{ marginRight: 20 }}>저장</Button> */}
+        </Stack>
+      ) : (
+        <Stack
+          style={{ marginTop: "53px" }}
+          direction="horizontal"
+          gap={2}
+        ></Stack>
+      )}
     </>
   );
 }

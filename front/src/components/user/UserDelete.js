@@ -50,7 +50,7 @@ function UserDelete() {
     <Container fluid>
       {isEditable ? (
         <Button
-          className="float-end"
+          className="float-end me-1"
           size="sm"
           type="submit"
           variant="danger"
