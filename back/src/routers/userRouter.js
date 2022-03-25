@@ -1,13 +1,15 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import * as crypto from "crypto";
 import * as nodemailer from "nodemailer";
 import is from "@sindresorhus/is";
+import * as multer from "multer";
+import * as AWS from "aws-sdk";
+import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
-require("dotenv").config();
-const multer = require("multer");
-const AWS = require("aws-sdk");
-const { v4: uuidv4 } = require("uuid");
 import * as status from "../utils/status";
 import { RequestError } from "../utils/errors";
 
