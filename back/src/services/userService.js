@@ -285,9 +285,9 @@ class userAuthService {
             Project.deleteAll({ user_id }),
             TechStack.deleteAll({ user_id }),
         ])
-            .then((resolved) => {
-                logger.log({}, `deleteUser >`, resolved);
-            })
+            // .then((resolved) => {
+            //     logger.log({}, `deleteUser >`, resolved);
+            // })
             .catch((error) => {
                 logger.log({ __level__: 1 }, `deleteUser >`, error);
             });
