@@ -775,7 +775,7 @@
     ```json
     {
         "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
-        "email": "tjwjdgus970118@gmail.com",
+        "email": "test7@naver.com",
         "name": "테스트7",
         "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
         "active": "n",
@@ -822,7 +822,7 @@
     ```json
     {
         "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
-        "email": "tjwjdgus970118@gmail.com",
+        "email": "test7@naver.com",
         "name": "테스트7",
         "password": "$2bqwrccqwr$5wqcr.OCkw8.kqwtqwvttvq/n1t.k7ovqwrv7UDeWqwrv",
         "active": "n",
@@ -922,7 +922,7 @@
     {
         "_id": "623dce51f260dc305a4c4862",
         "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
-        "email": "tjwjdgus970118@gmail.com",
+        "email": "test7@naver.com",
         "name": "테스트7",
         "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
         "active": "y",
@@ -969,7 +969,7 @@
     {
         "_id": "623dce51f260dc305a4c4862",
         "id": "d0e452e6-1202-477c-a0ad-8fb81d0c0516",
-        "email": "tjwjdgus970118@gmail.com",
+        "email": "test7@naver.com",
         "name": "테스트7",
         "password": "$2b$10$70kvLaX3Af.OCkw8.kH8Hup55MWYOjKb2/n1t.k7oan7UDeWvxn8a",
         "active": "y",
