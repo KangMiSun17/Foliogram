@@ -372,7 +372,7 @@ userAuthRouter.get(
                     active: "y",
                 });
                 // res.status(status.STATUS_200_OK).json({ result: true });
-                res.status(status.STATUS_200_OK).redirect("/user/current");
+                res.status(status.STATUS_200_OK).redirect("/");
             } else {
                 throw new RequestError(
                     { status: status.STATUS_403_FORBIDDEN },
