@@ -29,7 +29,7 @@ function CommentAddForm() {
       <Form.Control
         as="textarea"
         placeholder="댓글을 입력해주세요"
-        style={{ height: "100px", marginBottom: "5px" }}
+        style={{ height: "100px", marginBottom: "10px" }}
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />

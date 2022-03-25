@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { UserContext } from "./../common/context/Context";
 import { useNavigate } from "react-router-dom";
 import { UserStateContext } from "./../../App";
@@ -47,10 +47,10 @@ function UserDelete() {
   };
 
   return (
-    <Container fluid>
+    <div>
       {isEditable ? (
         <Button
-          className="float-end me-1"
+          className="float-end me-4"
           size="sm"
           type="submit"
           variant="danger"
@@ -59,7 +59,7 @@ function UserDelete() {
           회원탈퇴
         </Button>
       ) : null}
-    </Container>
+    </div>
   );
 }
 

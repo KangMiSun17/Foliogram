@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Alert } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
-import { DatePickForm, toStringDate, toObjectDate } from "../common/DateUtil";
 import {
   TechStackContext,
   TechStackFetchContext,
@@ -14,12 +13,10 @@ import * as Api from "../../api";
  */
 function ProjectEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(TechStackFetchContext);
-  const { id, title, description, from_date, to_date } =
-    useContext(TechStackContext);
+  const { id, title, description } = useContext(TechStackContext);
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescription] = useState(description);
-  // const [startDate, setStartDate] = useState(toObjectDate(from_date));
-  // const [endDate, setEndDate] = useState(toObjectDate(to_date));
+  const notSubAble = editTitle.length === 0 || editDescription.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -28,9 +25,6 @@ function ProjectEditForm({ setIsEditing }) {
     try {
       await Api.put(`techstacks/${id}`, {
         title: editTitle,
-        description: editDescription,
-        // from_date: toStringDate(startDate),
-        // to_date: toStringDate(endDate),
       });
     } catch (err) {
       console.log(err);
@@ -57,21 +51,18 @@ function ProjectEditForm({ setIsEditing }) {
           onChange={(e) => setEditDescription(e.target.value)}
         />
       </Form.Group>
-
-      {/* <Form.Group className="mt-3">
-        <Row>
-          <Col xs={3}>
-            <DatePickForm startDate={startDate} setState={setStartDate} />
-          </Col>
-          <Col xs={3}>
-            <DatePickForm startDate={endDate} setState={setEndDate} />
-          </Col>
-        </Row>
-      </Form.Group> */}
-
+      {notSubAble ? (
+        <Alert variant="danger">
+          <p>내용을 입력해주세요.</p>
+        </Alert>
+      ) : null}
       <Form.Group>
         <Row className="justify-content-center" xs="auto">
-          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
+          <BundleButton
+            disabled={notSubAble}
+            submitHandler={handleSubmit}
+            setState={setIsEditing}
+          />
         </Row>
       </Form.Group>
     </Form>

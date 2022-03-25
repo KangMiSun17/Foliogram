@@ -28,7 +28,10 @@ function Network() {
   }, [userState, navigate]);
 
   return (
-    <Container fluid>
+    <Container
+      fluid
+      style={{ height: "auto", minHeight: "100%", paddingBottom: "250px" }}
+    >
       <Category setCategory={setCategory} />
       {category === "all" && (
         <Row xs="auto">

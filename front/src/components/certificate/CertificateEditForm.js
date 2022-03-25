@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import * as Api from "../../api";
@@ -25,6 +25,7 @@ function CertificateEditForm({
     description,
     when_date: toObjectDate(when_date),
   });
+  const notSubAble = edit.title.length === 0 || edit.description.length === 0;
 
   // Request certificate item modification api
   const handleEditSubmit = async (event) => {
@@ -71,10 +72,20 @@ function CertificateEditForm({
         />
       </Form.Group>
       <DatePicker
+        className="mb-3"
         selected={edit.when_date}
         onChange={(date) => setEdit((prev) => ({ ...prev, when_date: date }))}
       />
-      <BundleButton submitHandler={handleEditSubmit} setState={setIsEdit} />
+      {notSubAble ? (
+        <Alert variant="danger">
+          <p>내용을 입력해주세요.</p>
+        </Alert>
+      ) : null}
+      <BundleButton
+        disabled={notSubAble}
+        submitHandler={handleEditSubmit}
+        setState={setIsEdit}
+      />
     </Form>
   );
 }

@@ -44,14 +44,23 @@ function Header() {
         </Nav.Item>
 
         <Nav.Item style={alignVertical} className="ms-auto">
-          <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
+          <Nav.Link style={{ color: "#303B4B" }} onClick={() => navigate("/")}>
+            나의 페이지
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item style={alignVertical}>
-          <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
+          <Nav.Link
+            style={{ color: "#303B4B" }}
+            onClick={() => navigate("/network")}
+          >
+            네트워크
+          </Nav.Link>
         </Nav.Item>
         {isLogin && (
           <Nav.Item style={alignVertical}>
-            <Nav.Link onClick={logout}>로그아웃</Nav.Link>
+            <Nav.Link style={{ color: "#303B4B" }} onClick={logout}>
+              로그아웃
+            </Nav.Link>
           </Nav.Item>
         )}
       </Nav>

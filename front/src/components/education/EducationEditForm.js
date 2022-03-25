@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, FormCheck, Row } from "react-bootstrap";
+import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import {
   EducationContext,
@@ -19,11 +19,10 @@ function EducationEditForm({ setIsEditing }) {
     major,
     position,
   });
-
+  const notSubAble = edit.school.length === 0 || edit.major.length === 0;
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(edit.position);
     //편집된 education 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`educations/${id}`, {
@@ -65,7 +64,7 @@ function EducationEditForm({ setIsEditing }) {
         />
       </Form.Group>
 
-      <Form.Group className="mt-3">
+      <Form.Group className="mt-3 mb-3">
         {radioList.map((graduate, index) => {
           return (
             <FormCheck
@@ -87,10 +86,18 @@ function EducationEditForm({ setIsEditing }) {
           );
         })}
       </Form.Group>
-
+      {notSubAble ? (
+        <Alert variant="danger">
+          <p>내용을 입력해주세요.</p>
+        </Alert>
+      ) : null}
       <Form.Group>
         <Row className="justify-content-center" xs="auto">
-          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
+          <BundleButton
+            disabled={notSubAble}
+            submitHandler={handleSubmit}
+            setState={setIsEditing}
+          />
         </Row>
       </Form.Group>
     </Form>

@@ -1,9 +1,17 @@
-import React, { useContext, useState } from "react";
-import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Row,
+} from "react-bootstrap";
 import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
 import * as Api from "../../api";
 import { toObjectDate, toStringDate } from "../common/DateUtil";
+import { DeleteButton } from "../common/Button";
 // import { int } from "nunjucks/src/filters";
 
 /** comment card component
@@ -12,6 +20,7 @@ import { toObjectDate, toStringDate } from "../common/DateUtil";
  * @returns comment edit form or comment content
  */
 function CommentCard({ comment, index }) {
+  const { isEditable } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const setComments = useContext(CommentFetchContext);
   const { user_id } = useContext(UserContext);
@@ -19,9 +28,11 @@ function CommentCard({ comment, index }) {
     Number(comment.createdAt.split("T")[1].split(".")[0].split(":")[0]) + 9
   );
 
-  if (24 <= hour || hour < 10) {
-    setHour((cur) => "0" + String(cur - 24));
-  }
+  useEffect(() => {
+    if (24 <= hour) {
+      return setHour((cur) => "0" + String(cur - 24));
+    }
+  }, []);
 
   const minute = comment.createdAt.split("T")[1].split(".")[0].split(":")[1];
 
@@ -38,6 +49,7 @@ function CommentCard({ comment, index }) {
     if (e.target.tabIndex === 1) {
       return setIsEditing(true);
     } else if (e.target.tabIndex === 2) {
+      console.log("hi");
       return deleteHandler();
     }
   };
@@ -78,14 +90,26 @@ function CommentCard({ comment, index }) {
               </span>
             </Col>
             {comment.user_id.id === user_id && (
-              <Col sm={4}>
+              <Col sm={2} className="me-2">
                 <DropdownButton
                   key={comment.id}
                   size="sm"
-                  title="수정/삭제"
+                  title=""
                   onClick={selectOption}
                 >
                   <Dropdown.Item tabIndex={1}>수정</Dropdown.Item>
+                  <Dropdown.Item tabIndex={2}>삭제</Dropdown.Item>
+                </DropdownButton>
+              </Col>
+            )}
+            {isEditable && comment.user_id.id !== user_id && (
+              <Col sm={2} className="me-2">
+                <DropdownButton
+                  key={comment.id}
+                  size="sm"
+                  title=""
+                  onClick={selectOption}
+                >
                   <Dropdown.Item tabIndex={2}>삭제</Dropdown.Item>
                 </DropdownButton>
               </Col>
@@ -94,11 +118,9 @@ function CommentCard({ comment, index }) {
               <span>{comment.content}</span>
             </Row>
             <Row style={{ color: "gray" }}>
-              <Col sm={3} className="ms-4 mb-2 p-0">
-                {toStringDate(toObjectDate(comment.createdAt))}
-              </Col>
-              <Col sm={3} className="p-0">
-                {hour} : {minute}
+              <Col className="ms-4 mb-2 p-0">
+                {toStringDate(toObjectDate(comment.createdAt))} {hour} :{" "}
+                {minute}
               </Col>
             </Row>
           </>

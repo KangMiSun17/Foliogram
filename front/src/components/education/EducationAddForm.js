@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, FormCheck, Row } from "react-bootstrap";
+import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { UserContext, EducationFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
@@ -16,6 +16,7 @@ function EducationAddForm() {
     major: "",
     position: "재학중",
   });
+  const notSubAble = add.school.length === 0 || add.major.length === 0;
   const [isAdding, setIsAdding] = useState(false);
 
   //확인 버튼 누를 시 실행
@@ -54,6 +55,7 @@ function EducationAddForm() {
         </Row>
       ) : (
         <Form>
+          <Form.Label>추가할 내용</Form.Label>
           <Form.Group className="mb-3" controlId="school">
             <Form.Control
               type="text"
@@ -75,7 +77,7 @@ function EducationAddForm() {
             />
           </Form.Group>
 
-          <Form.Group className="mt-3">
+          <Form.Group className="mt-3 mb-3">
             {radioList.map((graduate, index) => {
               return (
                 <FormCheck
@@ -97,8 +99,17 @@ function EducationAddForm() {
               );
             })}
           </Form.Group>
+          {notSubAble ? (
+            <Alert variant="danger">
+              <p>내용을 입력해주세요.</p>
+            </Alert>
+          ) : null}
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              disabled={notSubAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}

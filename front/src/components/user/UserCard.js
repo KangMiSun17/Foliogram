@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
+import { useState } from "react";
 
 function UserCard({
   isEditable,
@@ -9,21 +10,55 @@ function UserCard({
   setProfileImage,
 }) {
   const navigate = useNavigate();
+  const [hover, setHover] = useState(false);
+  const toggleHover = () => {
+    setHover((cur) => !cur);
+  };
+  let linkStyle = {};
+
+  if (hover) {
+    linkStyle = {
+      color: "black",
+      textAlign: "center",
+      width: "100px",
+      margin: "10px auto",
+    };
+  } else {
+    linkStyle = {
+      color: "black",
+      textAlign: "center",
+      width: "100px",
+      margin: "10px auto",
+      textDecoration: "none",
+    };
+  }
 
   return (
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "18rem" }}>
+    <Card className="mb-3 mt-1" style={{ height: "22rem" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
-            style={{ width: "10rem", height: "8rem" }}
+            style={{
+              width: "10rem",
+              height: "8rem",
+              borderRadius: "3rem",
+              cursor: "pointer",
+            }}
             className="mb-3"
             src={user.profileImage}
             alt="프로필 사진"
+            onClick={() => navigate(`/users/${user.id}`)}
           />
         </Row>
-        <Card.Title>
+        <Card.Title onClick={() => navigate(`/users/${user.id}`)}>
           {user?.name}
-          <span style={{ marginLeft: "5px", fontSize: "13px", color: "gray" }}>
+          <span
+            style={{
+              marginLeft: "5px",
+              fontSize: "13px",
+              color: "gray",
+            }}
+          >
             {user?.user_category}
           </span>
         </Card.Title>
@@ -31,39 +66,38 @@ function UserCard({
         <Card.Text>{user?.description}</Card.Text>
 
         {isEditable && (
-          <Col>
-            <Row className="mt-3  text-center text-info">
-              <Col sm={{ span: 20 }}>
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                >
-                  정보 편집
-                </Button>
-                <Button
-                  className="ms-2"
-                  variant="outline-primary"
-                  size="sm"
-                  onClick={() => setProfileImage(true)}
-                >
-                  프로필사진 편집
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
-
-        {isNetwork && (
-          <Card.Link
-            className="mt-3"
-            href="#"
-            onClick={() => navigate(`/users/${user.id}`)}
-          >
-            포트폴리오
-          </Card.Link>
+          <Row className="mt-4 text-center text-info">
+            <Col sm={{ span: 20 }}>
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+              >
+                정보 편집
+              </Button>
+              <Button
+                className="ms-3"
+                variant="outline-primary"
+                size="sm"
+                onClick={() => setProfileImage(true)}
+              >
+                프로필사진 편집
+              </Button>
+            </Col>
+          </Row>
         )}
       </Card.Body>
+      {isNetwork && (
+        <Card.Link
+          href="#"
+          onClick={() => navigate(`/users/${user.id}`)}
+          style={linkStyle}
+          onMouseEnter={toggleHover}
+          onMouseLeave={toggleHover}
+        >
+          포트폴리오
+        </Card.Link>
+      )}
     </Card>
   );
 }
