@@ -30,7 +30,9 @@ const userAuthRouter = Router();
 const upload = multer();
 
 if (!process.env.MAILER_PASSWORD) {
-    throw new Error("U FORGOT TO ADD MAILER_PASSWORD IN YOUR ENV");
+    throw new Error(
+        "OUR STUPID ADMIN FORGOT TO ADD MAILER_PASSWORD IN THE ENV"
+    );
 }
 const transport = nodemailer.createTransport({
     service: "Gmail",
@@ -156,7 +158,7 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         if (
             !(await userAuthService.setActivation({
                 user_id: newUser.id,
-                active: activationKey,
+                activation_key: activationKey,
             }))
         ) {
             throw new Error(
@@ -349,13 +351,13 @@ userAuthRouter.get(
 );
 
 // 윤성준: 이메일 인증용 라우터입니다.
-// 여기로 들어왔다는 건 이메일을 받았다는 소리이기 때문에 코드가 복잡할 필요는 없습니다.
+// 여기로 들어왔다는 건 이메일을 받았다는 소리이기 때문에 코드가 복잡할 이유는 없습니다.
 userAuthRouter.get(
-    "/users/:id/activate/:activationKey",
+    "/users/:id/activate/:activation_key",
     async function (req, res, next) {
         try {
             const id = req.params.id;
-            const activationKey = req.params.activationKey;
+            const activationKey = req.params.activation_key;
             const user = await userAuthService.getUserInfo({
                 user_id: id,
             });
@@ -366,12 +368,13 @@ userAuthRouter.get(
                 );
             }
 
-            if (activationKey === user.active) {
+            if (activationKey === user.activation_key) {
                 await userAuthService.setActivation({
                     user_id: id,
                     active: "y",
                 });
                 // res.status(status.STATUS_200_OK).json({ result: true });
+                // 로그인 페이지로 돌아가게 만듭니다
                 res.status(status.STATUS_200_OK).redirect("/");
             } else {
                 throw new RequestError(
