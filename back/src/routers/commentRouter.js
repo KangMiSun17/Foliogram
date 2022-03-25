@@ -129,7 +129,7 @@ commentRouter.delete(
             const id = req.params.id;
             const user_id = req.currentUserId;
             const comment = await commentService.getComment({ id });
-            console.log(comment);
+            // console.log(comment);
 
             if ("errorMessage" in comment) {
                 throw new RequestError(
