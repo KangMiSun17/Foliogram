@@ -265,18 +265,18 @@ class userAuthService {
     static async deleteUser({ user_id }) {
         let user = await User.findById({ user_id });
 
-        for (const id of user.follower) {
-            await User.update({
-                user_id: id,
-                newValue: { $pull: { following: user_id } },
-            });
-        }
-        for (const id of user.following) {
-            await User.update({
-                user_id: id,
-                newValue: { $pull: { follower: user_id } },
-            });
-        }
+        // for (const id of user.follower) {
+        //     await User.update({
+        //         user_id: id,
+        //         newValue: { $pull: { following: user_id } },
+        //     });
+        // }
+        // for (const id of user.following) {
+        //     await User.update({
+        //         user_id: id,
+        //         newValue: { $pull: { follower: user_id } },
+        //     });
+        // }
         // const { deletedCount } = await User.delete({ id: user_id });
         // const awa = await Award.deleteAll({ user_id });
         // const cer = await Certificate.deleteAll({ user_id });
@@ -290,6 +290,20 @@ class userAuthService {
         // 윤성준: await 은 동기화 키워드이기 때문에 줄줄이 쓰면 그만큼 오래 걸립니다.
         // 결과값을 위로 올릴 필요가 없으므로 딱히 기다리지 않아도 될 것 같습니다.
         Promise.allSettled([
+            ...user.follower.map((id) => {
+                return User.update({
+                    user_id: id,
+                    newValue: { $pull: { following: user_id } },
+                });
+            }),
+            ...user.following.map((id) => {
+                return User.update({
+                    user_id: id,
+                    newValue: {
+                        $pull: { follower: user_id },
+                    },
+                });
+            }),
             User.delete({ id: user_id }),
             Award.deleteAll({ user_id }),
             Career.deleteAll({ user_id }),
@@ -299,9 +313,9 @@ class userAuthService {
             Project.deleteAll({ user_id }),
             TechStack.deleteAll({ user_id }),
         ])
-            // .then((resolved) => {
-            //     logger.log({}, `deleteUser >`, resolved);
-            // })
+            .then((settled) => {
+                logger.log({}, `deleteUser >`, settled);
+            })
             .catch((error) => {
                 logger.log({ __level__: 1 }, `deleteUser >`, error);
             });
