@@ -246,7 +246,12 @@ class userAuthService {
                 statusCode: status.STATUS_405_METHODNOTALLOWED,
             };
         }
-        return user;
+        let result = {
+            following: user.following.map((user_id) => {
+                return { id: user_id, state: true };
+            }),
+        };
+        return result;
     }
 
     static async getUserInfo({ user_id }) {
