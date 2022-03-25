@@ -50,6 +50,12 @@ commentRouter.get("/commentlist/:user_id", async function (req, res, next) {
         const comments = await commentService.getComments({
             user_id,
         });
+        if ("errorMessage" in comments) {
+            throw new RequestError(
+                { status: comments.statusCode },
+                comments.errorMessage
+            );
+        }
         res.status(status.STATUS_200_OK).json(comments);
     } catch (error) {
         next(error);
