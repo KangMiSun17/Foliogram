@@ -37,7 +37,7 @@ function Header() {
         <Nav.Item style={logoPosition}>
           <Nav.Link onClick={() => navigate("/network")}>
             <Image
-              src="./logo.png"
+              src="./logo.svg"
               style={{ width: "200px", margin: "auto" }}
             ></Image>
           </Nav.Link>

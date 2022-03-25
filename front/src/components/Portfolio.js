@@ -129,10 +129,10 @@ function Portfolio() {
                       }
                       return null;
                     })}
+                <UserDelete />
               </Col>
             </Row>
           </Container>
-          <UserDelete />
         </PortfolioOwnerContext.Provider>
       </EditTableContext.Provider>
     </UserContext.Provider>
