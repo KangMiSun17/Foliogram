@@ -196,7 +196,7 @@ class userAuthService {
         }
         if (!following_user) {
             return {
-                errorMessage: `following id : {${user_id}} is not found`,
+                errorMessage: `following id : {${following}} is not found`,
                 statusCode: status.STATUS_404_NOTFOUND,
             };
         }
@@ -255,6 +255,20 @@ class userAuthService {
         return user;
     }
     static async deleteUser({ user_id }) {
+        let user = await User.findById({ user_id });
+
+        for (const id of user.follower) {
+            await User.update({
+                user_id: id,
+                newValue: { $pull: { following: user_id } },
+            });
+        }
+        for (const id of user.following) {
+            await User.update({
+                user_id: id,
+                newValue: { $pull: { follower: user_id } },
+            });
+        }
         // const { deletedCount } = await User.delete({ id: user_id });
         // const awa = await Award.deleteAll({ user_id });
         // const cer = await Certificate.deleteAll({ user_id });
