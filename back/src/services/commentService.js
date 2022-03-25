@@ -66,6 +66,15 @@ class commentService {
     }
 
     static async getComments({ user_id }) {
+        const user = await User.findById({ user_id });
+
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!user) {
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
         const comments = await Comment.searchByUserId({ user_id });
         if (comments.length <= 0) {
             return [];
