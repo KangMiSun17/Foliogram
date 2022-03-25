@@ -132,7 +132,10 @@ commentRouter.delete(
                 );
             }
 
-            if (user_id === comment.user_id.id) {
+            if (
+                user_id === comment.user_id.id ||
+                user_id === comment.target_user_id
+            ) {
                 const result = await commentService.deleteComment({
                     id,
                 });
