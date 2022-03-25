@@ -85,3 +85,15 @@ export const DeleteButton = ({ endpoint, id, setState, index = null }) => {
     </Button>
   );
 };
+
+export const LikesButton = ({ onClickHandler, children }) => {
+  return (
+    <button
+      type="submit"
+      onClick={onClickHandler}
+      style={{ backgroundColor: "#00000000", border: 0 }}
+    >
+      {children}
+    </button>
+  );
+};

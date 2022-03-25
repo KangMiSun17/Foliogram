@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
 import { useState } from "react";
+import Follow from "./Follow";
 
 function UserCard({
   isEditable,
@@ -8,6 +9,7 @@ function UserCard({
   setIsEditing,
   isNetwork,
   setProfileImage,
+  setReFetching,
 }) {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
@@ -88,15 +90,18 @@ function UserCard({
         )}
       </Card.Body>
       {isNetwork && (
-        <Card.Link
-          href="#"
-          onClick={() => navigate(`/users/${user.id}`)}
-          style={linkStyle}
-          onMouseEnter={toggleHover}
-          onMouseLeave={toggleHover}
-        >
-          포트폴리오
-        </Card.Link>
+        <>
+          <Follow user={user} setReFetching={setReFetching} />
+          <Card.Link
+            href="#"
+            onClick={() => navigate(`/users/${user.id}`)}
+            style={linkStyle}
+            onMouseEnter={toggleHover}
+            onMouseLeave={toggleHover}
+          >
+            포트폴리오
+          </Card.Link>
+        </>
       )}
     </Card>
   );
