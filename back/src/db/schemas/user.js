@@ -82,6 +82,16 @@ const UserSchema = new Schema(
                 },
             ],
         },
+        following: {
+            type: Array,
+            required: false,
+            default: [],
+        },
+        follower: {
+            type: Array,
+            required: false,
+            default: [],
+        },
     },
     {
         timestamps: true,
