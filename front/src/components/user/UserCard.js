@@ -21,6 +21,7 @@ function UserCard({
   if (hover) {
     linkStyle = {
       color: "black",
+      display: "block",
       textAlign: "center",
       width: "100px",
       margin: "10px auto",
@@ -28,6 +29,7 @@ function UserCard({
   } else {
     linkStyle = {
       color: "black",
+      display: "block",
       textAlign: "center",
       width: "100px",
       margin: "10px auto",
@@ -91,16 +93,20 @@ function UserCard({
       </Card.Body>
       {isNetwork && (
         <>
-          <Follow user={user} setReFetching={setReFetching} />
-          <Card.Link
-            href="#"
-            onClick={() => navigate(`/users/${user.id}`)}
-            style={linkStyle}
-            onMouseEnter={toggleHover}
-            onMouseLeave={toggleHover}
-          >
-            포트폴리오
-          </Card.Link>
+          <div style={{ textAlign: "center" }}>
+            <Follow user={user} setReFetching={setReFetching} />
+          </div>
+          <div>
+            <Card.Link
+              href="#"
+              onClick={() => navigate(`/users/${user.id}`)}
+              style={linkStyle}
+              onMouseEnter={toggleHover}
+              onMouseLeave={toggleHover}
+            >
+              포트폴리오
+            </Card.Link>
+          </div>
         </>
       )}
     </Card>

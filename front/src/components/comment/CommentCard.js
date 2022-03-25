@@ -1,17 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Dropdown,
-  DropdownButton,
-  Row,
-} from "react-bootstrap";
+import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
 import { CommentFetchContext, UserContext } from "../common/context/Context";
 import CommentEditForm from "./CommentEditForm";
 import * as Api from "../../api";
 import { toObjectDate, toStringDate } from "../common/DateUtil";
-import { DeleteButton } from "../common/Button";
 // import { int } from "nunjucks/src/filters";
 
 /** comment card component

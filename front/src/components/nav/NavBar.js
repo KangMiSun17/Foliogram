@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Stack, Dropdown, Button } from "react-bootstrap";
-import { PortfolioOwnerContext, UserContext } from "../common/context/Context";
+import { UserContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 function NavBar({ navList, setNavList, setTogglePage }) {
