@@ -138,7 +138,7 @@ class userAuthService {
      * `active` 필드를 통과시켜 주면 악의적인 PUT 요청으로 계정 활성화 상태를 바꿀 수 있습니다.
      * 그러니까 우리는 다른 데이터 필드는 허용하지 않는 전용 메서드를 사용합니다.
      */
-    static async setActivation({ user_id, active }) {
+    static async setActivation({ user_id, active, activation_key }) {
         let user = await User.findById({ user_id });
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -148,8 +148,16 @@ class userAuthService {
             };
         }
 
-        user = await User.update({ user_id, newValue: { active } });
-        return user.active === active;
+        let newValue = {};
+        if (active) {
+            newValue.active = active;
+        }
+        if (activation_key) {
+            newValue.activation_key = activation_key;
+        }
+
+        user = await User.update({ user_id, newValue });
+        return user.activation_key === activation_key;
     }
 
     static async setUserPassword({ user_id, password, passwordReset }) {
@@ -291,9 +299,9 @@ class userAuthService {
             Project.deleteAll({ user_id }),
             TechStack.deleteAll({ user_id }),
         ])
-            .then((resolved) => {
-                logger.log({}, `deleteUser >`, resolved);
-            })
+            // .then((resolved) => {
+            //     logger.log({}, `deleteUser >`, resolved);
+            // })
             .catch((error) => {
                 logger.log({ __level__: 1 }, `deleteUser >`, error);
             });

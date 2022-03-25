@@ -30,6 +30,12 @@ const UserSchema = new Schema(
             // Needs to be "y" to be activated.
             default: "n",
         },
+        // Made separate activation key field due to office hour suggestion
+        activation_key: {
+            type: String,
+            required: false,
+            default: "",
+        },
         description: {
             type: String,
             required: false,
