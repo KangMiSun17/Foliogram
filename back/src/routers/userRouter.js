@@ -4,8 +4,8 @@ dotenv.config();
 import * as crypto from "crypto";
 import * as nodemailer from "nodemailer";
 import is from "@sindresorhus/is";
-const multer = require("multer");
-const AWS = require("aws-sdk");
+import multer from "multer";
+import AWS from "aws-sdk";
 
 import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
