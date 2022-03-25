@@ -2,10 +2,7 @@ import React, { useState, useContext } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { DatePickForm, toStringDate } from "../common/DateUtil";
-import {
-  PortfolioOwnerContext,
-  CareerFetchContext,
-} from "../common/context/Context";
+import { UserContext, CareerFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 프로젝트 추가하는 컴포넌트입니다.
@@ -13,7 +10,7 @@ import * as Api from "../../api";
  * @returns {component} ProjectAddForm
  */
 function CareerAddForm() {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { portfolioOwnerId } = useContext(UserContext);
   const { setReFetching } = useContext(CareerFetchContext);
   const [addTitle, setAddTitle] = useState("");
   const [addDescription, setAddDescription] = useState("");

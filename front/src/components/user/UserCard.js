@@ -32,17 +32,18 @@ function UserCard({
 
         {isEditable && (
           <Col>
-            <Row className="mt-3 text-center text-info">
+            <Row className="mt-3  text-center text-info">
               <Col sm={{ span: 20 }}>
                 <Button
-                  variant="outline-info"
+                  variant="outline-primary"
                   size="sm"
                   onClick={() => setIsEditing(true)}
                 >
                   정보 편집
                 </Button>
                 <Button
-                  variant="outline-info"
+                  className="ms-2"
+                  variant="outline-primary"
                   size="sm"
                   onClick={() => setProfileImage(true)}
                 >

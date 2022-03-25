@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton, DeleteButton } from "../common/Button";
 import {
-  EditTableContext,
+  UserContext,
   TechStackContext,
   TechStackFetchContext,
 } from "../common/context/Context";
@@ -14,9 +14,8 @@ import {
  */
 function TechStackCard({ setIsEditing }) {
   const { setReFetching } = useContext(TechStackFetchContext);
-  const isEditable = useContext(EditTableContext);
-  const { id, title, description, from_date, to_date } =
-    useContext(TechStackContext);
+  const { isEditable } = useContext(UserContext);
+  const { id, title, description } = useContext(TechStackContext);
   return (
     <Row className="align-items-center">
       <Col className="mb-3">

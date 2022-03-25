@@ -51,7 +51,7 @@ export const PlusButton = ({ setState }) => {
  */
 export const EditButton = ({ setState }) => {
   return (
-    <Button size="sm" variant="outline-info" onClick={() => setState(true)}>
+    <Button size="sm" variant="outline-primary" onClick={() => setState(true)}>
       편집
     </Button>
   );

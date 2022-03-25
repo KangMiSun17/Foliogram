@@ -3,16 +3,14 @@ import { Card } from "react-bootstrap";
 import CareerAddForm from "./CareerAddForm";
 import Career from "./Career";
 import {
-  EditTableContext,
-  PortfolioOwnerContext,
+  UserContext,
   CareerFetchContext,
   CareerContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
 
 function Careers() {
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(UserContext);
   const [career, setCareer] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 
