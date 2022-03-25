@@ -1,4 +1,14 @@
-import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import {
+    User,
+    Award,
+    Certificate,
+    Education,
+    Project,
+    TechStack,
+    Career,
+    Comment,
+} from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
@@ -166,6 +176,14 @@ class userAuthService {
     }
     static async deleteUser({ user_id }) {
         const { deletedCount } = await User.delete({ id: user_id });
+        const awa = await Award.deleteAll({ user_id });
+        const cer = await Certificate.deleteAll({ user_id });
+        const edu = await Education.deleteAll({ user_id });
+        const pro = await Project.deleteAll({ user_id });
+        const tech = await TechStack.deleteAll({ user_id });
+        const car = await Career.deleteAll({ user_id });
+        const com = await Comment.deleteAll({ user_id });
+        console.log(awa, cer, edu, pro, tech, car, com);
         return { result: true };
     }
 }
