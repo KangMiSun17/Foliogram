@@ -44,6 +44,7 @@ commentRouter.post(
         }
     }
 );
+
 commentRouter.get("/commentlist/:user_id", async function (req, res, next) {
     try {
         const user_id = req.params.user_id;
@@ -61,6 +62,7 @@ commentRouter.get("/commentlist/:user_id", async function (req, res, next) {
         next(error);
     }
 });
+
 commentRouter.get(
     "/comments/:id",
     login_required,
@@ -83,6 +85,7 @@ commentRouter.get(
         }
     }
 );
+
 commentRouter.put(
     "/comments/:id",
     login_required,
@@ -157,4 +160,5 @@ commentRouter.delete(
         }
     }
 );
+
 export { commentRouter };
