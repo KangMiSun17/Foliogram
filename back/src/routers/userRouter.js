@@ -334,7 +334,8 @@ userAuthRouter.get(
                     user_id: id,
                     active: "y",
                 });
-                res.status(status.STATUS_200_OK).json({ result: true });
+                // res.status(status.STATUS_200_OK).json({ result: true });
+                res.status(status.STATUS_200_OK).redirect("/user/current");
             } else {
                 throw new RequestError(
                     { status: status.STATUS_403_FORBIDDEN },
