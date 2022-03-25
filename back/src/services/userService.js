@@ -145,8 +145,14 @@ class userAuthService {
         // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
         let user = await User.findById({ user_id });
 
+        if (!user) {
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        console.log(isPasswordCorrect);
         if (!isPasswordCorrect) {
             return {
                 errorMessage: `password is not correct`,
@@ -159,6 +165,63 @@ class userAuthService {
             newValue: { password: hashedPasswordReset },
         });
         return updatedUser;
+    }
+    static async setUserLikes({ user_id, following, state }) {
+        // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
+        let user = await User.findById({ user_id });
+        let following_user = await User.findById({ user_id: following });
+
+        if (!user) {
+            return {
+                errorMessage: `id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+        if (!following_user) {
+            return {
+                errorMessage: `following id : {${user_id}} is not found`,
+                statusCode: status.STATUS_404_NOTFOUND,
+            };
+        }
+        if (state === true) {
+            if (!user.following.includes(following)) {
+                user = await User.update({
+                    user_id,
+                    newValue: { $push: { following: following } },
+                });
+                await User.update({
+                    user_id: following,
+                    newValue: { $push: { follower: user_id } },
+                });
+            } else {
+                return {
+                    errorMessage: `you alredy following id : ${following}`,
+                    statusCode: status.STATUS_403_FORBIDDEN,
+                };
+            }
+        } else if (state === false) {
+            if (user.following.includes(following)) {
+                user = await User.update({
+                    user_id,
+                    newValue: { $pull: { following: following } },
+                });
+                await User.update({
+                    user_id: following,
+                    newValue: { $pull: { follower: user_id } },
+                });
+            } else {
+                return {
+                    errorMessage: `you alredy not following id : ${following}`,
+                    statusCode: status.STATUS_403_FORBIDDEN,
+                };
+            }
+        } else {
+            return {
+                errorMessage: `invalid state`,
+                statusCode: status.STATUS_405_METHODNOTALLOWED,
+            };
+        }
+        return user;
     }
 
     static async getUserInfo({ user_id }) {
@@ -175,6 +238,20 @@ class userAuthService {
         return user;
     }
     static async deleteUser({ user_id }) {
+        let user = await User.findById({ user_id });
+        console.log(user);
+        for (const id of user.follower) {
+            await User.update({
+                user_id: id,
+                newValue: { $pull: { following: user_id } },
+            });
+        }
+        for (const id of user.following) {
+            await User.update({
+                user_id: id,
+                newValue: { $pull: { follower: user_id } },
+            });
+        }
         const { deletedCount } = await User.delete({ id: user_id });
         const awa = await Award.deleteAll({ user_id });
         const cer = await Certificate.deleteAll({ user_id });
@@ -183,6 +260,7 @@ class userAuthService {
         const tech = await TechStack.deleteAll({ user_id });
         const car = await Career.deleteAll({ user_id });
         const com = await Comment.deleteAll({ user_id });
+
         console.log(awa, cer, edu, pro, tech, car, com);
         return { result: true };
     }
