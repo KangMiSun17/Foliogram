@@ -1,4 +1,16 @@
 import { Schema, model } from "mongoose";
+import { RE_DATE_PATTERN } from "../../utils/regexTools";
+
+const dateValidator = {
+    // Needs to be YYYY-MM-DD format.
+    // date.toISOString().slice(0, 10) does that.
+    validator: (v) => {
+        return (
+            RE_DATE_PATTERN.test(v) && new Date(v).toString() !== "Invalid Date"
+        );
+    },
+    message: "Not a correct date format, should be YYYY-MM-DD",
+};
 
 const CertificateSchema = new Schema(
     {
@@ -17,6 +29,7 @@ const CertificateSchema = new Schema(
         when_date: {
             type: String,
             required: true,
+            validate: dateValidator,
         },
         description: {
             type: String,

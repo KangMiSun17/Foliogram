@@ -92,6 +92,7 @@ class BaseModel {
         const deleted = await this.Model.findOneAndDelete({ id, ...query });
         return deleted;
     }
+
     static async deleteAll({ user_id, ...query }) {
         const deleted = await this.Model.deleteMany({ user_id, ...query });
         return deleted;

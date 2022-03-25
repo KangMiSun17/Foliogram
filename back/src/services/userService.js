@@ -8,11 +8,22 @@ import {
     Career,
     Comment,
 } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Logger, UNIFIED_LOG } from "../utils/logging";
 
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import * as status from "../utils/status";
+
+const logger = new Logger({
+    name: "userService",
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath("user.log"),
+        Logger.generateLogPath("service.log"),
+        Logger.generateLogPath("userservice.log"),
+    ],
+});
 
 class userAuthService {
     static async addUser({ name, email, password }) {
@@ -20,7 +31,7 @@ class userAuthService {
         const user = await User.findByEmail({ email });
         if (user) {
             return {
-                errorMessage: `id : {${email}} is already exist`,
+                errorMessage: `email {${email}} already exists`,
                 statusCode: status.STATUS_401_UNAUTHORIZED,
             };
         }
@@ -43,7 +54,7 @@ class userAuthService {
         const user = await User.findByEmail({ email });
         if (!user) {
             return {
-                errorMessage: `id : {${email}} is not found`,
+                errorMessage: `email {${email}} not found`,
                 statusCode: status.STATUS_404_NOTFOUND,
             };
         }
@@ -63,7 +74,7 @@ class userAuthService {
 
         // 로그인 성공 -> JWT 웹 토큰 생성
         const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-        console.log(secretKey);
+        // console.log(secretKey);
         const token = jwt.sign({ user_id: user.id }, secretKey);
 
         // 반환할 loginuser 객체를 위한 변수 설정
@@ -153,6 +164,12 @@ class userAuthService {
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        // console.log(isPasswordCorrect);
+        logger.log(
+            { __level__: 2 },
+            `.setUserPassword > `,
+            `isPasswordCorrect = ${isPasswordCorrect}`
+        );
         if (!isPasswordCorrect) {
             return {
                 errorMessage: `password is not correct`,
@@ -238,30 +255,35 @@ class userAuthService {
         return user;
     }
     static async deleteUser({ user_id }) {
-        let user = await User.findById({ user_id });
-        console.log(user);
-        for (const id of user.follower) {
-            await User.update({
-                user_id: id,
-                newValue: { $pull: { following: user_id } },
-            });
-        }
-        for (const id of user.following) {
-            await User.update({
-                user_id: id,
-                newValue: { $pull: { follower: user_id } },
-            });
-        }
-        const { deletedCount } = await User.delete({ id: user_id });
-        const awa = await Award.deleteAll({ user_id });
-        const cer = await Certificate.deleteAll({ user_id });
-        const edu = await Education.deleteAll({ user_id });
-        const pro = await Project.deleteAll({ user_id });
-        const tech = await TechStack.deleteAll({ user_id });
-        const car = await Career.deleteAll({ user_id });
-        const com = await Comment.deleteAll({ user_id });
+        // const { deletedCount } = await User.delete({ id: user_id });
+        // const awa = await Award.deleteAll({ user_id });
+        // const cer = await Certificate.deleteAll({ user_id });
+        // const edu = await Education.deleteAll({ user_id });
+        // const pro = await Project.deleteAll({ user_id });
+        // const tech = await TechStack.deleteAll({ user_id });
+        // const car = await Career.deleteAll({ user_id });
+        // const com = await Comment.deleteAll({ user_id });
+        // console.log(awa, cer, edu, pro, tech, car, com);
 
-        console.log(awa, cer, edu, pro, tech, car, com);
+        // 윤성준: await 은 동기화 키워드이기 때문에 줄줄이 쓰면 그만큼 오래 걸립니다.
+        // 결과값을 위로 올릴 필요가 없으므로 딱히 기다리지 않아도 될 것 같습니다.
+        Promise.allSettled([
+            User.delete({ id: user_id }),
+            Award.deleteAll({ user_id }),
+            Career.deleteAll({ user_id }),
+            Certificate.deleteAll({ user_id }),
+            Comment.deleteAll({ user_id }),
+            Education.deleteAll({ user_id }),
+            Project.deleteAll({ user_id }),
+            TechStack.deleteAll({ user_id }),
+        ])
+            .then((resolved) => {
+                logger.log({}, `deleteUser >`, resolved);
+            })
+            .catch((error) => {
+                logger.log({ __level__: 1 }, `deleteUser >`, error);
+            });
+
         return { result: true };
     }
 }
