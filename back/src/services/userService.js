@@ -60,10 +60,12 @@ class userAuthService {
         const id = user.id;
         const name = user.name;
         const description = user.description;
+        const active = user.active;
 
         const loginUser = {
             token,
             id,
+            active,
             email,
             name,
             description,
