@@ -4,8 +4,8 @@ dotenv.config();
 import * as crypto from "crypto";
 import * as nodemailer from "nodemailer";
 import is from "@sindresorhus/is";
-const multer = require("multer");
-const AWS = require("aws-sdk");
+import multer from "multer";
+import AWS from "aws-sdk";
 
 import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
@@ -276,6 +276,43 @@ userAuthRouter.put(
                 user_id,
                 password,
                 passwordReset,
+            });
+
+            if ("errorMessage" in updatedUser) {
+                throw new RequestError(
+                    { status: updatedUser.statusCode },
+                    updatedUser.errorMessage
+                );
+            }
+            res.status(status.STATUS_200_OK).json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+userAuthRouter.put(
+    "/users/:id/likes",
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const user_id = req.params.id;
+            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            if (user_id !== req.currentUserId) {
+                throw new RequestError(
+                    { status: status.STATUS_403_FORBIDDEN },
+                    `Trying to set different user's likes`
+                );
+            }
+            const following = req.body.following ?? null;
+            const state = req.body.state ?? null;
+            if (!following || !(state === true || state === false)) {
+                throw new Error(`following and state are required`);
+            }
+            const updatedUser = await userAuthService.setUserLikes({
+                user_id,
+                following,
+                state,
             });
 
             if ("errorMessage" in updatedUser) {
