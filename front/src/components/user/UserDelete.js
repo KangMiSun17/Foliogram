@@ -50,7 +50,7 @@ function UserDelete() {
     <div>
       {isEditable ? (
         <Button
-          className="float-end me-4"
+          className="float-end me-1"
           size="sm"
           type="submit"
           variant="danger"

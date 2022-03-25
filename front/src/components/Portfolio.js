@@ -10,10 +10,6 @@ import Career from "./career/Careers";
 import TechStacks from "./techstack/TechStacks";
 import NavBar from "./nav/NavBar";
 import { UserStateContext } from "../App";
-import {
-  PortfolioOwnerContext,
-  EditTableContext,
-} from "./common/context/Context";
 import Projects from "./project/Projects";
 import Comment from "./comment/Comments";
 import * as Api from "../api";
@@ -29,8 +25,8 @@ function Portfolio() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const userState = useContext(UserStateContext);
 
-  ///@ nav state
-  // const [navFromBack, setNavFromBack] = useState([]);
+  ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
+  let count = 0;
 
   const newAr = [];
   const [navList, setNavList] = useState(newAr);
@@ -45,6 +41,7 @@ function Portfolio() {
     const ownerData = res.data;
     // setNavFromBack(navData);
     let fromBack = res.data.user_mvp;
+    // 컴포넌트 배열(NavBar)
     const compo = [
       { compo: <Educations />, show: false },
       { compo: <Awards />, show: false },
@@ -53,7 +50,7 @@ function Portfolio() {
       { compo: <Career />, show: false },
       { compo: <TechStacks />, show: false },
     ];
-
+    // compo 배열과 res.data.user_mvp를 합쳐서 navBar의 상태로 쓸 수 있게 만듦
     for (let i = 0; i < compo.length; i++) {
       newAr.push({ ...compo[i], ...fromBack[i] });
     }
@@ -95,46 +92,48 @@ function Portfolio() {
 
   return (
     <UserContext.Provider value={userContext}>
-      <EditTableContext.Provider
-        value={portfolioOwner.id === userState.user?.id}
-      >
-        <PortfolioOwnerContext.Provider value={portfolioOwner.id}>
-          <Container fluid>
-            <Row>
-              {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
-              <Col xl="3" style={{ marginTop: 54 }}>
-                <User
-                  portfolioOwnerId={portfolioOwner.id}
-                  isEditable={portfolioOwner.id === userState.user?.id}
-                />
-                <Comment />
-              </Col>
-              <Col>
-                <NavBar
-                  navList={navList}
-                  setNavList={setNavList}
-                  setTogglePage={setTogglePage}
-                />
-                {togglePage
-                  ? navList.map((compAr, index) => {
-                      if (compAr.state === true) {
-                        return <div key={index}>{compAr.compo}</div>;
-                      }
-                      //just added this return like that because eslint bordered me
-                      return null;
-                    })
-                  : navList.map((compAr, index) => {
-                      if (compAr.show === true) {
-                        return <div key={index}>{compAr.compo}</div>;
-                      }
-                      return null;
-                    })}
-              </Col>
-              <UserDelete />
-            </Row>
-          </Container>
-        </PortfolioOwnerContext.Provider>
-      </EditTableContext.Provider>
+      <Container fluid className="mb-5">
+        <Row>
+          {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
+          <Col xl="3" style={{ marginTop: 54 }}>
+            <User />
+            <Comment />
+          </Col>
+          <Col>
+            <NavBar
+              navList={navList}
+              setNavList={setNavList}
+              setTogglePage={setTogglePage}
+            />
+            {togglePage
+              ? navList.map((compAr, index) => {
+                  if (compAr.state === true) {
+                    return <div key={index}>{compAr.compo}</div>;
+                  }
+                  //just added this return like that because eslint bordered me
+                  return null;
+                })
+              : navList.map((compAr, index) => {
+                  if (compAr.show === true) {
+                    return <div key={index}>{compAr.compo}</div>;
+                  } else {
+                    count += 1;
+                    if (count === 6) {
+                      count = 0;
+                      return (
+                        <div style={{ margin: "120px", textAlign: "center" }}>
+                          방금 누르신 항목을 한 번 더 클릭 하거나 전체 보기를
+                          눌려주세요!
+                        </div>
+                      );
+                    }
+                  }
+                  return null;
+                })}
+            <UserDelete />
+          </Col>
+        </Row>
+      </Container>
     </UserContext.Provider>
   );
 }

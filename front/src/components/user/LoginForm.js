@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import styled from "styled-components";
 import { validateEmail, validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
@@ -50,62 +51,77 @@ function LoginForm() {
   };
 
   return (
-    <Container
-      style={{ height: "auto", minHeight: "100%", paddingBottom: "250px" }}
-    >
-      <Row className="justify-content-md-center mt-5">
-        <Col lg={8}>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="loginEmail">
-              <Form.Label>이메일 주소</Form.Label>
-              <Form.Control
-                type="email"
-                autoComplete="on"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {!isEmailValid && (
-                <Form.Text className="text-success">
-                  이메일 형식이 올바르지 않습니다.
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group controlId="loginPassword" className="mt-3">
-              <Form.Label>비밀번호</Form.Label>
-              <Form.Control
-                type="password"
-                autoComplete="on"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {!isPasswordValid && (
-                <Form.Text className="text-success">
-                  비밀번호는 8자리 이상 특수문자, 영어, 숫자로 설정해 주세요.
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="primary" type="submit" disabled={!isFormValid}>
-                  로그인
-                </Button>
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="light" onClick={() => navigate("/register")}>
-                  회원가입하기
-                </Button>
-              </Col>
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <StyleDiv>
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col lg={8}>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="loginEmail">
+                <Form.Label>이메일 주소</Form.Label>
+                <Form.Control
+                  type="email"
+                  autoComplete="on"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {!isEmailValid && (
+                  <Form.Text className="text-success">
+                    이메일 형식이 올바르지 않습니다.
+                  </Form.Text>
+                )}
+              </Form.Group>
+              <Form.Group controlId="loginPassword" className="mt-3">
+                <Form.Label>비밀번호</Form.Label>
+                <Form.Control
+                  type="password"
+                  autoComplete="on"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {!isPasswordValid && (
+                  <Form.Text className="text-success">
+                    비밀번호는 8자리 이상 특수문자, 영어, 숫자로 설정해 주세요.
+                  </Form.Text>
+                )}
+              </Form.Group>
+              <Form.Group as={Row} className="mt-3 text-center">
+                <Col sm={{ span: 20 }}>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={!isFormValid}
+                  >
+                    로그인
+                  </Button>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} className="mt-3 text-center">
+                <Col sm={{ span: 20 }}>
+                  <Button variant="light" onClick={() => navigate("/register")}>
+                    회원가입하기
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </StyleDiv>
   );
 }
+
+export const StyleDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+
+  background-image: url(./dogpaw.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+`;
 
 export default LoginForm;
