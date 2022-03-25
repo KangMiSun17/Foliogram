@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
+import { Nav } from "react-bootstrap";
+import Image from "react-bootstrap/Image";
+import styled from "styled-components";
 import { UserStateContext, DispatchContext } from "../App";
 
 function Header() {
@@ -24,27 +26,61 @@ function Header() {
   };
 
   return (
-    <>
-      <Nav activeKey={location.pathname} className="m-4">
-        <Nav.Item className="me-auto">
+    <StyleDiv>
+      <Nav activeKey={location.pathname}>
+        <Nav.Item style={alignVertical} className="me-auto">
           <Nav.Link disabled>
-            안녕하세요, 포트폴리오 공유 서비스입니다.
+            폴리오그램은 포트폴리오 공유 서비스입니다.
           </Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+
+        <Nav.Item style={logoPosition}>
+          <Nav.Link onClick={() => navigate("/network")}>
+            <Image
+              src="./logo.png"
+              style={{ width: "200px", margin: "auto" }}
+            ></Image>
+          </Nav.Link>
+        </Nav.Item>
+
+        <Nav.Item style={alignVertical} className="ms-auto">
           <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+        <Nav.Item style={alignVertical}>
           <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
         </Nav.Item>
         {isLogin && (
-          <Nav.Item>
+          <Nav.Item style={alignVertical}>
             <Nav.Link onClick={logout}>로그아웃</Nav.Link>
           </Nav.Item>
         )}
       </Nav>
-    </>
+    </StyleDiv>
   );
 }
+
+//style
+const StyleDiv = styled.div`
+  border-bottom: 1px solid #c4c4c4;
+  padding: 10px 30px;
+  margin: 0 10px 30px;
+  // background-image: url(./Logo1.png);
+  // background-size: 220px;
+  // background-repeat: no-repeat;
+  // background-position-x: center;
+  // background-position-y: center;
+`;
+
+const alignVertical = {
+  paddingTop: "20px",
+  paddingBottom: "20px",
+};
+
+const logoPosition = {
+  position: "absolute",
+  top: "14px",
+  left: "50%",
+  transform: "translateX(-43%)",
+};
 
 export default Header;
