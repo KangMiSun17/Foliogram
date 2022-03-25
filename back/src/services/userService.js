@@ -160,7 +160,7 @@ class userAuthService {
         // console.log(isPasswordCorrect);
         logger.log(
             { __level__: 2 },
-            `${this.name}.setUserPassword > `,
+            `.setUserPassword > `,
             `isPasswordCorrect = ${isPasswordCorrect}`
         );
         if (!isPasswordCorrect) {
@@ -214,14 +214,10 @@ class userAuthService {
             TechStack.deleteAll({ user_id }),
         ])
             .then((resolved) => {
-                logger.log({}, `UserAuthService.deleteUser >`, resolved);
+                logger.log({}, `deleteUser >`, resolved);
             })
             .catch((error) => {
-                logger.log(
-                    { __level__: 1 },
-                    `UserAuthService.deleteUser >`,
-                    error
-                );
+                logger.log({ __level__: 1 }, `deleteUser >`, error);
             });
 
         return { result: true };
