@@ -6,13 +6,25 @@ import * as nodemailer from "nodemailer";
 import is from "@sindresorhus/is";
 import multer from "multer";
 import AWS from "aws-sdk";
-
 import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
+
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
 import * as status from "../utils/status";
 import { RequestError } from "../utils/errors";
+import { Logger, UNIFIED_LOG } from "../utils/logging";
+
+const logger = new Logger({
+    name: `userRouter`,
+    tee: [
+        UNIFIED_LOG,
+        Logger.generateLogPath(`$user.log`),
+        Logger.generateLogPath(`router.log`),
+        Logger.generateLogPath(`$userrouter.log`),
+    ],
+    default_level: 2,
+});
 
 const userAuthRouter = Router();
 const upload = multer();
@@ -43,18 +55,29 @@ userAuthRouter.post(
             });
             //create unique id
             const imageName = uuidv4();
+
+            logger.log(
+                {},
+                `POST /user/profileImage`,
+                `imageName = ${imageName}`
+            );
+
             //add image file in Bucket in Ncloud with settings
             await S3.putObject({
                 Bucket: process.env.IMAGE_BUCKET,
                 Key: `${imageName}.PNG`,
-                //ACL is access permission in image,all client can acces imagefile with 'public-read'
+                //ACL is access permission in image, all client can acces
+                // imagefile with 'public-read'
                 ACL: "public-read",
                 Body: req.file.buffer,
                 ContentType: "image/png",
             }).promise();
             //return image url
             res.status(status.STATUS_200_OK).json({
-                imageLink: `${process.env.IMAGE_ENDPOINT}/${process.env.IMAGE_BUCKET}/${imageName}.PNG`,
+                imageLink:
+                    `${process.env.IMAGE_ENDPOINT}/` +
+                    `${process.env.IMAGE_BUCKET}/` +
+                    `${imageName}.PNG`,
             });
         } catch (error) {
             next(error);
@@ -74,6 +97,13 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         const name = req.body.name;
         const email = req.body.email;
         const password = req.body.password;
+
+        logger.log(
+            {},
+            `POST /user/register`,
+            `name = ${name}`,
+            `email = ${email}`
+        );
 
         // 위 데이터를 유저 db에 추가하기
         const newUser = await userAuthService.addUser({
@@ -102,6 +132,9 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         const activationPath =
             `${process.env.SERVER_URL}:${process.env.SERVER_PORT}/users` +
             `/${newUser.id}/activate/${activationKey}`;
+        //
+        logger.log({}, `activationPath = ${activationPath}`);
+        //
         transport.sendMail({
             from: "team5portfolioservice@gmail.com",
             to: email,
@@ -143,6 +176,7 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
         // req (request) 에서 데이터 가져오기
         const email = req.body.email;
         const password = req.body.password;
+        logger.log({}, `POST /user/login`, `email = ${email}`);
 
         // 위 데이터를 이용하여 유저 db에서 유저 찾기
         const user = await userAuthService.getUser({ email, password });
@@ -376,17 +410,17 @@ userAuthRouter.delete(
                 );
             }
             const result = await userAuthService.deleteUser({ user_id });
-            res.status(200).json(result);
+            res.status(status.STATUS_200_OK).json(result);
         } catch (error) {
             next(error);
         }
     }
 );
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
-    res.status(200).send(
-        `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
+// userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
+//     res.status(200).send(
+//         `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
+//     );
+// });
 
 export { userAuthRouter };
