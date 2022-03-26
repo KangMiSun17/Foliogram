@@ -57,7 +57,7 @@ function UserCard({
           />
         </Row>
         <Card.Title onClick={() => navigate(`/users/${user.id}`)}>
-          {user?.name}
+          <span style={{ cursor: "pointer" }}>{user?.name}</span>
           <span
             style={{
               marginLeft: "5px",
