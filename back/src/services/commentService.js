@@ -79,9 +79,11 @@ class commentService {
         if (comments.length <= 0) {
             return [];
         }
+        console.log(comments);
         const populatedComments = await Promise.all(
             comments.map((comment) => comment.populate("user_id"))
         );
+        console.log(populatedComments);
         const data = populatedComments.map((populatedComment) => ({
             id: populatedComment.id,
             content: populatedComment.content,
