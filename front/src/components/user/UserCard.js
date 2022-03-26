@@ -38,7 +38,7 @@ function UserCard({
   }
 
   return (
-    <Card className="mb-3 mt-1" style={{ height: "22rem" }}>
+    <Card className="mb-3 mt-1" style={{ height: "23rem" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
@@ -98,7 +98,6 @@ function UserCard({
           </div>
           <div>
             <Card.Link
-              href="#"
               onClick={() => navigate(`/users/${user.id}`)}
               style={linkStyle}
               onMouseEnter={toggleHover}
