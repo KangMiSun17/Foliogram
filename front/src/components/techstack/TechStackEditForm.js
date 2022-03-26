@@ -7,7 +7,7 @@ import {
 } from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 선택된 Project 편집하는 컴포넌트입니다.
+/** 선택된 Tech stack 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state
  * @returns {component} - ProjectEditForm
  */
@@ -21,7 +21,7 @@ function ProjectEditForm({ setIsEditing }) {
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //편집된 projects 업데이트 하기위해 서버로 put 요청
+    //편집된 tech stack 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`techstacks/${id}`, {
         title: editTitle,

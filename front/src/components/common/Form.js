@@ -53,7 +53,3 @@ export function FormCheckField({ label, id, value, checked, setState }) {
     />
   );
 }
-
-export function FormDateField() {
-  //DatePickForm 을 여기로 옮겼으면 합니다.
-}

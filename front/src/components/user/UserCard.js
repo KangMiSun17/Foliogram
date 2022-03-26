@@ -47,7 +47,7 @@ function UserCard({
             style={{
               width: "10rem",
               height: "8rem",
-              borderRadius: "3rem",
+              borderRadius: "2rem",
               cursor: "pointer",
             }}
             className="mb-3"
@@ -69,7 +69,12 @@ function UserCard({
           </span>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
-        <Card.Text>{user?.description}</Card.Text>
+        <Card.Text
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate(`/users/${user.id}`)}
+        >
+          {user?.description}
+        </Card.Text>
 
         {isEditable && (
           <Row className="mt-4 text-center text-info">

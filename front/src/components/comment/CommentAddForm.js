@@ -24,6 +24,7 @@ function CommentAddForm() {
     }
     setContent("");
   };
+
   return (
     <div>
       <Form.Control
