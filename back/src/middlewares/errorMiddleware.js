@@ -18,7 +18,11 @@ const logger = new Logger({
             "techstack",
         ]
             .map((mvp) => {
-                return [`${mvp}.log`, `${mvp}service.log`, `${mvp}router.log`];
+                return [
+                    Logger.generateLogPath(`${mvp}.log`),
+                    Logger.generateLogPath(`${mvp}service.log`),
+                    Logger.generateLogPath(`${mvp}router.log`),
+                ];
             })
             .flat(),
     ],

@@ -44,17 +44,25 @@ commentRouter.post(
         }
     }
 );
+
 commentRouter.get("/commentlist/:user_id", async function (req, res, next) {
     try {
         const user_id = req.params.user_id;
         const comments = await commentService.getComments({
             user_id,
         });
+        if ("errorMessage" in comments) {
+            throw new RequestError(
+                { status: comments.statusCode },
+                comments.errorMessage
+            );
+        }
         res.status(status.STATUS_200_OK).json(comments);
     } catch (error) {
         next(error);
     }
 });
+
 commentRouter.get(
     "/comments/:id",
     login_required,
@@ -77,6 +85,7 @@ commentRouter.get(
         }
     }
 );
+
 commentRouter.put(
     "/comments/:id",
     login_required,
@@ -123,7 +132,7 @@ commentRouter.delete(
             const id = req.params.id;
             const user_id = req.currentUserId;
             const comment = await commentService.getComment({ id });
-            console.log(comment);
+            // console.log(comment);
 
             if ("errorMessage" in comment) {
                 throw new RequestError(
@@ -132,7 +141,10 @@ commentRouter.delete(
                 );
             }
 
-            if (user_id === comment.user_id.id) {
+            if (
+                user_id === comment.user_id.id ||
+                user_id === comment.target_user_id
+            ) {
                 const result = await commentService.deleteComment({
                     id,
                 });
@@ -148,4 +160,5 @@ commentRouter.delete(
         }
     }
 );
+
 export { commentRouter };

@@ -16,7 +16,7 @@ class EducationService extends SubrecordService {
         "position",
     ]);
     optionalFields = Object.freeze([]);
-    settableFields = Object.freeze(["school", "major", "description"]);
+    settableFields = Object.freeze(["school", "major", "position"]);
     // uniqueFields = Object.freeze([]);
     // searchableFields = Object.freeze([]);
 

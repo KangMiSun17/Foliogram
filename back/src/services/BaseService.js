@@ -102,7 +102,7 @@ class BaseService {
      *  - `null` when addtion was a failure for unexpected reason.
      */
     async add(record) {
-        this.logger.log({}, `${this.name}.add >`, arguments[0]);
+        this.logger.log({}, `.add >`, arguments[0]);
 
         const nonUniqueField = await this._notUnique(record);
         if (nonUniqueField) {
@@ -131,7 +131,7 @@ class BaseService {
         });
 
         const added = await this.Model.create(data);
-        console.log(`${this.name}.add > added=`, added);
+        this.logger.log({}, `.add > added=`, added);
 
         return added;
     }
@@ -148,7 +148,7 @@ class BaseService {
      *  - `null` when record could not be found.
      */
     async get({ id, ...query }) {
-        this.logger.log({}, `${this.name}.get > `, arguments[0]);
+        this.logger.log({}, `.get > `, arguments[0]);
 
         const found = await this.Model.find({ id, ...query });
         if (!found) {
@@ -240,7 +240,7 @@ class BaseService {
      * It is an error to attempt to delete an undeletable record.
      */
     async del({ id, currentUserId, ...query }) {
-        this.logger.log({}, `${this.name}.del > `, arguments[0]);
+        this.logger.log({}, `.del > `, arguments[0]);
         if (this.deletable) {
             const peek = await this.Model.find({ id });
             if (!peek) {
@@ -312,7 +312,7 @@ class BaseService {
      *  - Returns `{}` when good to go.
      */
     _auth({ currentUserId, ...record }) {
-        this.logger.log({}, `${this.name}._auth >`, arguments[0]);
+        this.logger.log({}, `._auth >`, arguments[0]);
         if (currentUserId !== record[this.authField]) {
             return {
                 errorMessage:
@@ -343,7 +343,7 @@ class ToprecordService extends BaseService {
      *  It will not emit error message.
      */
     async getAll(query = {}) {
-        this.logger.log({}, `${this.name}.getAll > `, arguments[0]);
+        this.logger.log({}, `.getAll > `, arguments[0]);
         const found = await this.Model.findAll(query);
         return found;
     }
@@ -384,7 +384,7 @@ class SubrecordService extends BaseService {
      *  - Error: The record was not found.
      */
     async getParent({ id, ...query }) {
-        this.logger.log({}, `${this.name}.getParent > `, arguments[0]);
+        this.logger.log({}, `.getParent > `, arguments[0]);
 
         const me = await this.Model.find({ id, ...query });
         if (!me) {
@@ -412,7 +412,7 @@ class SubrecordService extends BaseService {
      *  - If none, return an empty Array. It will not emit error message.
      */
     async getSiblings({ user_id }) {
-        this.logger.log({}, `${this.name}.getSiblings > `, arguments[0]);
+        this.logger.log({}, `.getSiblings > `, arguments[0]);
 
         const query = { [this.ownerField]: user_id };
         const found = await this.Model.findAll(query);

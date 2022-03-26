@@ -35,6 +35,15 @@ class Comment {
         const result = await CommentModel.deleteOne({ id });
         return result;
     }
+    static async deleteAll({ user_id, od }) {
+        const target_result = await CommentModel.deleteMany({
+            target_user_id: user_id,
+        });
+        const result = await CommentModel.deleteMany({
+            user_id: od,
+        });
+        return { target_result, result };
+    }
 }
 
 export { Comment };
