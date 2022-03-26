@@ -132,7 +132,7 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         // sendMail은 콜백을 등록하지 않으면 프로미스를 반환합니다.
         // 사용자가 이메일을 확인하는데 시간이 좀 필요할 것이므로 굳이 기다리지 않습니다.
         const activationPath =
-            `${process.env.SERVER_URL}:${process.env.SERVER_PORT}/users` +
+            `${process.env.SERVER_DOMAIN}:${process.env.SERVER_PORT}/users` +
             `/${newUser.id}/activate/${activationKey}`;
         //
         logger.log({}, `activationPath = ${activationPath}`);
@@ -150,7 +150,7 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
                             이 링크로 들어와 계정을 활성화해주세요
                         </a>
                         <br>
-                        ${activationPath}
+                        <!-- ${activationPath} -->
                     </body>
                 </html>
                 `,
@@ -412,7 +412,10 @@ userAuthRouter.get(
                 });
                 // res.status(status.STATUS_200_OK).json({ result: true });
                 // 로그인 페이지로 돌아가게 만듭니다
-                res.status(status.STATUS_200_OK).redirect("/");
+                logger.log({ __level__: 2 }, `activate user of id {${id}}`);
+                res.status(status.STATUS_200_OK).redirect(
+                    process.env.SERVICE_DOMAIN
+                );
             } else {
                 throw new RequestError(
                     { status: status.STATUS_403_FORBIDDEN },
@@ -435,7 +438,7 @@ userAuthRouter.delete(
             if (user_id !== req.currentUserId) {
                 throw new RequestError(
                     { status: status.STATUS_403_FORBIDDEN },
-                    `Trying to set different user's comments`
+                    `Trying to delete a different user other than himself`
                 );
             }
 
