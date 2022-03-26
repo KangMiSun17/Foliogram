@@ -9,7 +9,8 @@ import { toObjectDate, toStringDate } from "../common/DateUtil";
 /** comment card component
  *
  * @param {object} comment each comment
- * @returns comment edit form or comment content
+ * @param {number} index comment index
+ * @returns {component} comment edit form or comment content
  */
 function CommentCard({ comment, index }) {
   const { isEditable } = useContext(UserContext);
@@ -27,7 +28,7 @@ function CommentCard({ comment, index }) {
   }, []);
 
   const minute = comment.createdAt.split("T")[1].split(".")[0].split(":")[1];
-
+  //delete function
   const deleteHandler = async () => {
     await Api.delete("comments", comment.id);
     setComments((cur) => {
@@ -36,15 +37,15 @@ function CommentCard({ comment, index }) {
       return newComment;
     });
   };
-
+  //select edit or delete function
   const selectOption = (e) => {
     if (e.target.tabIndex === 1) {
       return setIsEditing(true);
     } else if (e.target.tabIndex === 2) {
-      console.log("hi");
       return deleteHandler();
     }
   };
+
   return (
     <Card className="mb-3" key={comment.id}>
       <Row className="align-items-center">

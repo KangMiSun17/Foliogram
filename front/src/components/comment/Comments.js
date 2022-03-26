@@ -24,6 +24,7 @@ function Comments() {
       console.log("Error: comment list get request fail", err);
     }
   }, [portfolioOwnerId]);
+
   return (
     <CommentFetchContext.Provider value={setComments}>
       <Card className="mb-3">

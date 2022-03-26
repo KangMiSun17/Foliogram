@@ -8,12 +8,13 @@ import { CommentFetchContext } from "../common/context/Context";
  *
  * @param {object} comment each comment object
  * @param {boolean} setIsEditing whether editing or not
+ * @param {number} index comment index
  * @returns
  */
 function CommentEditForm({ comment, setIsEditing, index }) {
   const setComments = useContext(CommentFetchContext);
   const [editContent, setEditContent] = useState(comment.content);
-
+  //edit function
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -31,6 +32,7 @@ function CommentEditForm({ comment, setIsEditing, index }) {
 
     setIsEditing(false);
   };
+
   return (
     <Row className="align-items-center">
       <Col sm={1} className="ms-1">

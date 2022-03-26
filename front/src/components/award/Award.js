@@ -8,6 +8,7 @@ import AwardEditForm from "./AwardEditForm";
  */
 function Award() {
   const [isEditing, setIsEditing] = useState(false);
+
   return (
     <>
       {isEditing ? (

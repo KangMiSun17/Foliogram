@@ -7,7 +7,7 @@ import {
   CareerFetchContext,
 } from "../common/context/Context";
 
-/** 수상 이력 목록 컴포넌트입니다.
+/** 경력 목록 컴포넌트입니다.
  *
  * @param {boolean} setIsEditing - 편집중 상태 변경 state
  * @returns projectList and edit button

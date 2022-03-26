@@ -1,5 +1,9 @@
 import { Col, Row } from "react-bootstrap";
 
+/**
+ *
+ * @returns {component} footer
+ */
 function Footer() {
   return (
     <footer>

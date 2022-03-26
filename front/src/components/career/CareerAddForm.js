@@ -5,7 +5,7 @@ import { DatePickForm, toStringDate } from "../common/DateUtil";
 import { UserContext, CareerFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 프로젝트 추가하는 컴포넌트입니다.
+/** 경력 추가하는 컴포넌트입니다.
  *
  * @returns {component} ProjectAddForm
  */
@@ -23,7 +23,7 @@ function CareerAddForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //추가된 projects 업데이트 하기위해 서버에 post 요청
+    //추가된 career 업데이트 하기위해 서버에 post 요청
     try {
       await Api.post(`career/create`, {
         user_id: portfolioOwnerId,
