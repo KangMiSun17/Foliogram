@@ -26,16 +26,24 @@ const logger = new Logger({
     default_level: 2,
 });
 
+[
+    "SERVER_DOMAIN",
+    "SERVER_PORT",
+    "SERVICE_DOMAIN",
+    "MAILER_PASSWORD",
+    "IMAGE_ENDPOINT",
+    "IMAGE_ACCESSKEY",
+    "IMAGE_SECRETACCESSKEY",
+    "IMAGE_BUCKET",
+].forEach((k) => {
+    if (!(k in process.env)) {
+        throw new Error(`OUR STUPID ADMIN FORGOT TO ADD "${k}" IN THE ENV`);
+    }
+});
+
 const userAuthRouter = Router();
 const upload = multer();
 
-["SERVER_DOMAIN", "SERVER_PORT", "SERVICE_DOMAIN", "MAILER_PASSWORD"].forEach(
-    (k) => {
-        if (!(k in process.env)) {
-            throw new Error(`OUR STUPID ADMIN FORGOT TO ADD "${k}" IN THE ENV`);
-        }
-    }
-);
 const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
