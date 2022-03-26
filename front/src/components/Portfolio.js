@@ -28,7 +28,6 @@ function Portfolio() {
   ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
   let count = 0;
   let count2 = 0;
-  let toggleEmpty = false;
 
   const newAr = [];
   const [navList, setNavList] = useState(newAr);
@@ -116,6 +115,7 @@ function Portfolio() {
                     if (index === 5 && count2 === 0) {
                       return (
                         <div
+                          key={index}
                           style={{
                             margin: "22px",
                             textAlign: "center",
@@ -130,9 +130,11 @@ function Portfolio() {
                       );
                     }
 
-                    if (index === 0)
+                    if (index === 0) {
                       //just added this return like that because eslint bordered me
                       return null;
+                    }
+                    return null;
                   })
                 : navList.map((compAr, index) => {
                     if (compAr.show === true) {
@@ -178,12 +180,12 @@ function Portfolio() {
                 ? navList.map((compAr, index) => {
                     if (compAr.state === true) {
                       count2 += 1;
-                      console.log(count2);
                       return <div key={index}>{compAr.compo}</div>;
                     }
                     if (index === 5 && count2 === 0) {
                       return (
                         <div
+                          key={index}
                           style={{
                             margin: "22px",
                             textAlign: "center",
