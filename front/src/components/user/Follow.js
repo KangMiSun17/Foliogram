@@ -11,19 +11,14 @@ function Follow({ user, setReFetching }) {
   const loginedUser = userState.user;
 
   useEffect(() => {
-    try {
-      if (loginedUser.following) {
-        const targetId = loginedUser.following.filter((id) => id === user?.id);
+    const targetId = loginedUser.following.filter((id) => id === user?.id);
 
-        if (targetId[0] === user?.id) {
-          setIsFollow(true);
-        } else {
-          setIsFollow(false);
-        }
-      }
-    } catch (err) {
-      console.log(err);
+    if (targetId[0] === user?.id) {
+      setIsFollow(true);
+      return;
     }
+
+    setIsFollow(false);
   }, [loginedUser, user?.id]);
 
   const onClickHandler = async (e) => {

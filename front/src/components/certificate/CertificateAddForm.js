@@ -39,6 +39,11 @@ function CertificateAddForm({ setCertificateList }) {
       console.log("Error: certificates/create post request fail", err);
     }
 
+    setAdd({
+      title: "",
+      description: "",
+      when_date: new Date(),
+    });
     setIsAdding(false);
   };
 
