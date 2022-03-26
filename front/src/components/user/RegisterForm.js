@@ -45,6 +45,7 @@ function RegisterForm() {
         name: addUser.name,
       });
 
+      alert("이메일이 전송되었습니다. 이메일을 확인해주세요.");
       // 로그인 페이지로 이동함.
       navigate("/login");
     } catch (err) {

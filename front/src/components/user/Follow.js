@@ -6,7 +6,7 @@ import { UserStateContext } from "../../App";
 import * as Api from "../../api";
 
 function Follow({ user, setReFetching }) {
-  const [isFollow, setIsFollow] = useState(false);
+  const [isFollow, setIsFollow] = useState(null);
   const userState = useContext(UserStateContext);
   const loginedUser = userState.user;
 
