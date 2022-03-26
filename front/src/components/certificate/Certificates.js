@@ -1,13 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Card, Row } from "react-bootstrap";
-import {
-  EditTableContext,
-  PortfolioOwnerContext,
-  CertificateContext,
-} from "../common/context/Context";
+import { Card } from "react-bootstrap";
+import { UserContext } from "../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import CertificateCard from "./CertificateCard";
-import { PlusButton } from "../common/Button";
 import * as Api from "../../api";
 
 /**
@@ -16,9 +11,7 @@ import * as Api from "../../api";
  */
 function Certificates() {
   const [certificateList, setCertificateList] = useState([]);
-  const [isAdding, setIsAdding] = useState(false);
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(UserContext);
 
   // All certificate list get API request
   useEffect(() => {
@@ -39,22 +32,20 @@ function Certificates() {
    * @description isAdding {type: boolean} if true show CertificateAddForm
    */
   return (
-    <CertificateContext.Provider
-      value={{ certificateList, setCertificateList }}
-    >
-      <Card className="me-4 mt-3 mb-3">
+    <Card className="me-4 mt-3 mb-3">
+      <Card.Body>
+        <Card.Title className="mb-3">자격증</Card.Title>
         <Card.Body>
-          <Card.Title>자격증</Card.Title>
-          <CertificateCard />
-          {isEditable && (
-            <Row className="justify-content-center mb-4" xs="auto">
-              <PlusButton setState={setIsAdding} />
-            </Row>
-          )}
-          {isAdding && <CertificateAddForm setIsAdding={setIsAdding} />}
+          <CertificateCard
+            certificateList={certificateList}
+            setCertificateList={setCertificateList}
+          />
         </Card.Body>
-      </Card>
-    </CertificateContext.Provider>
+        {isEditable && (
+          <CertificateAddForm setCertificateList={setCertificateList} />
+        )}
+      </Card.Body>
+    </Card>
   );
 }
 

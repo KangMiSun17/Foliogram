@@ -1,10 +1,7 @@
 import React, { useState, useContext } from "react";
-import { Form, FormCheck, Row } from "react-bootstrap";
+import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import {
-  PortfolioOwnerContext,
-  EducationFetchContext,
-} from "../common/context/Context";
+import { UserContext, EducationFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 학력을 추가하는 컴포넌트입니다.
@@ -12,11 +9,14 @@ import * as Api from "../../api";
  * @returns {component} EducationAddForm
  */
 function EducationAddForm() {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { portfolioOwnerId } = useContext(UserContext);
   const { setReFetching } = useContext(EducationFetchContext);
-  const [addSchool, setAddSchool] = useState("");
-  const [addMajor, setAddMajor] = useState("");
-  const [addPosition, setAddPosition] = useState("재학중");
+  const [add, setAdd] = useState({
+    school: "",
+    major: "",
+    position: "재학중",
+  });
+  const notSubAble = add.school.length === 0 || add.major.length === 0;
   const [isAdding, setIsAdding] = useState(false);
 
   //확인 버튼 누를 시 실행
@@ -27,14 +27,16 @@ function EducationAddForm() {
     try {
       await Api.post(`education/create`, {
         user_id: portfolioOwnerId,
-        school: addSchool,
-        major: addMajor,
-        position: addPosition,
+        school: add.school,
+        major: add.major,
+        position: add.position,
       });
 
-      setAddSchool("");
-      setAddMajor("");
-      setAddPosition("재학중");
+      setAdd({
+        school: "",
+        major: "",
+        position: "재학중",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -42,6 +44,8 @@ function EducationAddForm() {
     setReFetching(new Date());
     setIsAdding(false);
   };
+
+  const radioList = ["재학중", "졸업", "학사졸업", "석사졸업", "박사졸업"];
 
   return (
     <>
@@ -51,68 +55,61 @@ function EducationAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>추가할 내용</Form.Label>
+          <Form.Group className="mb-3" controlId="school">
             <Form.Control
               type="text"
               placeholder="학교 이름"
-              value={addSchool}
-              onChange={(e) => setAddSchool(e.target.value)}
+              value={add.school}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="major">
             <Form.Control
               type="text"
               placeholder="전공"
-              value={addMajor}
-              onChange={(e) => setAddMajor(e.target.value)}
+              value={add.major}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
-          <Form.Group className="mt-3">
-            <FormCheck
-              inline
-              label="재학중"
-              id="radio1"
-              type="radio"
-              name="position"
-              value="재학중"
-              checked={addPosition === "재학중"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
-              label="학사졸업"
-              id="radio2"
-              type="radio"
-              name="position"
-              value="학사졸업"
-              checked={addPosition === "학사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
-              label="석사졸업"
-              id="radio3"
-              type="radio"
-              name="position"
-              value="석사졸업"
-              checked={addPosition === "석사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
-            <FormCheck
-              inline
-              label="박사졸업"
-              id="radio4"
-              type="radio"
-              name="position"
-              value="박사졸업"
-              checked={addPosition === "박사졸업"}
-              onChange={(e) => setAddPosition(e.target.value)}
-            ></FormCheck>
+          <Form.Group className="mt-3 mb-3">
+            {radioList.map((graduate, index) => {
+              return (
+                <FormCheck
+                  inline
+                  label={graduate}
+                  key={index}
+                  id={index}
+                  type="radio"
+                  name="position"
+                  value={graduate}
+                  checked={add.position === graduate}
+                  onChange={(e) =>
+                    setAdd((prev) => ({
+                      ...prev,
+                      [e.target.name]: e.target.value,
+                    }))
+                  }
+                ></FormCheck>
+              );
+            })}
           </Form.Group>
-
+          {notSubAble ? (
+            <Alert variant="danger">
+              <p>내용을 입력해주세요.</p>
+            </Alert>
+          ) : null}
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              disabled={notSubAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}

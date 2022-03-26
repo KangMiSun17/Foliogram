@@ -1,10 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import {
-  CertificateContext,
-  EditTableContext,
-} from "../common/context/Context";
+import { UserContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
@@ -14,9 +11,8 @@ import CertificateEditForm from "./CertificateEditForm";
  * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate information or EditForm
  */
-function Certificate({ certificate, index }) {
-  const isEditable = useContext(EditTableContext);
-  const { setCertificateList } = useContext(CertificateContext);
+function Certificate({ certificate, index, setCertificateList }) {
+  const { isEditable } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const { id, title, description, when_date } = certificate;
 
@@ -25,15 +21,16 @@ function Certificate({ certificate, index }) {
    * @description isEditable {type: boolean} if isEditable true and isEditing false show EditButton
    */
   return (
-    <Row className="align-items-center row">
+    <Row className="align-items-center">
       {isEditing ? (
         <CertificateEditForm
           certificate={certificate}
+          setCertificateList={setCertificateList}
           setIsEdit={setIsEditing}
           index={index}
         />
       ) : (
-        <Col className="mb-3">
+        <Col>
           <span>{title}</span>
           <br />
           <span style={{ color: "gray" }}>{description}</span>

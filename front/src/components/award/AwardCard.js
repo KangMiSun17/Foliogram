@@ -4,7 +4,7 @@ import { DeleteButton, EditButton } from "../common/Button";
 import {
   AwardContext,
   AwardFetchContext,
-  EditTableContext,
+  UserContext,
 } from "../common/context/Context";
 
 /** Award list component
@@ -13,10 +13,11 @@ import {
  * @returns AwardList and edit button or null
  */
 function AwardCard({ setIsEditing }) {
-  const isEditable = useContext(EditTableContext);
-  const setReFetching = useContext(AwardFetchContext);
+  const { isEditable } = useContext(UserContext);
+  const setAwards = useContext(AwardFetchContext);
   //Each award
-  const award = useContext(AwardContext);
+  const { award, index } = useContext(AwardContext);
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">
@@ -33,7 +34,8 @@ function AwardCard({ setIsEditing }) {
             <DeleteButton
               endpoint={"awards"}
               id={award.id}
-              setState={setReFetching}
+              setState={setAwards}
+              index={index}
             />
           </Col>
         </>

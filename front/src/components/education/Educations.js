@@ -3,8 +3,7 @@ import { Card } from "react-bootstrap";
 import EducationAddForm from "./EducationAddForm";
 import Education from "./Education";
 import {
-  EditTableContext,
-  PortfolioOwnerContext,
+  UserContext,
   EducationFetchContext,
   EducationContext,
 } from "../common/context/Context";
@@ -15,8 +14,7 @@ import * as Api from "../../api";
  * @returns Education or EducationAddForm
  */
 function Educations() {
-  const isEditable = useContext(EditTableContext);
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
+  const { isEditable, portfolioOwnerId } = useContext(UserContext);
   const [educations, setEducations] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 
@@ -34,7 +32,7 @@ function Educations() {
   }, [reFetching, portfolioOwnerId]);
 
   return (
-    <Card className="me-4 mt-3 mb-3">
+    <Card className="me-4 mb-3">
       <Card.Body>
         <Card.Title className="mb-3">학력</Card.Title>
         <EducationFetchContext.Provider value={{ reFetching, setReFetching }}>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, FormCheck, Row } from "react-bootstrap";
+import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import {
   EducationContext,
@@ -14,19 +14,21 @@ import * as Api from "../../api";
 function EducationEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(EducationFetchContext);
   const { id, school, major, position } = useContext(EducationContext);
-  const [editSchool, setEditSchool] = useState(school);
-  const [editMajor, setEditMajor] = useState(major);
-  const [editPosition, setEditPosition] = useState(position);
-
+  const [edit, setEdit] = useState({
+    school,
+    major,
+    position,
+  });
+  const notSubAble = edit.school.length === 0 || edit.major.length === 0;
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
     //편집된 education 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`educations/${id}`, {
-        school: editSchool,
-        major: editMajor,
-        position: editPosition,
+        school: edit.school,
+        major: edit.major,
+        position: edit.position,
       });
     } catch (err) {
       console.log(err);
@@ -36,70 +38,66 @@ function EducationEditForm({ setIsEditing }) {
     setIsEditing(false);
   };
 
+  const radioList = ["재학중", "졸업", "학사졸업", "석사졸업", "박사졸업"];
+
   return (
     <Form>
       <Form.Group className="mb-3">
         <Form.Label>수정할 내용</Form.Label>
         <Form.Control
           type="text"
+          name="school"
           className="mb-3"
-          value={editSchool}
-          onChange={(e) => setEditSchool(e.target.value)}
+          value={edit.school}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+          }
         />
         <Form.Control
           type="text"
+          name="major"
           className="mb-3"
-          value={editMajor}
-          onChange={(e) => setEditMajor(e.target.value)}
+          value={edit.major}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+          }
         />
       </Form.Group>
 
-      <Form.Group className="mt-3">
-        <FormCheck
-          inline
-          label="재학중"
-          id="radio1"
-          type="radio"
-          name="position"
-          value="재학중"
-          checked={editPosition === "재학중"}
-          onChange={(e) => setEditPosition(e.target.value)}
-        ></FormCheck>
-        <FormCheck
-          inline
-          label="학사졸업"
-          id="radio2"
-          type="radio"
-          name="position"
-          value="학사졸업"
-          checked={editPosition === "학사졸업"}
-          onChange={(e) => setEditPosition(e.target.value)}
-        ></FormCheck>
-        <FormCheck
-          inline
-          label="석사졸업"
-          id="radio3"
-          type="radio"
-          name="position"
-          value="석사졸업"
-          checked={editPosition === "석사졸업"}
-          onChange={(e) => setEditPosition(e.target.value)}
-        ></FormCheck>
-        <FormCheck
-          inline
-          label="박사졸업"
-          id="radio4"
-          type="radio"
-          name="position"
-          value="박사졸업"
-          checked={editPosition === "박사졸업"}
-          onChange={(e) => setEditPosition(e.target.value)}
-        ></FormCheck>
+      <Form.Group className="mt-3 mb-3">
+        {radioList.map((graduate, index) => {
+          return (
+            <FormCheck
+              inline
+              label={graduate}
+              key={index}
+              id={index}
+              type="radio"
+              name="position"
+              value={graduate}
+              checked={edit.position === graduate}
+              onChange={(e) =>
+                setEdit((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
+            ></FormCheck>
+          );
+        })}
       </Form.Group>
-
+      {notSubAble ? (
+        <Alert variant="danger">
+          <p>내용을 입력해주세요.</p>
+        </Alert>
+      ) : null}
       <Form.Group>
         <Row className="justify-content-center" xs="auto">
-          <BundleButton submitHandler={handleSubmit} setState={setIsEditing} />
+          <BundleButton
+            disabled={notSubAble}
+            submitHandler={handleSubmit}
+            setState={setIsEditing}
+          />
         </Row>
       </Form.Group>
     </Form>
