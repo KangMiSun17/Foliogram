@@ -36,7 +36,7 @@ function Network() {
       {category === "all" && (
         <Row xs="auto">
           {users.map((user) => (
-            <Col sm={2} key={user.id}>
+            <Col sm={3} key={user.id}>
               <UserCard user={user} setReFetching={setReFetching} isNetwork />
             </Col>
           ))}
@@ -47,7 +47,7 @@ function Network() {
           {users.map((user) => {
             if (user.user_category === "개발자") {
               return (
-                <Col sm={2} key={user.id}>
+                <Col sm={3} key={user.id}>
                   <UserCard
                     user={user}
                     setReFetching={setReFetching}
@@ -65,7 +65,7 @@ function Network() {
           {users.map((user) => {
             if (user.user_category === "예술가") {
               return (
-                <Col sm={2} key={user.id}>
+                <Col sm={3} key={user.id}>
                   <UserCard
                     user={user}
                     setReFetching={setReFetching}
@@ -83,7 +83,7 @@ function Network() {
           {users.map((user) => {
             if (user.user_category === "마피아") {
               return (
-                <Col sm={2} key={user.id}>
+                <Col sm={3} key={user.id}>
                   <UserCard
                     user={user}
                     setReFetching={setReFetching}
