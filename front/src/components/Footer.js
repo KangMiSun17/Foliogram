@@ -1,5 +1,9 @@
 import { Col, Row } from "react-bootstrap";
 
+/**
+ *
+ * @returns {component} footer
+ */
 function Footer() {
   return (
     <footer>
@@ -11,11 +15,11 @@ function Footer() {
           height: "200px",
         }}
       >
-        <img src="./logo2.svg" style={{ width: "150px" }} alt="img"></img>
+        <img src="./footerLogo.svg" style={{ width: "150px" }} alt="img"></img>
         <p style={{ color: "#7D7D7D" }}>
           5팀 개발바닥
           <br />
-          우수팀 가즈아
+          우수팀 가보자고
         </p>
       </Row>
       <Row

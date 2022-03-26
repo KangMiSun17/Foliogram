@@ -5,9 +5,9 @@ import { BundleButton, PlusButton } from "../common/Button";
 import { UserContext, TechStackFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
-/** 프로젝트 추가하는 컴포넌트입니다.
+/** 기술스택 추가하는 컴포넌트입니다.
  *
- * @returns {component} ProjectAddForm
+ * @returns {component} TechStackAddForm
  */
 function TechStackAddForm() {
   const { portfolioOwnerId } = useContext(UserContext);
