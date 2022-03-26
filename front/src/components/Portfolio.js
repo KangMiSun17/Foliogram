@@ -91,7 +91,6 @@ function Portfolio() {
     portfolioOwnerId: portfolioOwner.id,
     user_id: userState.user?.id,
   };
-  console.log(userContext.isEditable);
   return (
     <UserContext.Provider value={userContext}>
       {userContext.isEditable ? (
@@ -125,7 +124,7 @@ function Portfolio() {
                           <img
                             src="/empty.png"
                             alt="비어있음"
-                            // width="400px"
+                            width="50%"
                           ></img>
                         </div>
                       );
@@ -193,7 +192,7 @@ function Portfolio() {
                           <img
                             src="/empty.png"
                             alt="비어있음"
-                            // width="400px"
+                            width="50%"
                           ></img>
                         </div>
                       );
