@@ -27,6 +27,8 @@ function Portfolio() {
 
   ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
   let count = 0;
+  let count2 = 0;
+  let toggleEmpty = false;
 
   const newAr = [];
   const [navList, setNavList] = useState(newAr);
@@ -89,56 +91,142 @@ function Portfolio() {
     portfolioOwnerId: portfolioOwner.id,
     user_id: userState.user?.id,
   };
-
   return (
     <UserContext.Provider value={userContext}>
-      <Container fluid className="mb-5">
-        <Row>
-          {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
-          <Col xl="3" style={{ marginTop: 54 }}>
-            <User />
-            <Comment />
-          </Col>
-          <Col>
-            <NavBar
-              navList={navList}
-              setNavList={setNavList}
-              setTogglePage={setTogglePage}
-            />
-            {togglePage
-              ? navList.map((compAr, index) => {
-                  if (compAr.state === true) {
-                    return <div key={index}>{compAr.compo}</div>;
-                  }
-                  //just added this return like that because eslint bordered me
-                  return null;
-                })
-              : navList.map((compAr, index) => {
-                  if (compAr.show === true) {
-                    return <div key={index}>{compAr.compo}</div>;
-                  } else {
-                    count += 1;
-                    if (count === 6) {
-                      count = 0;
+      {userContext.isEditable ? (
+        <Container fluid className="mb-5">
+          <Row>
+            {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
+            <Col xl="3" style={{ marginTop: 54 }}>
+              <User />
+              <Comment />
+            </Col>
+            <Col>
+              <NavBar
+                navList={navList}
+                setNavList={setNavList}
+                setTogglePage={setTogglePage}
+              />
+              {togglePage
+                ? navList.map((compAr, index) => {
+                    if (compAr.state === true) {
+                      count2 += 1;
+                      return <div key={index}>{compAr.compo}</div>;
+                    }
+                    if (index === 5 && count2 === 0) {
                       return (
                         <div
-                          key={index}
-                          style={{ margin: "120px", textAlign: "center" }}
+                          style={{
+                            margin: "22px",
+                            textAlign: "center",
+                          }}
                         >
-                          현재 아무런 항목도 누르지 않은 상태입니다.
-                          <br />
-                          상단 항목 중 아무거나 한 번 더 클릭 하시거나 전체
-                          보기를 클릭 해주세요!
+                          <img
+                            src="/empty.png"
+                            alt="비어있음"
+                            width="50%"
+                          ></img>
                         </div>
                       );
                     }
-                  }
-                  return null;
-                })}
-            <UserDelete />
-          </Col>
-        </Row>
-      </Container>
+
+                    if (index === 0)
+                      //just added this return like that because eslint bordered me
+                      return null;
+                  })
+                : navList.map((compAr, index) => {
+                    if (compAr.show === true) {
+                      return <div key={index}>{compAr.compo}</div>;
+                    } else {
+                      count += 1;
+                      if (count === 6) {
+                        count = 0;
+                        return (
+                          <div
+                            key={index}
+                            style={{ margin: "120px", textAlign: "center" }}
+                          >
+                            현재 아무런 항목도 누르지 않은 상태입니다.
+                            <br />
+                            상단 항목 중 아무거나 한 번 더 클릭 하시거나 전체
+                            보기를 클릭 해주세요!
+                          </div>
+                        );
+                      }
+                    }
+                    return null;
+                  })}
+              <UserDelete />
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <Container fluid className="mb-5">
+          <Row>
+            {/* 마진값 높이 맞추기 위해 임시적으로 설정 */}
+            <Col xl="3" style={{ marginTop: 54 }}>
+              <User />
+              <Comment />
+            </Col>
+            <Col>
+              <NavBar
+                navList={navList}
+                setNavList={setNavList}
+                setTogglePage={setTogglePage}
+              />
+              {togglePage
+                ? navList.map((compAr, index) => {
+                    if (compAr.state === true) {
+                      count2 += 1;
+                      console.log(count2);
+                      return <div key={index}>{compAr.compo}</div>;
+                    }
+                    if (index === 5 && count2 === 0) {
+                      return (
+                        <div
+                          style={{
+                            margin: "22px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <img
+                            src="/empty.png"
+                            alt="비어있음"
+                            width="50%"
+                          ></img>
+                        </div>
+                      );
+                    }
+                    //just added this return like that because eslint bordered me
+                    return null;
+                  })
+                : navList.map((compAr, index) => {
+                    if (compAr.show === true) {
+                      return <div key={index}>{compAr.compo}</div>;
+                    } else {
+                      count += 1;
+                      if (count === 6) {
+                        count = 0;
+                        return (
+                          <div
+                            key={index}
+                            style={{ margin: "120px", textAlign: "center" }}
+                          >
+                            현재 아무런 항목도 누르지 않은 상태입니다.
+                            <br />
+                            상단 항목 중 아무거나 한 번 더 클릭 하시거나 전체
+                            보기를 클릭 해주세요!
+                          </div>
+                        );
+                      }
+                    }
+                    return null;
+                  })}
+              <UserDelete />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </UserContext.Provider>
   );
 }

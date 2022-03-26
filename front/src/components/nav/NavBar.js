@@ -94,8 +94,8 @@ function NavBar({ navList, setNavList, setTogglePage }) {
         compAr.show = !compAr.show;
         array.splice(index, 1, compAr);
       } else {
-        // compAr.show = false;
-        // array.splice(index, 1, compAr);
+        compAr.show = false;
+        array.splice(index, 1, compAr);
       }
       return null;
     });
@@ -130,7 +130,7 @@ function NavBar({ navList, setNavList, setTogglePage }) {
           return null;
         })}
 
-        {isEditable && (
+        {isEditable ? (
           <>
             <Button className="ms-auto" variant="light" onClick={handleShowAll}>
               전체보기
@@ -186,6 +186,13 @@ function NavBar({ navList, setNavList, setTogglePage }) {
               </Dropdown.Menu>
             </Dropdown>
             {/* <Button style={{ marginRight: 20 }}>저장</Button> */}
+          </>
+        ) : (
+          <>
+            <Button className="ms-auto" variant="light" onClick={handleShowAll}>
+              전체보기
+            </Button>
+            <div style={{ marginRight: "12px" }}></div>
           </>
         )}
       </Stack>
