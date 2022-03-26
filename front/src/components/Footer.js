@@ -11,15 +11,12 @@ function Footer() {
           height: "200px",
         }}
       >
-        <Col>
-          <h1>Foliogram</h1>
-          <p style={{ color: "#7D7D7D" }}>
-            5팀 개발바닥
-            <br />
-            우수팀 가즈아
-          </p>
-        </Col>
-        <Col></Col>
+        <img src="./logo2.svg" style={{ width: "150px" }} alt="img"></img>
+        <p style={{ color: "#7D7D7D" }}>
+          5팀 개발바닥
+          <br />
+          우수팀 가즈아
+        </p>
       </Row>
       <Row
         className="align-items-center"
