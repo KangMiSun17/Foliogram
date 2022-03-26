@@ -19,9 +19,9 @@ const logger = new Logger({
     name: `userRouter`,
     tee: [
         UNIFIED_LOG,
-        Logger.generateLogPath(`$user.log`),
+        Logger.generateLogPath(`user.log`),
         Logger.generateLogPath(`router.log`),
-        Logger.generateLogPath(`$userrouter.log`),
+        Logger.generateLogPath(`userrouter.log`),
     ],
     default_level: 2,
 });
