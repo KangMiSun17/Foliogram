@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { LikesButton } from "./../common/Button";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserStateContext, DispatchContext } from "../../App";
 import * as Api from "../../api";
@@ -12,6 +13,10 @@ function Follow({ user, setReFetching }) {
   const loginedUser = userState.user;
 
   useEffect(() => {
+    if (!loginedUser) {
+      return;
+    }
+
     const targetId = loginedUser.following.filter((id) => id === user?.id);
 
     if (targetId[0] === user?.id) {
@@ -50,14 +55,12 @@ function Follow({ user, setReFetching }) {
           <LikesButton onClickHandler={onClickHandler}>
             <FontAwesomeIcon icon={faHeart} color="red" />
           </LikesButton>
-          <span>{user?.follower.length}</span>
         </>
       ) : (
         <>
           <LikesButton onClickHandler={onClickHandler}>
-            <FontAwesomeIcon icon={faHeart} />
+            <FontAwesomeIcon icon={faRegularHeart} />
           </LikesButton>
-          <span>{user?.follower.length}</span>
         </>
       )}
     </>

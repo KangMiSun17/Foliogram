@@ -11,6 +11,7 @@ function UserCard({
   isFollows,
   setProfileImage,
   setReFetching,
+  isMypage,
 }) {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
@@ -99,10 +100,19 @@ function UserCard({
           </Row>
         )}
       </Card.Body>
+      <Card.Text style={linkStyle}>
+        {!isEditable && isMypage && (
+          <>
+            <Follow user={user} setReFetching={setReFetching} />
+            <span>{user?.follower.length}</span>
+          </>
+        )}
+      </Card.Text>
       {(isNetwork || isFollows) && (
         <>
           <div style={{ textAlign: "center" }}>
             <Follow user={user} setReFetching={setReFetching} />
+            <span>{user?.follower.length}</span>
           </div>
           <div>
             <Card.Link
