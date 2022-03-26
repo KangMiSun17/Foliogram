@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
