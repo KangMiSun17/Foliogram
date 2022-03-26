@@ -58,6 +58,9 @@ function RegisterForm() {
       <Container>
         <Row className="justify-content-md-center mt-5">
           <Col lg={8}>
+            <div style={{ color: "#e62617" }}>
+              ※ 이메일 인증이 필요한 서비스입니다.
+            </div>
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="registerEmail">
                 <Form.Label>이메일 주소</Form.Label>
