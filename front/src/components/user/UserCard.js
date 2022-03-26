@@ -25,6 +25,7 @@ function UserCard({
       textAlign: "center",
       width: "100px",
       margin: "10px auto",
+      cursor: "pointer",
     };
   } else {
     linkStyle = {
@@ -34,6 +35,7 @@ function UserCard({
       width: "100px",
       margin: "10px auto",
       textDecoration: "none",
+      cursor: "pointer",
     };
   }
 
