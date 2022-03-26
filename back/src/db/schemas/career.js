@@ -15,25 +15,23 @@ const dateValidator = {
 /*
 {
     "user_id":"af4ff0af-2a5f-4eea-99f2-d18b42aba419",
-    "title":"react 프로젝트",
-    "description":"프론트엔드 역량을 키웠습니다!",
+    "title":"독서실 알바",
+    "description":"독서실에서 시급 2천원을 받고 노예 노동을 했습니다!",
     "from_date":"2021-03-20",
     "to_date":"2021-04-20"
 }
 */
 
-/** Schema representing an individual project.
+/** Schema representing an individual career.
  *
  * @field {uuid} id
- * @field {uuid} participant_id
- * @field {String} title
- * @field {String} from_date
- * @field {String} to_date
- * @field {String} [description]
- *
- * @todo May have to modify to_date later.
+ * @field {uuid} user_id
+ * @field {string} title
+ * @field {string} from_date
+ * @field {string} to_date
+ * @field {string} [description]
  **/
-const ProjectSchema = new Schema(
+const CareerSchema = new Schema(
     {
         id: {
             type: String,
@@ -71,6 +69,6 @@ const ProjectSchema = new Schema(
     }
 );
 
-const ProjectModel = model("Project", ProjectSchema);
+const CareerModel = model("Career", CareerSchema);
 
-export { ProjectModel };
+export { CareerModel };

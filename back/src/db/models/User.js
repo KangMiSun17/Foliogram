@@ -21,17 +21,20 @@ class User {
         return users;
     }
 
-    static async update({ user_id, fieldToUpdate, newValue }) {
+    static async update({ user_id, newValue }) {
         const filter = { id: user_id };
-        const update = { [fieldToUpdate]: newValue };
         const option = { returnOriginal: false };
 
         const updatedUser = await UserModel.findOneAndUpdate(
             filter,
-            update,
+            newValue,
             option
         );
         return updatedUser;
+    }
+    static async delete({ id }) {
+        const result = await UserModel.deleteOne({ id });
+        return result;
     }
 }
 

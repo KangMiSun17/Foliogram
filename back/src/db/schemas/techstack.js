@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 
-/** Schema representing an individual award.
+/** Schema representing an individual tech stack.
  *
  * @field {uuid} id
- * @field {uuid} awardee_id
- * @field {String} title
- * @field {String} [description]
+ * @field {uuid} user_id
+ * @field {string} title
+ * @field {string} [description]
  **/
-const AwardSchema = new Schema(
+const TechStackSchema = new Schema(
     {
         id: {
             type: String,
@@ -32,6 +32,6 @@ const AwardSchema = new Schema(
     }
 );
 
-const AwardModel = model("Award", AwardSchema);
+const TechStackModel = model("TechStack", TechStackSchema);
 
-export { AwardModel };
+export { TechStackModel };

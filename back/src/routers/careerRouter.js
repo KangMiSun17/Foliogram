@@ -1,19 +1,19 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { educationService } from "../services/educationService";
+import { careerService } from "../services/careerService";
 import { RequestError } from "../utils/errors";
 import * as status from "../utils/status";
 import { Logger, UNIFIED_LOG } from "../utils/logging";
 
-const educationRouter = Router();
+const careerRouter = Router();
 
 /* ==========================================================================
  * -------------            CopyPasta Constants here            -------------
  * ========================================================================== */
-const SERVICE = educationService;
-const ROUTER = educationRouter;
-const ROUTE_TOP = "education";
+const SERVICE = careerService;
+const ROUTER = careerRouter;
+const ROUTE_TOP = "career";
 
 const logger = new Logger({
     name: `${ROUTE_TOP}Router`,
@@ -63,7 +63,7 @@ ROUTER.get(
     `/${ROUTE_TOP}s/:id`,
     login_required,
     async function (req, res, next) {
-        // Here we get the id of an award and give back a single award.
+        // Here we get the id of an career and give back a single career.
         try {
             const id = req.params.id;
             logger.log({}, `GET /${ROUTE_TOP}s/${id}`);
@@ -162,4 +162,4 @@ ROUTER.delete(
     }
 );
 
-export { educationRouter };
+export { careerRouter };

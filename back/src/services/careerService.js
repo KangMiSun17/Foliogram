@@ -1,16 +1,21 @@
-import { Award } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Career } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { SubrecordService } from "./BaseService";
 import { Logger, UNIFIED_LOG } from "../utils/logging";
 
-class AwardService extends SubrecordService {
+class CareerService extends SubrecordService {
     // Inherit from BaseService
-    Model = Award;
+    Model = Career;
 
     // deletable = true;
 
-    requiredFields = Object.freeze(["id", "user_id", "title"]);
-    optionalFields = Object.freeze(["description"]);
-    settableFields = Object.freeze(["title", "description"]);
+    requiredFields = Object.freeze(["id", "user_id", "title", "from_date"]);
+    optionalFields = Object.freeze(["to_date", "description"]);
+    settableFields = Object.freeze([
+        "title",
+        "description",
+        "from_date",
+        "to_date",
+    ]);
     // uniqueFields = Object.freeze([]);
     // searchableFields = Object.freeze([]);
 
@@ -42,15 +47,15 @@ class AwardService extends SubrecordService {
 }
 
 const logger = new Logger({
-    name: "awardService",
+    name: "careerService",
     tee: [
         UNIFIED_LOG,
-        Logger.generateLogPath("award.log"),
+        Logger.generateLogPath("career.log"),
         Logger.generateLogPath("service.log"),
-        Logger.generateLogPath("awardservice.log"),
+        Logger.generateLogPath("careerservice.log"),
     ],
 });
 
-const awardService = new AwardService({ logger });
+const careerService = new CareerService({ logger });
 
-export { awardService };
+export { careerService };
