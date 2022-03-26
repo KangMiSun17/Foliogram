@@ -2,12 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { LikesButton } from "./../common/Button";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UserStateContext } from "../../App";
+import { UserStateContext, DispatchContext } from "../../App";
 import * as Api from "../../api";
 
 function Follow({ user, setReFetching }) {
   const [isFollow, setIsFollow] = useState(null);
   const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
   const loginedUser = userState.user;
 
   useEffect(() => {
@@ -24,10 +25,17 @@ function Follow({ user, setReFetching }) {
   const onClickHandler = async (e) => {
     e.preventDefault();
     try {
-      await Api.put("users/" + userState.user.id + "/likes", {
+      const res = await Api.put("users/" + userState.user.id + "/likes", {
         following: user.id,
         state: !isFollow,
       });
+
+      const data = {
+        ...loginedUser,
+        following: res.data.following.map((item) => item.id),
+      };
+
+      dispatch({ type: "FOLLOW", payload: data });
       setIsFollow((cur) => !cur);
     } catch (err) {
       console.log(err);
