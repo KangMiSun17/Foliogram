@@ -22,9 +22,9 @@ function Follows() {
     });
   }, [userState, navigate, reFetching]);
 
-  const filterFollowUsers = users.filter((user) =>
-    userState.user.following.includes(user.id)
-  );
+  const filterFollowUsers = users
+    .filter((user) => userState.user.following.includes(user.id))
+    .filter((user) => user.id !== userState.user.id);
 
   return (
     <Container
@@ -35,7 +35,7 @@ function Follows() {
         {filterFollowUsers.length > 0 ? (
           <Row xs="auto">
             {filterFollowUsers.map((user) => (
-              <Col sm={2} key={user.id}>
+              <Col sm={3} key={user.id}>
                 <UserCard user={user} setReFetching={setReFetching} isFollows />
               </Col>
             ))}
