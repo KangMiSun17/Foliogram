@@ -14,6 +14,8 @@ import Projects from "./project/Projects";
 import Comment from "./comment/Comments";
 import * as Api from "../api";
 import UserDelete from "./user/UserDelete";
+import Empty from "./nav/Empty";
+import NoneClick from "./nav/NoneClick";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -113,21 +115,7 @@ function Portfolio() {
                       return <div key={index}>{compAr.compo}</div>;
                     }
                     if (index === 5 && count2 === 0) {
-                      return (
-                        <div
-                          key={index}
-                          style={{
-                            margin: "22px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <img
-                            src="/empty.png"
-                            alt="비어있음"
-                            width="50%"
-                          ></img>
-                        </div>
-                      );
+                      return <Empty index={index} />;
                     }
 
                     if (index === 0) {
@@ -143,17 +131,7 @@ function Portfolio() {
                       count += 1;
                       if (count === 6) {
                         count = 0;
-                        return (
-                          <div
-                            key={index}
-                            style={{ margin: "120px", textAlign: "center" }}
-                          >
-                            현재 아무런 항목도 누르지 않은 상태입니다.
-                            <br />
-                            상단 항목 중 아무거나 한 번 더 클릭 하시거나 전체
-                            보기를 클릭 해주세요!
-                          </div>
-                        );
+                        return <NoneClick index={index} />;
                       }
                     }
                     return null;
@@ -183,21 +161,7 @@ function Portfolio() {
                       return <div key={index}>{compAr.compo}</div>;
                     }
                     if (index === 5 && count2 === 0) {
-                      return (
-                        <div
-                          key={index}
-                          style={{
-                            margin: "22px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <img
-                            src="/empty.png"
-                            alt="비어있음"
-                            width="50%"
-                          ></img>
-                        </div>
-                      );
+                      return <Empty index={index} />;
                     }
                     //just added this return like that because eslint bordered me
                     return null;
@@ -209,17 +173,7 @@ function Portfolio() {
                       count += 1;
                       if (count === 6) {
                         count = 0;
-                        return (
-                          <div
-                            key={index}
-                            style={{ margin: "120px", textAlign: "center" }}
-                          >
-                            현재 아무런 항목도 누르지 않은 상태입니다.
-                            <br />
-                            상단 항목 중 아무거나 한 번 더 클릭 하시거나 전체
-                            보기를 클릭 해주세요!
-                          </div>
-                        );
+                        return <NoneClick index={index} />;
                       }
                     }
                     return null;
