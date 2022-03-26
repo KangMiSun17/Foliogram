@@ -28,7 +28,6 @@ function Portfolio() {
   ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
   let count = 0;
   let count2 = 0;
-  let toggleEmpty = false;
 
   const newAr = [];
   const [navList, setNavList] = useState(newAr);
