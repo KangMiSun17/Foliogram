@@ -122,6 +122,8 @@ function Portfolio() {
                       count = 0;
                       return (
                         <div style={{ margin: "120px", textAlign: "center" }}>
+                          현재 아무런 항목도 누르지 않은 상태입니다.
+                          <br />
                           방금 누르신 항목을 한 번 더 클릭 하거나 전체 보기를
                           눌려주세요!
                         </div>
