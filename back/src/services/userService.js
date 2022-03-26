@@ -82,7 +82,8 @@ class userAuthService {
         const name = user.name;
         const description = user.description;
         const active = user.active;
-
+        const following = user.following;
+        const follower = user.follower;
         const loginUser = {
             token,
             id,
@@ -90,6 +91,8 @@ class userAuthService {
             email,
             name,
             description,
+            following,
+            follower,
         };
 
         return loginUser;
@@ -313,7 +316,7 @@ class userAuthService {
             Award.deleteAll({ user_id }),
             Career.deleteAll({ user_id }),
             Certificate.deleteAll({ user_id }),
-            Comment.deleteAll({ user_id }),
+            Comment.deleteAll({ user_id, od: user._id }),
             Education.deleteAll({ user_id }),
             Project.deleteAll({ user_id }),
             TechStack.deleteAll({ user_id }),
