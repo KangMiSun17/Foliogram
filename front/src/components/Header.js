@@ -47,7 +47,7 @@ function Header() {
             <Nav.Item style={alignVertical} className="ms-auto">
               <Nav.Link
                 style={{ color: "#303B4B" }}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/users/" + userState.user.id)}
               >
                 나의 페이지
               </Nav.Link>

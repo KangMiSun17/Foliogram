@@ -11,6 +11,7 @@ import RegisterForm from "./components/user/RegisterForm";
 import Portfolio from "./components/Portfolio";
 import Follows from "./components/user/Follows";
 import Footer from "./components/Footer";
+import Main from "./components/Main";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -60,7 +61,7 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" exact element={<Portfolio />} />
+            <Route path="/" exact element={<Main />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/users/:userId" element={<Portfolio />} />

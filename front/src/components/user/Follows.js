@@ -13,7 +13,7 @@ function Follows() {
 
   useEffect(() => {
     if (!userState.user) {
-      navigate("/login");
+      navigate("/");
       return;
     }
 
@@ -62,6 +62,7 @@ function Follows() {
                 color: "#303B4B",
                 display: "block",
                 textAlign: "center",
+                cursor: "pointer",
               }}
             >
               <p>이미지를 누르시면 전체 목록으로 이동합니다.</p>

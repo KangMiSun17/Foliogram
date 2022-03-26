@@ -23,7 +23,7 @@ function UserDelete() {
     const deleteUser = async () => {
       try {
         await Api.delete("users", userState.user.id);
-        navigate("/login");
+        navigate("/");
       } catch (err) {
         alert("탈퇴에 실패하였습니다.", err);
       }
