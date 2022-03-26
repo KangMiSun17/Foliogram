@@ -94,8 +94,8 @@ function NavBar({ navList, setNavList, setTogglePage }) {
         compAr.show = !compAr.show;
         array.splice(index, 1, compAr);
       } else {
-        // compAr.show = false;
-        // array.splice(index, 1, compAr);
+        compAr.show = false;
+        array.splice(index, 1, compAr);
       }
       return null;
     });
