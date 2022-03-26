@@ -3,6 +3,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import CommentEditForm from "./CommentEditForm";
 import CommentDate from "./CommentDate";
 import SelectOption from "./SelectOption";
+import { useNavigate } from "react-router-dom";
 
 /** comment card component
  *
@@ -11,34 +12,34 @@ import SelectOption from "./SelectOption";
  * @returns {component} comment edit form or comment content
  */
 function CommentCard({ comment, index }) {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const asOnPage = () => {
+    navigate(`/users/${comment.user_id.id}`);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <Card className="mb-3" key={comment.id}>
       <Row className="align-items-center">
         <Col sm={1} className="ms-1">
-          <a href={`/users/${comment.user_id.id}`}>
-            <img
-              src={comment.user_id.profileImage}
-              style={{
-                width: "32px",
-                height: "32px",
-                marginLeft: "5px",
-                borderRadius: "15px",
-                border: "1px gray solid",
-              }}
-              alt="comment img"
-            />
-          </a>
+          <img
+            src={comment.user_id.profileImage}
+            style={{
+              width: "32px",
+              height: "32px",
+              marginLeft: "5px",
+              borderRadius: "15px",
+              border: "1px gray solid",
+              cursor: "pointer",
+            }}
+            alt="comment img"
+            onClick={asOnPage}
+          />
         </Col>
         <Col className="ms-3 mt-3 mb-3">
-          <span>
-            <a
-              href={`/users/${comment.user_id.id}`}
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              {comment.user_id.name}님
-            </a>
+          <span onClick={asOnPage} style={{ cursor: "pointer" }}>
+            {comment.user_id.name}님
           </span>
         </Col>
         <SelectOption
