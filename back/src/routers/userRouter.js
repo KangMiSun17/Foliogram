@@ -29,11 +29,13 @@ const logger = new Logger({
 const userAuthRouter = Router();
 const upload = multer();
 
-if (!process.env.MAILER_PASSWORD) {
-    throw new Error(
-        "OUR STUPID ADMIN FORGOT TO ADD MAILER_PASSWORD IN THE ENV"
-    );
-}
+["SERVER_DOMAIN", "SERVER_PORT", "SERVICE_DOMAIN", "MAILER_PASSWORD"].forEach(
+    (k) => {
+        if (!(k in process.env)) {
+            throw new Error(`OUR STUPID ADMIN FORGOT TO ADD "${k}" IN THE ENV`);
+        }
+    }
+);
 const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
