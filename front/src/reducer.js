@@ -12,6 +12,11 @@ export function loginReducer(userState, action) {
         ...userState,
         user: null,
       };
+    case "FOLLOW":
+      return {
+        ...userState,
+        user: action.payload,
+      };
     default:
       return userState;
   }
