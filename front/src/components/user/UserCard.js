@@ -8,6 +8,7 @@ function UserCard({
   user,
   setIsEditing,
   isNetwork,
+  isFollows,
   setProfileImage,
   setReFetching,
 }) {
@@ -98,7 +99,7 @@ function UserCard({
           </Row>
         )}
       </Card.Body>
-      {isNetwork && (
+      {(isNetwork || isFollows) && (
         <>
           <div style={{ textAlign: "center" }}>
             <Follow user={user} setReFetching={setReFetching} />

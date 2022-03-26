@@ -24,6 +24,7 @@ function Follow({ user, setReFetching }) {
 
   const onClickHandler = async (e) => {
     e.preventDefault();
+    setIsFollow((cur) => !cur);
     try {
       const res = await Api.put("users/" + userState.user.id + "/likes", {
         following: user.id,
@@ -36,7 +37,6 @@ function Follow({ user, setReFetching }) {
       };
 
       dispatch({ type: "FOLLOW", payload: data });
-      setIsFollow((cur) => !cur);
     } catch (err) {
       console.log(err);
     }

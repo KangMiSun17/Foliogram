@@ -48,6 +48,16 @@ function Header() {
             나의 페이지
           </Nav.Link>
         </Nav.Item>
+
+        <Nav.Item style={alignVertical}>
+          <Nav.Link
+            style={{ color: "#303B4B" }}
+            onClick={() => navigate("/users/follows")}
+          >
+            팔로우 목록
+          </Nav.Link>
+        </Nav.Item>
+
         <Nav.Item style={alignVertical}>
           <Nav.Link
             style={{ color: "#303B4B" }}
