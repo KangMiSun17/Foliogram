@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { UserContext } from "./../common/context/Context";
 import { useNavigate } from "react-router-dom";
-import { UserStateContext } from "./../../App";
+import { DispatchContext, UserStateContext } from "./../../App";
+
 import * as Api from "../../api";
 
 /**
@@ -11,6 +12,7 @@ import * as Api from "../../api";
 function UserDelete() {
   const { isEditable } = useContext(UserContext);
   const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
   const navigate = useNavigate();
 
   /**
@@ -23,6 +25,9 @@ function UserDelete() {
     const deleteUser = async () => {
       try {
         await Api.delete("users", userState.user.id);
+        sessionStorage.removeItem("userToken");
+        // dispatch 함수를 이용해 로그아웃함.
+        dispatch({ type: "LOGOUT" });
         navigate("/");
       } catch (err) {
         alert("탈퇴에 실패하였습니다.", err);
@@ -42,7 +47,6 @@ function UserDelete() {
     if (!confirmMessage) {
       return;
     }
-
     deleteUser();
   };
 

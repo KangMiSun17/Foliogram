@@ -33,7 +33,7 @@ function Awards() {
 
   return (
     <AwardFetchContext.Provider value={setAwards}>
-      <Card className="me-4 mt-3">
+      <Card className="me-4 mt-3 mb-3">
         <Card.Body>
           <Card.Title className="mb-3">수상 이력</Card.Title>
           <Card.Body>
