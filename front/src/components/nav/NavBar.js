@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Stack, Dropdown, Button } from "react-bootstrap";
-import { UserContext } from "../common/context/Context";
+import { User1Context } from "../common/context/Context";
 import * as Api from "../../api";
 
 function NavBar({ navList, setNavList, setTogglePage }) {
-  const { portfolioOwnerId, isEditable } = useContext(UserContext);
+  const { portfolioOwnerId, isEditable } = useContext(User1Context);
   const [pickSameName, setPickSameName] = useState("");
 
   ///@ put addBtn request

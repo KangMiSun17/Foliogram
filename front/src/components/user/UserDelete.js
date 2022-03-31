@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
-import { UserContext } from "./../common/context/Context";
+import { User1Context } from "./../common/context/Context";
 import { useNavigate } from "react-router-dom";
-import { UserStateContext } from "./../../App";
 import * as Api from "../../api";
+import { UserContext } from "../common/context/UserContext";
 
 /**
  * Delete User component
  */
 function UserDelete() {
-  const { isEditable } = useContext(UserContext);
-  const userState = useContext(UserStateContext);
+  const { isEditable } = useContext(User1Context);
+  const { userState } = useContext(UserContext);
   const navigate = useNavigate();
 
   /**

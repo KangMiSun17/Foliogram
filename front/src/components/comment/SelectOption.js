@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Col, Dropdown, DropdownButton } from "react-bootstrap";
-import { CommentFetchContext, UserContext } from "../common/context/Context";
+import { CommentFetchContext, User1Context } from "../common/context/Context";
 import * as Api from "../../api";
 /**
  *
@@ -10,7 +10,7 @@ import * as Api from "../../api";
  * @returns
  */
 function SelectOption({ comment, setIsEditing, index }) {
-  const { isEditable, user_id } = useContext(UserContext);
+  const { isEditable, user_id } = useContext(User1Context);
   const setComments = useContext(CommentFetchContext);
   //select edit or delete function
   const selectOption = (e) => {

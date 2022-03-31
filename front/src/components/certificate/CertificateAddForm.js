@@ -2,9 +2,9 @@ import React, { useState, useContext } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { toStringDate } from "../common/DateUtil";
-import { UserStateContext } from "../../App";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
+import { UserContext } from "../common/context/UserContext";
 
 /**
  * This component can add certification item
@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
  * @returns {component} Certificate add Form
  */
 function CertificateAddForm({ setCertificateList }) {
-  const { user } = useContext(UserStateContext);
+  const { userState } = useContext(UserContext);
   const [isAdding, setIsAdding] = useState(false);
   const [add, setAdd] = useState({
     title: "",
@@ -28,7 +28,7 @@ function CertificateAddForm({ setCertificateList }) {
 
     try {
       const res = await Api.post("certificate/create", {
-        user_id: user.id,
+        user_id: userState.user.id,
         title: add.title,
         description: add.description,
         when_date: toStringDate(add.when_date),

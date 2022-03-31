@@ -3,14 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import styled from "styled-components";
-import { UserStateContext, DispatchContext } from "../App";
+import { UserContext } from "./common/context/UserContext";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const userState = useContext(UserStateContext);
-  const dispatch = useContext(DispatchContext);
+  const { userState, dispatch } = useContext(UserContext);
 
   // 전역상태에서 user가 null이 아니라면 로그인 성공 상태임.
   const isLogin = !!userState.user;

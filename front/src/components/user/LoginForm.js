@@ -4,11 +4,11 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { validateEmail, validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
-import { DispatchContext } from "../../App";
+import { UserContext } from "../common/context/UserContext";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const dispatch = useContext(DispatchContext);
+  const { dispatch } = useContext(UserContext);
 
   //useState로 email 상태를 생성함.
   const [email, setEmail] = useState("");

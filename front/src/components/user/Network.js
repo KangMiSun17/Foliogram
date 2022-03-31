@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import * as Api from "../../api";
 import UserCard from "./UserCard";
-import { UserStateContext } from "../../App";
 import Category from "./Category";
+import { UserContext } from "../common/context/UserContext";
 
 function Network() {
   const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
+  const { userState } = useContext(UserContext);
   // useState 훅을 통해 users 상태를 생성함.
   const [users, setUsers] = useState([]);
   //selected category

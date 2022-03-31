@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserStateContext } from "../App";
 import styled from "styled-components";
+import { UserContext } from "./common/context/UserContext";
 
 function Main() {
   const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
+  // const userState = useContext(UserStateContext);
+  const { userState } = useContext(UserContext);
 
   useEffect(() => {
     if (userState.user) {

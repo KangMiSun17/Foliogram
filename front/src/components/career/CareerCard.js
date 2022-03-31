@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton, DeleteButton } from "../common/Button";
 import {
-  UserContext,
+  User1Context,
   CareerContext,
   CareerFetchContext,
 } from "../common/context/Context";
@@ -14,7 +14,7 @@ import {
  */
 function CareerCard({ setIsEditing }) {
   const { setReFetching } = useContext(CareerFetchContext);
-  const { isEditable } = useContext(UserContext);
+  const { isEditable } = useContext(User1Context);
   const { id, title, description, from_date, to_date } =
     useContext(CareerContext);
   return (

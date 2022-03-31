@@ -4,7 +4,7 @@ import { validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
 import { useNavigate } from "react-router-dom";
-import { DispatchContext } from "../../App";
+import { UserContext } from "../common/context/UserContext";
 
 function UserEditForm({ user, setIsEditing, setUser }) {
   const [isEditPassword, setIsEditPassword] = useState(false);
@@ -16,7 +16,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     confirmPassword: "",
   });
   const [user_category, setUserCategory] = useState(user.user_category);
-  const dispatch = useContext(DispatchContext);
+  const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();
 
   const isPasswordValid = validatePassword(userEdit.newPassword);

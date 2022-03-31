@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Form, Row, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 
-import { UserContext, TechStackFetchContext } from "../common/context/Context";
+import { User1Context, TechStackFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 기술스택 추가하는 컴포넌트입니다.
@@ -10,12 +10,10 @@ import * as Api from "../../api";
  * @returns {component} TechStackAddForm
  */
 function TechStackAddForm() {
-  const { portfolioOwnerId } = useContext(UserContext);
+  const { portfolioOwnerId } = useContext(User1Context);
   const { setReFetching } = useContext(TechStackFetchContext);
   const [addTitle, setAddTitle] = useState("");
   const [addDescription, setAddDescription] = useState("");
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
   const [isAdding, setIsAdding] = useState(false);
   const notSubAble = addTitle.length === 0 || addDescription.length === 0;
   //확인 버튼 누를 시 실행

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { UserContext, CommentFetchContext } from "../common/context/Context";
+import { User1Context, CommentFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 import CommentCard from "./CommentCard";
 import CommentAddForm from "./CommentAddForm";
@@ -10,7 +10,7 @@ import CommentAddForm from "./CommentAddForm";
  * @returns comment and add form
  */
 function Comments() {
-  const { portfolioOwnerId } = useContext(UserContext);
+  const { portfolioOwnerId } = useContext(User1Context);
   const [comments, setComments] = useState([]);
   //get comment list
   useEffect(() => {

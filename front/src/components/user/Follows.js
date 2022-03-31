@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
-import { UserStateContext } from "../../App";
 import { Row, Col, Container } from "react-bootstrap";
 import UserCard from "./UserCard";
+import { UserContext } from "../common/context/UserContext";
 
 function Follows() {
   const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
+  const { userState } = useContext(UserContext);
   const [users, setUsers] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
-import { UserContext } from "./common/context/Context";
+import { User1Context } from "./common/context/Context";
 import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
@@ -9,7 +9,7 @@ import Awards from "./award/Awards";
 import Career from "./career/Careers";
 import TechStacks from "./techstack/TechStacks";
 import NavBar from "./nav/NavBar";
-import { UserStateContext } from "../App";
+import { UserContext } from "./common/context/UserContext";
 import Projects from "./project/Projects";
 import Comment from "./comment/Comments";
 import * as Api from "../api";
@@ -25,7 +25,7 @@ function Portfolio() {
   // fetchPorfolioOwner 함수가 완료된 이후에만 (isFetchCompleted가 true여야) 컴포넌트가 구현되도록 함.
   // 아래 코드를 보면, isFetchCompleted가 false이면 "loading..."만 반환되어서, 화면에 이 로딩 문구만 뜨게 됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
-  const userState = useContext(UserStateContext);
+  const { userState } = useContext(UserContext);
 
   ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
   let count = 0;
@@ -93,7 +93,7 @@ function Portfolio() {
     user_id: userState.user?.id,
   };
   return (
-    <UserContext.Provider value={userContext}>
+    <User1Context.Provider value={userContext}>
       {userContext.isEditable ? (
         <Container fluid className="mb-5">
           <Row>
@@ -183,7 +183,7 @@ function Portfolio() {
           </Row>
         </Container>
       )}
-    </UserContext.Provider>
+    </User1Context.Provider>
   );
 }
 

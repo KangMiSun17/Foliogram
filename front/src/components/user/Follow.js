@@ -3,13 +3,12 @@ import { LikesButton } from "./../common/Button";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UserStateContext, DispatchContext } from "../../App";
 import * as Api from "../../api";
+import { UserContext } from "../common/context/UserContext";
 
 function Follow({ user, setReFetching }) {
   const [isFollow, setIsFollow] = useState(null);
-  const userState = useContext(UserStateContext);
-  const dispatch = useContext(DispatchContext);
+  const { userState, dispatch } = useContext(UserContext);
   const loginedUser = userState.user;
 
   useEffect(() => {

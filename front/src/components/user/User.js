@@ -3,10 +3,10 @@ import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
 import ProfileImage from "./ProfileImage";
 import * as Api from "../../api";
-import { UserContext } from "../common/context/Context";
+import { User1Context } from "../common/context/Context";
 
 function User() {
-  const { isEditable, portfolioOwnerId } = useContext(UserContext);
+  const { isEditable, portfolioOwnerId } = useContext(User1Context);
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(false);

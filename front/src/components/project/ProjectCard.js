@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton, DeleteButton } from "../common/Button";
 import {
-  UserContext,
+  User1Context,
   ProjectContext,
   ProjectFetchContext,
 } from "../common/context/Context";
@@ -14,7 +14,7 @@ import {
  */
 function ProjectCard({ setIsEditing }) {
   const { setReFetching } = useContext(ProjectFetchContext);
-  const { isEditable } = useContext(UserContext);
+  const { isEditable } = useContext(User1Context);
   const { id, title, description, from_date, to_date } =
     useContext(ProjectContext);
 
