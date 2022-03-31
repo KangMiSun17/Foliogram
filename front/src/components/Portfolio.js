@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
-import { User1Context } from "./common/context/Context";
+import { OwnerContext } from "./common/context/Context";
 import User from "./user/User";
 import Educations from "./education/Educations";
 import Certificates from "./certificate/Certificates";
@@ -21,11 +21,11 @@ function Portfolio() {
   const navigate = useNavigate();
   const params = useParams();
   // useState 훅을 통해 portfolioOwner 상태를 생성함.
-  const [portfolioOwner, setPortfolioOwner] = useState(null);
   // fetchPorfolioOwner 함수가 완료된 이후에만 (isFetchCompleted가 true여야) 컴포넌트가 구현되도록 함.
   // 아래 코드를 보면, isFetchCompleted가 false이면 "loading..."만 반환되어서, 화면에 이 로딩 문구만 뜨게 됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const { userState } = useContext(UserContext);
+  const [userContext, setUserContext] = useState({});
 
   ///@ for showing 방금 누르신 항목을 한 번 더 클릭 하거나 전체보기를 눌려주세요!
   let count = 0;
@@ -59,7 +59,12 @@ function Portfolio() {
     }
     setNavList(newAr);
     // portfolioOwner을 해당 사용자 정보로 세팅함.
-    setPortfolioOwner(ownerData);
+    setUserContext((prev) => ({
+      ...prev,
+      isEditable: ownerData.id === userState.user?.id,
+      portfolioOwnerId: ownerData.id,
+      user_id: userState.user?.id,
+    }));
     // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
     setIsFetchCompleted(true);
   };
@@ -87,13 +92,9 @@ function Portfolio() {
   if (!isFetchCompleted) {
     return "loading...";
   }
-  const userContext = {
-    isEditable: portfolioOwner.id === userState.user?.id,
-    portfolioOwnerId: portfolioOwner.id,
-    user_id: userState.user?.id,
-  };
+
   return (
-    <User1Context.Provider value={userContext}>
+    <OwnerContext.Provider value={userContext}>
       {userContext.isEditable ? (
         <Container fluid className="mb-5">
           <Row>
@@ -183,7 +184,7 @@ function Portfolio() {
           </Row>
         </Container>
       )}
-    </User1Context.Provider>
+    </OwnerContext.Provider>
   );
 }
 

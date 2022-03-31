@@ -5,7 +5,7 @@ import Award from "./Award";
 import {
   AwardFetchContext,
   AwardContext,
-  User1Context,
+  OwnerContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
 
@@ -15,7 +15,7 @@ import * as Api from "../../api";
  */
 function Awards() {
   //editable
-  const { isEditable, portfolioOwnerId } = useContext(User1Context);
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
   //award list object
   const [awards, setAwards] = useState([]);
 

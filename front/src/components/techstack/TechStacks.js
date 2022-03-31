@@ -3,14 +3,14 @@ import { Card } from "react-bootstrap";
 import TechStackAddForm from "./TechStackAddForm";
 import TechStack from "./TechStack";
 import {
-  User1Context,
+  OwnerContext,
   TechStackFetchContext,
   TechStackContext,
 } from "../common/context/Context";
 import * as Api from "../../api";
 
 function Projects() {
-  const { isEditable, portfolioOwnerId } = useContext(User1Context);
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
   const [techStacks, setTechStacks] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 

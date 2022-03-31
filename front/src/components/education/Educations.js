@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import EducationAddForm from "./EducationAddForm";
 import Education from "./Education";
 import {
-  User1Context,
+  OwnerContext,
   EducationFetchContext,
   EducationContext,
 } from "../common/context/Context";
@@ -14,7 +14,7 @@ import * as Api from "../../api";
  * @returns Education or EducationAddForm
  */
 function Educations() {
-  const { isEditable, portfolioOwnerId } = useContext(User1Context);
+  const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
   const [educations, setEducations] = useState([]);
   const [reFetching, setReFetching] = useState(new Date());
 

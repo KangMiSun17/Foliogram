@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, Row, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-
-import { User1Context, TechStackFetchContext } from "../common/context/Context";
+import { OwnerContext, TechStackFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 기술스택 추가하는 컴포넌트입니다.
@@ -10,7 +9,7 @@ import * as Api from "../../api";
  * @returns {component} TechStackAddForm
  */
 function TechStackAddForm() {
-  const { portfolioOwnerId } = useContext(User1Context);
+  const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(TechStackFetchContext);
   const [addTitle, setAddTitle] = useState("");
   const [addDescription, setAddDescription] = useState("");

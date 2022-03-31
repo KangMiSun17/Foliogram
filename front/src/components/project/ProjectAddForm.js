@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { toStringDate } from "../common/DateUtil";
-import { User1Context, ProjectFetchContext } from "../common/context/Context";
+import { OwnerContext, ProjectFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
 
@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
  * @returns {component} ProjectAddForm
  */
 function ProjectAddForm() {
-  const { portfolioOwnerId } = useContext(User1Context);
+  const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(ProjectFetchContext);
   const [isAdding, setIsAdding] = useState(false);
   const [add, setAdd] = useState({

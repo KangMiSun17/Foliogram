@@ -4,7 +4,7 @@ import { DeleteButton, EditButton } from "../common/Button";
 import {
   AwardContext,
   AwardFetchContext,
-  User1Context,
+  OwnerContext,
 } from "../common/context/Context";
 
 /** Award list component
@@ -13,7 +13,7 @@ import {
  * @returns AwardList and edit button or null
  */
 function AwardCard({ setIsEditing }) {
-  const { isEditable } = useContext(User1Context);
+  const { isEditable } = useContext(OwnerContext);
   const setAwards = useContext(AwardFetchContext);
   //Each award
   const { award, index } = useContext(AwardContext);
