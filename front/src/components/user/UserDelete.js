@@ -10,7 +10,7 @@ import { UserContext } from "../common/context/UserContext";
  */
 function UserDelete() {
   const { isEditable } = useContext(User1Context);
-  const { userState } = useContext(UserContext);
+  const { userState, dispatch } = useContext(UserContext);
   const navigate = useNavigate();
 
   /**
@@ -23,6 +23,9 @@ function UserDelete() {
     const deleteUser = async () => {
       try {
         await Api.delete("users", userState.user.id);
+        sessionStorage.removeItem("userToken");
+        // dispatch 함수를 이용해 로그아웃함.
+        dispatch({ type: "LOGOUT" });
         navigate("/");
       } catch (err) {
         alert("탈퇴에 실패하였습니다.", err);
@@ -42,7 +45,6 @@ function UserDelete() {
     if (!confirmMessage) {
       return;
     }
-
     deleteUser();
   };
 

@@ -28,7 +28,7 @@ function App() {
         <Route path="/users/:userId" element={<Portfolio />} />
         <Route path="/users/follows" element={<Follows />} />
         <Route path="/network" element={<Network />} />
-        <Route path="*" element={<Portfolio />} />
+        <Route path="*" element={<Main />} />
       </Routes>
       <Footer />
     </Router>
