@@ -115,7 +115,7 @@ function Portfolio() {
                       return <div key={index}>{compAr.compo}</div>;
                     }
                     if (index === 5 && count2 === 0) {
-                      return <Empty index={index} />;
+                      return <Empty key={index} index={index} />;
                     }
 
                     if (index === 0) {
@@ -131,7 +131,7 @@ function Portfolio() {
                       count += 1;
                       if (count === 6) {
                         count = 0;
-                        return <NoneClick index={index} />;
+                        return <NoneClick key={index} index={index} />;
                       }
                     }
                     return null;
@@ -161,7 +161,7 @@ function Portfolio() {
                       return <div key={index}>{compAr.compo}</div>;
                     }
                     if (index === 5 && count2 === 0) {
-                      return <Empty index={index} />;
+                      return <Empty key={index} index={index} />;
                     }
                     //just added this return like that because eslint bordered me
                     return null;
@@ -173,7 +173,7 @@ function Portfolio() {
                       count += 1;
                       if (count === 6) {
                         count = 0;
-                        return <NoneClick index={index} />;
+                        return <NoneClick key={index} index={index} />;
                       }
                     }
                     return null;

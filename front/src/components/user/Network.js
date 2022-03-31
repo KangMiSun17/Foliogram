@@ -1,31 +1,22 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
-import * as Api from "../../api";
 import UserCard from "./UserCard";
 import Category from "./Category";
 import { UserContext } from "../common/context/UserContext";
 
 function Network() {
   const navigate = useNavigate();
-  const { userState } = useContext(UserContext);
-  // useState 훅을 통해 users 상태를 생성함.
-  const [users, setUsers] = useState([]);
+  const { users, userState } = useContext(UserContext);
   //selected category
   const [category, setCategory] = useState("all");
-  const [reFetching, setReFetching] = useState(new Date());
 
   useEffect(() => {
-    // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
     if (!userState.user) {
       navigate("/");
       return;
     }
-    // "userlist" 엔드포인트로 GET 요청을 하고, users를 response의 data로 세팅함.
-    Api.get("userlist").then((res) => {
-      setUsers(res.data);
-    });
-  }, [userState, navigate, reFetching]);
+  }, [userState.user, navigate]);
 
   return (
     <Container
@@ -37,7 +28,7 @@ function Network() {
         <Row xs="auto">
           {users.map((user) => (
             <Col sm={3} key={user.id}>
-              <UserCard user={user} setReFetching={setReFetching} isNetwork />
+              <UserCard user={user} isNetwork />
             </Col>
           ))}
         </Row>
@@ -48,11 +39,7 @@ function Network() {
             if (user.user_category === "개발자") {
               return (
                 <Col sm={3} key={user.id}>
-                  <UserCard
-                    user={user}
-                    setReFetching={setReFetching}
-                    isNetwork
-                  />
+                  <UserCard user={user} isNetwork />
                 </Col>
               );
             }
@@ -66,11 +53,7 @@ function Network() {
             if (user.user_category === "예술가") {
               return (
                 <Col sm={3} key={user.id}>
-                  <UserCard
-                    user={user}
-                    setReFetching={setReFetching}
-                    isNetwork
-                  />
+                  <UserCard user={user} isNetwork />
                 </Col>
               );
             }
@@ -84,11 +67,7 @@ function Network() {
             if (user.user_category === "마피아") {
               return (
                 <Col sm={3} key={user.id}>
-                  <UserCard
-                    user={user}
-                    setReFetching={setReFetching}
-                    isNetwork
-                  />
+                  <UserCard user={user} isNetwork />
                 </Col>
               );
             }

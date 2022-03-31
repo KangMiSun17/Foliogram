@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
-import { useState } from "react";
 import Follow from "./Follow";
 
 function UserCard({
@@ -10,7 +10,6 @@ function UserCard({
   isNetwork,
   isFollows,
   setProfileImage,
-  setReFetching,
   isMypage,
 }) {
   const navigate = useNavigate();
@@ -103,7 +102,7 @@ function UserCard({
       <Card.Text style={linkStyle}>
         {!isEditable && isMypage && (
           <>
-            <Follow user={user} setReFetching={setReFetching} />
+            <Follow user={user} />
             <span>{user?.follower.length}</span>
           </>
         )}
@@ -111,7 +110,7 @@ function UserCard({
       {(isNetwork || isFollows) && (
         <>
           <div style={{ textAlign: "center" }}>
-            <Follow user={user} setReFetching={setReFetching} />
+            <Follow user={user} />
             <span>{user?.follower.length}</span>
           </div>
           <div>

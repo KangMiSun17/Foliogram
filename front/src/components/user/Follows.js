@@ -1,26 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as Api from "../../api";
 import { Row, Col, Container } from "react-bootstrap";
 import UserCard from "./UserCard";
 import { UserContext } from "../common/context/UserContext";
 
 function Follows() {
   const navigate = useNavigate();
-  const { userState } = useContext(UserContext);
-  const [users, setUsers] = useState([]);
-  const [reFetching, setReFetching] = useState(new Date());
+  const { users, userState } = useContext(UserContext);
 
   useEffect(() => {
     if (!userState.user) {
       navigate("/");
       return;
     }
-
-    Api.get("userlist").then((res) => {
-      setUsers(res.data);
-    });
-  }, [userState, navigate, reFetching]);
+  }, [userState.user, navigate]);
 
   const filterFollowUsers = users
     .filter((user) => userState.user.following.includes(user.id))
@@ -36,7 +29,7 @@ function Follows() {
           <Row xs="auto">
             {filterFollowUsers.map((user) => (
               <Col sm={3} key={user.id}>
-                <UserCard user={user} setReFetching={setReFetching} isFollows />
+                <UserCard user={user} isFollows />
               </Col>
             ))}
           </Row>

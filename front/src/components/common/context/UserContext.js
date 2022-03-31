@@ -9,6 +9,8 @@ function UserProvider({ children }) {
   const [userState, dispatch] = useReducer(loginReducer, {
     user: null,
   });
+  const [users, setUsers] = useState([]);
+  const [reFetching, setReFetching] = useState(new Date());
 
   // 아래의 fetchCurrentUser 함수가 실행된 다음에 컴포넌트가 구현되도록 함.
   // 아래 코드를 보면 isFetchCompleted 가 true여야 컴포넌트가 구현됨.
@@ -39,7 +41,27 @@ function UserProvider({ children }) {
     fetchCurrentUser();
   }, []);
 
-  const store = { userState, dispatch, isFetchCompleted };
+  useEffect(() => {
+    // "userlist" 엔드포인트로 GET 요청을 하고, users를 response의 data로 세팅함.
+    if (!userState.user) {
+      return;
+    }
+
+    Api.get("userlist")
+      .then((res) => {
+        setUsers(res.data);
+      })
+      .catch(console.log);
+  }, [userState, reFetching]);
+
+  const store = {
+    userState,
+    dispatch,
+    isFetchCompleted,
+    reFetching,
+    setReFetching,
+    users,
+  };
 
   return <UserContext.Provider value={store}>{children}</UserContext.Provider>;
 }

@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Api from "../../api";
 import { UserContext } from "../common/context/UserContext";
 
-function Follow({ user, setReFetching }) {
+function Follow({ user }) {
   const [isFollow, setIsFollow] = useState(null);
-  const { userState, dispatch } = useContext(UserContext);
+  const { userState, dispatch, setReFetching } = useContext(UserContext);
   const loginedUser = userState.user;
 
   useEffect(() => {
