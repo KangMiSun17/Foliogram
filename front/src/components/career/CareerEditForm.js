@@ -1,19 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
 import DatePicker from "react-datepicker";
-import { CareerContext, CareerFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 선택된 career 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state
  * @returns {component} - CareerEditForm
  */
-function CareerEditForm({ setIsEditing }) {
-  const { setReFetching } = useContext(CareerFetchContext);
-  const { id, title, description, from_date, to_date } =
-    useContext(CareerContext);
+function CareerEditForm({ career, setCareerList, setIsEditing }) {
+  const { id, title, description, from_date, to_date } = career.data;
   const [edit, setEdit] = useState({
     title,
     description,
@@ -27,17 +24,21 @@ function CareerEditForm({ setIsEditing }) {
     e.preventDefault();
     //편집된 career 업데이트 하기위해 서버로 put 요청
     try {
-      await Api.put(`careers/${id}`, {
+      const res = await Api.put(`careers/${id}`, {
         title: edit.title,
         description: edit.description,
         from_date: toStringDate(edit.from_date),
         to_date: toStringDate(edit.to_date),
       });
+
+      setCareerList((cur) => {
+        cur[career.index] = res.data;
+        return [...cur];
+      });
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
     setIsEditing(false);
   };
 

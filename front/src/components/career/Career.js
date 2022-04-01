@@ -6,15 +6,23 @@ import CareerEditForm from "./CareerEditForm";
  *
  * @returns CareerEditForm or CareerCard
  */
-function Career() {
+function Career({ career, setCareerList }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
       {isEditing ? (
-        <CareerEditForm setIsEditing={setIsEditing} />
+        <CareerEditForm
+          career={career}
+          setCareerList={setCareerList}
+          setIsEditing={setIsEditing}
+        />
       ) : (
-        <CareerCard setIsEditing={setIsEditing} />
+        <CareerCard
+          career={career}
+          setCareerList={setCareerList}
+          setIsEditing={setIsEditing}
+        />
       )}
     </div>
   );

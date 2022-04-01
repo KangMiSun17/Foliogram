@@ -3,16 +3,15 @@ import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { toStringDate } from "../common/DateUtil";
 import DatePicker from "react-datepicker";
-import { OwnerContext, CareerFetchContext } from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 경력 추가하는 컴포넌트입니다.
  *
  * @returns {component} ProjectAddForm
  */
-function CareerAddForm() {
+function CareerAddForm({ setCareerList }) {
   const { portfolioOwnerId } = useContext(OwnerContext);
-  const { setReFetching } = useContext(CareerFetchContext);
   const init = {
     title: "",
     description: "",
@@ -29,19 +28,20 @@ function CareerAddForm() {
 
     //추가된 career 업데이트 하기위해 서버에 post 요청
     try {
-      await Api.post(`career/create`, {
+      const res = await Api.post(`career/create`, {
         user_id: portfolioOwnerId,
         title: add.title,
         description: add.description,
         from_date: toStringDate(add.from_date),
         to_date: toStringDate(add.to_date),
       });
+
+      setCareerList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log(err);
     }
 
     setAdd(init);
-    setReFetching(new Date());
     setIsAdding(false);
   };
 
