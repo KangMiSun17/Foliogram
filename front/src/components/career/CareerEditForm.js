@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
-import { DatePickForm, toStringDate, toObjectDate } from "../common/DateUtil";
+import { toStringDate, toObjectDate } from "../common/DateUtil";
+import DatePicker from "react-datepicker";
 import { CareerContext, CareerFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
@@ -59,10 +60,18 @@ function CareerEditForm({ setIsEditing }) {
       <Form.Group className="mt-3 mb-3">
         <Row>
           <Col xs={3}>
-            <DatePickForm startDate={startDate} setState={setStartDate} />
+            <DatePicker
+              className="mb-3"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
           </Col>
           <Col xs={3}>
-            <DatePickForm startDate={endDate} setState={setEndDate} />
+            <DatePicker
+              className="mb-3"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+            />
           </Col>
         </Row>
       </Form.Group>
