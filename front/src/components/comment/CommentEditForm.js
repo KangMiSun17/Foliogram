@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Form, Row } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import * as Api from "../../api";
 import { CommentFetchContext } from "../common/context/Context";
