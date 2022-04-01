@@ -13,12 +13,13 @@ import * as Api from "../../api";
 function CareerAddForm() {
   const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(CareerFetchContext);
-  const [add, setAdd] = useState({
+  const init = {
     title: "",
     description: "",
     from_date: new Date(),
     to_date: new Date(),
-  });
+  };
+  const [add, setAdd] = useState(init);
   const [isAdding, setIsAdding] = useState(false);
   const notSubAble = add.title.length === 0 || add.description.length === 0;
 
@@ -39,6 +40,7 @@ function CareerAddForm() {
       console.log(err);
     }
 
+    setAdd(init);
     setReFetching(new Date());
     setIsAdding(false);
   };

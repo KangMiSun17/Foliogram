@@ -14,12 +14,13 @@ import { UserContext } from "../common/context/UserContext";
  */
 function CertificateAddForm({ setCertificateList }) {
   const { userState } = useContext(UserContext);
-  const [isAdding, setIsAdding] = useState(false);
-  const [add, setAdd] = useState({
+  const init = {
     title: "",
     description: "",
     when_date: new Date(),
-  });
+  };
+  const [isAdding, setIsAdding] = useState(false);
+  const [add, setAdd] = useState(init);
   const notSubAble = add.title.length === 0 || add.description.length === 0;
 
   // Request certificate item add api
@@ -39,11 +40,7 @@ function CertificateAddForm({ setCertificateList }) {
       console.log("Error: certificates/create post request fail", err);
     }
 
-    setAdd({
-      title: "",
-      description: "",
-      when_date: new Date(),
-    });
+    setAdd(init);
     setIsAdding(false);
   };
 

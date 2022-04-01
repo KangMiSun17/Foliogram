@@ -11,11 +11,12 @@ import * as Api from "../../api";
 function EducationAddForm() {
   const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(EducationFetchContext);
-  const [add, setAdd] = useState({
+  const init = {
     school: "",
     major: "",
     position: "재학중",
-  });
+  };
+  const [add, setAdd] = useState(init);
   const notSubAble = add.school.length === 0 || add.major.length === 0;
   const [isAdding, setIsAdding] = useState(false);
 
@@ -32,11 +33,7 @@ function EducationAddForm() {
         position: add.position,
       });
 
-      setAdd({
-        school: "",
-        major: "",
-        position: "재학중",
-      });
+      setAdd(init);
     } catch (err) {
       console.log(err);
     }

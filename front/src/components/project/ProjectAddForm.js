@@ -13,13 +13,14 @@ import DatePicker from "react-datepicker";
 function ProjectAddForm() {
   const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(ProjectFetchContext);
-  const [isAdding, setIsAdding] = useState(false);
-  const [add, setAdd] = useState({
+  const init = {
     title: "",
     description: "",
     startDate: new Date(),
     endDate: new Date(),
-  });
+  };
+  const [isAdding, setIsAdding] = useState(false);
+  const [add, setAdd] = useState(init);
   const notSubAble = add.title.length === 0 || add.description.length === 0;
 
   //확인 버튼 누를 시 실행
@@ -36,12 +37,7 @@ function ProjectAddForm() {
         to_date: toStringDate(add.endDate),
       });
 
-      setAdd({
-        title: "",
-        description: "",
-        startDate: new Date(),
-        endDate: new Date(),
-      });
+      setAdd(init);
     } catch (err) {
       console.log(err);
     }
