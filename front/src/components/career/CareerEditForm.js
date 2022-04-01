@@ -14,11 +14,13 @@ function CareerEditForm({ setIsEditing }) {
   const { setReFetching } = useContext(CareerFetchContext);
   const { id, title, description, from_date, to_date } =
     useContext(CareerContext);
-  const [editTitle, setEditTitle] = useState(title);
-  const [editDescription, setEditDescription] = useState(description);
-  const [startDate, setStartDate] = useState(toObjectDate(from_date));
-  const [endDate, setEndDate] = useState(toObjectDate(to_date));
-  const notSubAble = editTitle.length === 0 || editDescription.length === 0;
+  const [edit, setEdit] = useState({
+    title,
+    description,
+    from_date: toObjectDate(from_date),
+    to_date: toObjectDate(to_date),
+  });
+  const notSubAble = edit.title.length === 0 || edit.description.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -26,10 +28,10 @@ function CareerEditForm({ setIsEditing }) {
     //편집된 career 업데이트 하기위해 서버로 put 요청
     try {
       await Api.put(`careers/${id}`, {
-        title: editTitle,
-        description: editDescription,
-        from_date: toStringDate(startDate),
-        to_date: toStringDate(endDate),
+        title: edit.title,
+        description: edit.description,
+        from_date: toStringDate(edit.from_date),
+        to_date: toStringDate(edit.to_date),
       });
     } catch (err) {
       console.log(err);
@@ -41,19 +43,25 @@ function CareerEditForm({ setIsEditing }) {
 
   return (
     <Form>
-      <Form.Group className="mb-3">
-        <Form.Label>수정할 내용</Form.Label>
+      <Form.Label>수정할 내용</Form.Label>
+      <Form.Group className="mb-3" controlId="title">
         <Form.Control
           type="text"
           className="mb-3"
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
+          value={edit.title}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="description">
         <Form.Control
           type="text"
           className="mb-3"
-          value={editDescription}
-          onChange={(e) => setEditDescription(e.target.value)}
+          value={edit.description}
+          onChange={(e) =>
+            setEdit((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+          }
         />
       </Form.Group>
 
@@ -62,15 +70,19 @@ function CareerEditForm({ setIsEditing }) {
           <Col xs={3}>
             <DatePicker
               className="mb-3"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              selected={edit.from_date}
+              onChange={(date) =>
+                setEdit((prev) => ({ ...prev, from_date: date }))
+              }
             />
           </Col>
           <Col xs={3}>
             <DatePicker
               className="mb-3"
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
+              selected={edit.to_date}
+              onChange={(date) =>
+                setEdit((prev) => ({ ...prev, to_date: date }))
+              }
             />
           </Col>
         </Row>
