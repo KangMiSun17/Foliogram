@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import { DatePickForm, toStringDate } from "../common/DateUtil";
+import { toStringDate } from "../common/DateUtil";
+import DatePicker from "react-datepicker";
 import { OwnerContext, CareerFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 
@@ -12,12 +13,14 @@ import * as Api from "../../api";
 function CareerAddForm() {
   const { portfolioOwnerId } = useContext(OwnerContext);
   const { setReFetching } = useContext(CareerFetchContext);
-  const [addTitle, setAddTitle] = useState("");
-  const [addDescription, setAddDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [add, setAdd] = useState({
+    title: "",
+    description: "",
+    from_date: new Date(),
+    to_date: new Date(),
+  });
   const [isAdding, setIsAdding] = useState(false);
-  const notSubAble = addTitle.length === 0 || addDescription.length === 0;
+  const notSubAble = add.title.length === 0 || add.description.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -27,21 +30,16 @@ function CareerAddForm() {
     try {
       await Api.post(`career/create`, {
         user_id: portfolioOwnerId,
-        title: addTitle,
-        description: addDescription,
-        from_date: toStringDate(startDate),
-        to_date: toStringDate(endDate),
+        title: add.title,
+        description: add.description,
+        from_date: toStringDate(add.from_date),
+        to_date: toStringDate(add.to_date),
       });
-
-      setAddTitle("");
-      setAddDescription("");
     } catch (err) {
       console.log(err);
     }
 
     setReFetching(new Date());
-    setStartDate(new Date());
-    setEndDate(new Date());
     setIsAdding(false);
   };
 
@@ -53,30 +51,46 @@ function CareerAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="job">
+          <Form.Group className="mb-3" controlId="title">
             <Form.Control
               type="text"
               placeholder="근무지"
-              value={addTitle}
-              onChange={(e) => setAddTitle(e.target.value)}
+              value={add.title}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="details">
+          <Form.Group className="mb-3" controlId="description">
             <Form.Control
               type="text"
               placeholder="상세내역"
-              value={addDescription}
-              onChange={(e) => setAddDescription(e.target.value)}
+              value={add.description}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
           <Form.Group className="mt-3 mb-3">
             <Row>
               <Col xs={3}>
-                <DatePickForm startDate={startDate} setState={setStartDate} />
+                <DatePicker
+                  className="mb-3"
+                  selected={add.from_date}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, from_date: date }))
+                  }
+                />
               </Col>
               <Col xs={3}>
-                <DatePickForm startDate={endDate} setState={setEndDate} />
+                <DatePicker
+                  className="mb-3"
+                  selected={add.to_date}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, to_date: date }))
+                  }
+                />
               </Col>
             </Row>
           </Form.Group>
