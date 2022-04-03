@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
 import * as Api from "../../api";
 import { BundleButton } from "../common/Button";
-import { AwardFetchContext, AwardContext } from "../common/context/Context";
 import { FormTextField } from "../common/Form";
 
 /** Edit award component
@@ -10,13 +9,10 @@ import { FormTextField } from "../common/Form";
  * @param {boolean} setIsEditing - Change state whether editing or not
  * @returns EditForm
  */
-function AwardEditForm({ setIsEditing }) {
-  //To re-render
-  const setAwards = useContext(AwardFetchContext);
-  const { award, index } = useContext(AwardContext);
+function AwardEditForm({ setIsEditing, award, setAwards }) {
   const [edit, setEdit] = useState({
-    title: award.title,
-    description: award.description,
+    title: award.data.title,
+    description: award.data.description,
   });
   const notSubAble = edit.title.length === 0 || edit.description.length === 0;
 
@@ -25,12 +21,12 @@ function AwardEditForm({ setIsEditing }) {
     e.preventDefault();
     //Put request to update edited award
     try {
-      const res = await Api.put(`awards/${award.id}`, {
+      const res = await Api.put(`awards/${award.data.id}`, {
         title: edit.title,
         description: edit.description,
       });
       setAwards((cur) => {
-        cur[index] = res.data;
+        cur[award.index] = res.data;
         const newComment = [...cur];
         return newComment;
       });

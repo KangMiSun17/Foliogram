@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
 import { PlusButton, BundleButton } from "../common/Button";
-import { AwardFetchContext, OwnerContext } from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import { FormTextField } from "../common/Form";
 import * as Api from "../../api";
 
@@ -9,10 +9,8 @@ import * as Api from "../../api";
  *
  * @returns AddForm
  */
-function AwardAddForm() {
+function AwardAddForm({ setAwards }) {
   const { portfolioOwnerId } = useContext(OwnerContext);
-  //To re-render
-  const setAwards = useContext(AwardFetchContext);
   //Whether adding or not
   const [isAdding, setIsAdding] = useState(false);
   //initial award
