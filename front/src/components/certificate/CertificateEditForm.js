@@ -13,13 +13,8 @@ import DatePicker from "react-datepicker";
  * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate edit Form
  */
-function CertificateEditForm({
-  setCertificateList,
-  setIsEdit,
-  certificate,
-  index,
-}) {
-  const { id, title, description, when_date } = certificate;
+function CertificateEditForm({ setCertificateList, setIsEdit, certificate }) {
+  const { id, title, description, when_date } = certificate.data;
   const [edit, setEdit] = useState({
     title,
     description,
@@ -39,7 +34,7 @@ function CertificateEditForm({
       });
 
       setCertificateList((cur) => {
-        cur[index] = res.data;
+        cur[certificate.index] = res.data;
         return [...cur];
       });
     } catch (err) {

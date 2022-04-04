@@ -11,7 +11,7 @@ import CertificateEditForm from "./CertificateEditForm";
  * @param {number} props.index Index in the Certification List
  * @returns {component} Certificate information or EditForm
  */
-function Certificate({ certificate, index, setCertificateList }) {
+function Certificate({ certificate, setCertificateList }) {
   const { isEditable } = useContext(OwnerContext);
   const [isEditing, setIsEditing] = useState(false);
   const { id, title, description, when_date } = certificate;
@@ -27,7 +27,6 @@ function Certificate({ certificate, index, setCertificateList }) {
           certificate={certificate}
           setCertificateList={setCertificateList}
           setIsEdit={setIsEditing}
-          index={index}
         />
       ) : (
         <Col>
@@ -48,7 +47,7 @@ function Certificate({ certificate, index, setCertificateList }) {
               endpoint={"certificates"}
               id={id}
               setState={setCertificateList}
-              index={index}
+              index={certificate.index}
             />
           </Col>
         </>

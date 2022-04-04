@@ -11,8 +11,7 @@ function CertificateCard({ certificateList, setCertificateList }) {
       {certificateList.map((certificate, index) => (
         <Certificate
           key={certificate.id}
-          index={index}
-          certificate={certificate}
+          certificate={{ data: certificate, index }}
           setCertificateList={setCertificateList}
         />
       ))}
