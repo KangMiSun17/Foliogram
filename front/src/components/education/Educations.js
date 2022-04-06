@@ -2,11 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import EducationAddForm from "./EducationAddForm";
 import Education from "./Education";
-import {
-  OwnerContext,
-  EducationFetchContext,
-  EducationContext,
-} from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** Education list and Education add component
@@ -15,36 +11,35 @@ import * as Api from "../../api";
  */
 function Educations() {
   const { isEditable, portfolioOwnerId } = useContext(OwnerContext);
-  const [educations, setEducations] = useState([]);
-  const [reFetching, setReFetching] = useState(new Date());
+  const [educationList, setEducationList] = useState([]);
 
   useEffect(() => {
     try {
       const getEducationList = async () => {
         const res = await Api.get("educationlist/" + portfolioOwnerId);
-        // console.log(res.data);
-        setEducations(res.data);
+        setEducationList(res.data);
       };
+
       getEducationList();
     } catch (err) {
       console.log("Error: getEducationlist get request fail", err);
     }
-  }, [reFetching, portfolioOwnerId]);
+  }, [portfolioOwnerId]);
 
   return (
     <Card className="me-4 mb-3">
       <Card.Body>
         <Card.Title className="mb-3">학력</Card.Title>
-        <EducationFetchContext.Provider value={{ reFetching, setReFetching }}>
-          <Card.Body>
-            {educations.map((education) => (
-              <EducationContext.Provider key={education.id} value={education}>
-                <Education />
-              </EducationContext.Provider>
-            ))}
-          </Card.Body>
-          {isEditable && <EducationAddForm />}
-        </EducationFetchContext.Provider>
+        <Card.Body>
+          {educationList.map((education, index) => (
+            <Education
+              key={education.id}
+              education={{ data: education, index }}
+              setEducationList={setEducationList}
+            />
+          ))}
+        </Card.Body>
+        {isEditable && <EducationAddForm setEducationList={setEducationList} />}
       </Card.Body>
     </Card>
   );

@@ -1,16 +1,15 @@
 import React, { useState, useContext } from "react";
 import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import { OwnerContext, EducationFetchContext } from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 학력을 추가하는 컴포넌트입니다.
  *
  * @returns {component} EducationAddForm
  */
-function EducationAddForm() {
+function EducationAddForm({ setEducationList }) {
   const { portfolioOwnerId } = useContext(OwnerContext);
-  const { setReFetching } = useContext(EducationFetchContext);
   const init = {
     school: "",
     major: "",
@@ -26,19 +25,19 @@ function EducationAddForm() {
 
     //추가된 Education 업데이트 하기위해 서버에 post 요청
     try {
-      await Api.post(`education/create`, {
+      const res = await Api.post(`education/create`, {
         user_id: portfolioOwnerId,
         school: add.school,
         major: add.major,
         position: add.position,
       });
 
-      setAdd(init);
+      setEducationList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
+    setAdd(init);
     setIsAdding(false);
   };
 

@@ -1,40 +1,40 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Alert, Form, FormCheck, Row } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
-import {
-  EducationContext,
-  EducationFetchContext,
-} from "../common/context/Context";
 import * as Api from "../../api";
 
 /** 선택된 Education을 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state
  * @returns {component} - EducationEditForm
  */
-function EducationEditForm({ setIsEditing }) {
-  const { setReFetching } = useContext(EducationFetchContext);
-  const { id, school, major, position } = useContext(EducationContext);
+function EducationEditForm({ setIsEditing, education, setEducationList }) {
+  const { id, school, major, position } = education.data;
   const [edit, setEdit] = useState({
     school,
     major,
     position,
   });
   const notSubAble = edit.school.length === 0 || edit.major.length === 0;
+
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
     e.preventDefault();
     //편집된 education 업데이트 하기위해 서버로 put 요청
     try {
-      await Api.put(`educations/${id}`, {
+      const res = await Api.put(`educations/${id}`, {
         school: edit.school,
         major: edit.major,
         position: edit.position,
+      });
+
+      setEducationList((cur) => {
+        cur[education.index] = res.data;
+        return [...cur];
       });
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
     setIsEditing(false);
   };
 

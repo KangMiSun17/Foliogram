@@ -3,8 +3,6 @@ import { createContext } from "react";
 export const OwnerContext = createContext(null);
 export const ProjectFetchContext = createContext(null);
 export const ProjectContext = createContext(null);
-export const EducationFetchContext = createContext(null);
-export const EducationContext = createContext(null);
 export const CertificateContext = createContext(null);
 export const CommentFetchContext = createContext(null);
 export const TechStackFetchContext = createContext(null);
