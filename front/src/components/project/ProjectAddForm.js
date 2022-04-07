@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
 import { toStringDate } from "../common/DateUtil";
-import { OwnerContext, ProjectFetchContext } from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
 
@@ -10,9 +10,8 @@ import DatePicker from "react-datepicker";
  *
  * @returns {component} ProjectAddForm
  */
-function ProjectAddForm() {
+function ProjectAddForm({ setProjectList }) {
   const { portfolioOwnerId } = useContext(OwnerContext);
-  const { setReFetching } = useContext(ProjectFetchContext);
   const init = {
     title: "",
     description: "",
@@ -29,7 +28,7 @@ function ProjectAddForm() {
 
     //추가된 projects 업데이트 하기위해 서버에 post 요청
     try {
-      await Api.post(`project/create`, {
+      const res = await Api.post(`project/create`, {
         user_id: portfolioOwnerId,
         title: add.title,
         description: add.description,
@@ -37,12 +36,12 @@ function ProjectAddForm() {
         to_date: toStringDate(add.endDate),
       });
 
-      setAdd(init);
+      setProjectList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
+    setAdd(init);
     setIsAdding(false);
   };
 

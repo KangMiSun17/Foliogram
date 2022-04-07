@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton } from "../common/Button";
 import { toStringDate, toObjectDate } from "../common/DateUtil";
-import { ProjectContext, ProjectFetchContext } from "../common/context/Context";
 import * as Api from "../../api";
 import DatePicker from "react-datepicker";
 
@@ -10,10 +9,8 @@ import DatePicker from "react-datepicker";
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state
  * @returns {component} - ProjectEditForm
  */
-function ProjectEditForm({ setIsEditing }) {
-  const { setReFetching } = useContext(ProjectFetchContext);
-  const { id, title, description, from_date, to_date } =
-    useContext(ProjectContext);
+function ProjectEditForm({ setIsEditing, project, setProjectList }) {
+  const { id, title, description, from_date, to_date } = project.data;
   const [edit, setEdit] = useState({
     title,
     description,
@@ -27,17 +24,21 @@ function ProjectEditForm({ setIsEditing }) {
     e.preventDefault();
     //편집된 projects 업데이트 하기위해 서버로 put 요청
     try {
-      await Api.put(`projects/${id}`, {
+      const res = await Api.put(`projects/${id}`, {
         title: edit.title,
         description: edit.description,
         from_date: toStringDate(edit.startDate),
         to_date: toStringDate(edit.endDate),
       });
+
+      setProjectList((cur) => {
+        cur[project.index] = res.data;
+        return [...cur];
+      });
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
     setIsEditing(false);
   };
 
