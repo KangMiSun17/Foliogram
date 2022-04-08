@@ -6,15 +6,23 @@ import TechStackEditForm from "./TechStackEditForm";
  *
  * @returns TechStackEditForm or TechStackCard
  */
-function TechStack() {
+function TechStack({ techStack, setTechStackList }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
       {isEditing ? (
-        <TechStackEditForm setIsEditing={setIsEditing} />
+        <TechStackEditForm
+          setIsEditing={setIsEditing}
+          techStack={techStack}
+          setTechStackList={setTechStackList}
+        />
       ) : (
-        <TechStackCard setIsEditing={setIsEditing} />
+        <TechStackCard
+          setIsEditing={setIsEditing}
+          techStack={techStack}
+          setTechStackList={setTechStackList}
+        />
       )}
     </div>
   );
