@@ -8,12 +8,13 @@ import * as Api from "../../api";
  * @param {function} setState Change state when CancleButton onClick
  * @returns {component} Confirm Button and Cancle Button
  */
-export const BundleButton = ({ submitHandler, setState }) => {
+export const BundleButton = ({ disabled, submitHandler, setState }) => {
   return (
-    <Row className="justify-content-center" xs="auto">
+    <Row className="justify-content-center mb-3" xs="auto">
       <Button
         className="me-3"
         variant="primary"
+        disabled={disabled}
         type="submit"
         onClick={submitHandler}
       >
@@ -50,7 +51,7 @@ export const PlusButton = ({ setState }) => {
  */
 export const EditButton = ({ setState }) => {
   return (
-    <Button size="sm" variant="outline-info" onClick={() => setState(true)}>
+    <Button size="sm" variant="outline-primary" onClick={() => setState(true)}>
       편집
     </Button>
   );
@@ -82,5 +83,17 @@ export const DeleteButton = ({ endpoint, id, setState, index = null }) => {
     <Button size="sm" variant="outline-danger" onClick={handleDelete}>
       삭제
     </Button>
+  );
+};
+
+export const LikesButton = ({ onClickHandler, children }) => {
+  return (
+    <button
+      type="submit"
+      onClick={onClickHandler}
+      style={{ backgroundColor: "#00000000", border: 0 }}
+    >
+      {children}
+    </button>
   );
 };

@@ -1,28 +1,22 @@
 import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import {
-  AwardContext,
-  AwardFetchContext,
-  EditTableContext,
-} from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 
 /** Award list component
  *
  * @param {boolean} setIsEditing - Change state whether editing or not
  * @returns AwardList and edit button or null
  */
-function AwardCard({ setIsEditing }) {
-  const isEditable = useContext(EditTableContext);
-  const setReFetching = useContext(AwardFetchContext);
-  //Each award
-  const award = useContext(AwardContext);
+function AwardCard({ setIsEditing, award, setAwards }) {
+  const { isEditable } = useContext(OwnerContext);
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">
-        <span>{award.title}</span>
+        <span>{award.data.title}</span>
         <br />
-        <span style={{ color: "gray" }}>{award.description}</span>
+        <span style={{ color: "gray" }}>{award.data.description}</span>
       </Col>
       {isEditable && (
         <>
@@ -32,8 +26,9 @@ function AwardCard({ setIsEditing }) {
           <Col sm={1}>
             <DeleteButton
               endpoint={"awards"}
-              id={award.id}
-              setState={setReFetching}
+              id={award.data.id}
+              setState={setAwards}
+              index={award.index}
             />
           </Col>
         </>

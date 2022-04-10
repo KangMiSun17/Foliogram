@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
-import { UserStateContext, DispatchContext } from "../App";
+import { Nav } from "react-bootstrap";
+import Image from "react-bootstrap/Image";
+import { StyleDiv, alignVertical, logoPosition } from "./common/Style";
+import { UserContext } from "./common/context/UserContext";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const userState = useContext(UserStateContext);
-  const dispatch = useContext(DispatchContext);
+  const { userState, dispatch } = useContext(UserContext);
 
   // 전역상태에서 user가 null이 아니라면 로그인 성공 상태임.
   const isLogin = !!userState.user;
@@ -24,22 +24,60 @@ function Header() {
   };
 
   return (
-    <Nav activeKey={location.pathname}>
-      <Nav.Item className="me-auto mb-5">
-        <Nav.Link disabled>안녕하세요, 포트폴리오 공유 서비스입니다.</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
-      </Nav.Item>
-      {isLogin && (
-        <Nav.Item>
-          <Nav.Link onClick={logout}>로그아웃</Nav.Link>
+    <StyleDiv>
+      <Nav activeKey={location.pathname}>
+        <Nav.Item style={alignVertical} className="me-auto">
+          <Nav.Link disabled>
+            폴리오그램은 포트폴리오 공유 서비스입니다.
+          </Nav.Link>
         </Nav.Item>
-      )}
-    </Nav>
+
+        <Nav.Item style={logoPosition}>
+          <Nav.Link onClick={() => navigate("/network")}>
+            <Image
+              src="/logo.svg"
+              style={{ width: "200px", margin: "auto" }}
+            ></Image>
+          </Nav.Link>
+        </Nav.Item>
+        {isLogin && (
+          <>
+            <Nav.Item style={alignVertical} className="ms-auto">
+              <Nav.Link
+                style={{ color: "#303B4B" }}
+                onClick={() => navigate("/users/" + userState.user.id)}
+              >
+                나의 페이지
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item style={alignVertical}>
+              <Nav.Link
+                style={{ color: "#303B4B" }}
+                onClick={() => navigate("/users/follows")}
+              >
+                팔로우 목록
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item style={alignVertical}>
+              <Nav.Link
+                style={{ color: "#303B4B" }}
+                onClick={() => navigate("/network")}
+              >
+                네트워크
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item style={alignVertical}>
+              <Nav.Link style={{ color: "#303B4B" }} onClick={logout}>
+                로그아웃
+              </Nav.Link>
+            </Nav.Item>
+          </>
+        )}
+      </Nav>
+    </StyleDiv>
   );
 }
 

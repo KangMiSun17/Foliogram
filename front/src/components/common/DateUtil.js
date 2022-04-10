@@ -1,16 +1,10 @@
-import DatePicker from "react-datepicker";
+function checkedDigit(value) {
+  if (value < 10) {
+    return `0${value}`;
+  }
 
-/**
- * DatePicker
- * @param {object} startDate Date Object
- * @param {function} setState State function to change when date change
- * @returns {component} DatePicker component
- */
-export const DatePickForm = ({ startDate, setState }) => {
-  return (
-    <DatePicker selected={startDate} onChange={(date) => setState(date)} />
-  );
-};
+  return value;
+}
 
 /**
  * Change date object format to String
@@ -18,7 +12,11 @@ export const DatePickForm = ({ startDate, setState }) => {
  * @returns {String} "YYYY-MM-DD"
  **/
 export const toStringDate = (date) => {
-  return date.toISOString().split("T")[0];
+  const year = date.getFullYear();
+  const month = checkedDigit(date.getMonth() + 1);
+  const day = checkedDigit(date.getDate());
+
+  return [year, month, day].join("-");
 };
 
 /**

@@ -1,49 +1,77 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Row, Button, Col } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
+import { linkStyle } from "../common/Style";
+import Follow from "./Follow";
 
-function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
+function UserCard({ user, children, isNetwork, isFollows }) {
   const navigate = useNavigate();
+  const [hoverStyle, setHoverStyle] = useState(linkStyle);
+
+  const toggleHover = () =>
+    setHoverStyle((cur) => {
+      if (cur.textDecoration !== "none") {
+        return { ...cur, textDecoration: "none" };
+      }
+      return { ...cur, textDecoration: "" };
+    });
+
   return (
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "18rem" }}>
+    <Card className="mb-3 mt-1" style={{ height: "23rem" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
-            style={{ width: "10rem", height: "8rem" }}
+            style={{
+              width: "10rem",
+              height: "8rem",
+              borderRadius: "2rem",
+              cursor: "pointer",
+            }}
             className="mb-3"
-            src="http://placekitten.com/200/200"
-            alt="랜덤 고양이 사진 (http://placekitten.com API 사용)"
+            src={user.profileImage}
+            alt="프로필 사진"
+            onClick={() => navigate(`/users/${user.id}`)}
           />
         </Row>
-        <Card.Title>{user?.name}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
-        <Card.Text>{user?.description}</Card.Text>
-
-        {isEditable && (
-          <Col>
-            <Row className="mt-3 text-center text-info">
-              <Col sm={{ span: 20 }}>
-                <Button
-                  variant="outline-info"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                >
-                  편집
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
-
-        {isNetwork && (
-          <Card.Link
-            className="mt-3"
-            href="#"
-            onClick={() => navigate(`/users/${user.id}`)}
+        <Card.Title onClick={() => navigate(`/users/${user.id}`)}>
+          <span style={{ cursor: "pointer" }}>{user?.name}</span>
+          <span
+            style={{
+              marginLeft: "5px",
+              fontSize: "13px",
+              color: "gray",
+            }}
           >
-            포트폴리오
-          </Card.Link>
-        )}
+            {user?.user_category}
+          </span>
+        </Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{user?.email}</Card.Subtitle>
+        <Card.Text
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate(`/users/${user.id}`)}
+        >
+          {user?.description}
+        </Card.Text>
       </Card.Body>
+      {children}
+      {(isNetwork || isFollows) && (
+        <>
+          <div style={{ textAlign: "center" }}>
+            <Follow user={user} />
+            <span>{user?.follower.length}</span>
+          </div>
+          <div>
+            <Card.Link
+              onClick={() => navigate(`/users/${user.id}`)}
+              style={hoverStyle}
+              onMouseEnter={toggleHover}
+              onMouseLeave={toggleHover}
+            >
+              포트폴리오
+            </Card.Link>
+          </div>
+        </>
+      )}
     </Card>
   );
 }

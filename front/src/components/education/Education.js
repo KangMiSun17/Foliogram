@@ -6,15 +6,23 @@ import EducationEditForm from "./EducationEditForm";
  *
  * @returns EducationEditForm or EducationCard
  */
-function Education() {
+function Education({ education, setEducationList }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
       {isEditing ? (
-        <EducationEditForm setIsEditing={setIsEditing} />
+        <EducationEditForm
+          setIsEditing={setIsEditing}
+          education={education}
+          setEducationList={setEducationList}
+        />
       ) : (
-        <EducationCard setIsEditing={setIsEditing} />
+        <EducationCard
+          setIsEditing={setIsEditing}
+          education={education}
+          setEducationList={setEducationList}
+        />
       )}
     </div>
   );

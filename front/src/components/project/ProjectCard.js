@@ -1,22 +1,17 @@
 import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton, DeleteButton } from "../common/Button";
-import {
-  EditTableContext,
-  ProjectContext,
-  ProjectFetchContext,
-} from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 
 /** 수상 이력 목록 컴포넌트입니다.
  *
  * @param {boolean} setIsEditing - 편집중 상태 변경 state
  * @returns projectList and edit button
  */
-function ProjectCard({ setIsEditing }) {
-  const { setReFetching } = useContext(ProjectFetchContext);
-  const isEditable = useContext(EditTableContext);
-  const { id, title, description, from_date, to_date } =
-    useContext(ProjectContext);
+function ProjectCard({ setIsEditing, project, setProjectList }) {
+  const { isEditable } = useContext(OwnerContext);
+  const { id, title, description, from_date, to_date } = project.data;
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">
@@ -37,7 +32,8 @@ function ProjectCard({ setIsEditing }) {
             <DeleteButton
               endpoint={"projects"}
               id={id}
-              setState={setReFetching}
+              setState={setProjectList}
+              index={project.index}
             />
           </Col>
         </>

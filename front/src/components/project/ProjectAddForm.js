@@ -1,25 +1,26 @@
 import React, { useState, useContext } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Alert } from "react-bootstrap";
 import { BundleButton, PlusButton } from "../common/Button";
-import { DatePickForm, toStringDate } from "../common/DateUtil";
-import {
-  PortfolioOwnerContext,
-  ProjectFetchContext,
-} from "../common/context/Context";
+import { toStringDate } from "../common/DateUtil";
+import { OwnerContext } from "../common/context/Context";
 import * as Api from "../../api";
+import DatePicker from "react-datepicker";
 
 /** 프로젝트 추가하는 컴포넌트입니다.
  *
  * @returns {component} ProjectAddForm
  */
-function ProjectAddForm() {
-  const portfolioOwnerId = useContext(PortfolioOwnerContext);
-  const { setReFetching } = useContext(ProjectFetchContext);
-  const [addTitle, setAddTitle] = useState("");
-  const [addDescription, setAddDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+function ProjectAddForm({ setProjectList }) {
+  const { portfolioOwnerId } = useContext(OwnerContext);
+  const init = {
+    title: "",
+    description: "",
+    startDate: new Date(),
+    endDate: new Date(),
+  };
   const [isAdding, setIsAdding] = useState(false);
+  const [add, setAdd] = useState(init);
+  const notSubAble = add.title.length === 0 || add.description.length === 0;
 
   //확인 버튼 누를 시 실행
   const handleSubmit = async (e) => {
@@ -27,23 +28,20 @@ function ProjectAddForm() {
 
     //추가된 projects 업데이트 하기위해 서버에 post 요청
     try {
-      await Api.post(`project/create`, {
+      const res = await Api.post(`project/create`, {
         user_id: portfolioOwnerId,
-        title: addTitle,
-        description: addDescription,
-        from_date: toStringDate(startDate),
-        to_date: toStringDate(endDate),
+        title: add.title,
+        description: add.description,
+        from_date: toStringDate(add.startDate),
+        to_date: toStringDate(add.endDate),
       });
 
-      setAddTitle("");
-      setAddDescription("");
+      setProjectList((cur) => [...cur, res.data]);
     } catch (err) {
       console.log(err);
     }
 
-    setReFetching(new Date());
-    setStartDate(new Date());
-    setEndDate(new Date());
+    setAdd(init);
     setIsAdding(false);
   };
 
@@ -55,36 +53,59 @@ function ProjectAddForm() {
         </Row>
       ) : (
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>추가할 내용</Form.Label>
+          <Form.Group className="mb-3" controlId="title">
             <Form.Control
               type="text"
               placeholder="프로젝트 제목"
-              value={addTitle}
-              onChange={(e) => setAddTitle(e.target.value)}
+              value={add.title}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="description">
             <Form.Control
               type="text"
               placeholder="상세내역"
-              value={addDescription}
-              onChange={(e) => setAddDescription(e.target.value)}
+              value={add.description}
+              onChange={(e) =>
+                setAdd((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+              }
             />
           </Form.Group>
 
-          <Form.Group className="mt-3">
+          <Form.Group className="mt-3 mb-3">
             <Row>
               <Col xs={3}>
-                <DatePickForm startDate={startDate} setState={setStartDate} />
+                <DatePicker
+                  selected={add.startDate}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, startDate: date }))
+                  }
+                />
               </Col>
               <Col xs={3}>
-                <DatePickForm startDate={endDate} setState={setEndDate} />
+                <DatePicker
+                  selected={add.endDate}
+                  onChange={(date) =>
+                    setAdd((prev) => ({ ...prev, endDate: date }))
+                  }
+                />
               </Col>
             </Row>
           </Form.Group>
-
+          {notSubAble ? (
+            <Alert variant="danger">
+              <p>내용을 입력해주세요.</p>
+            </Alert>
+          ) : null}
           <Row className="justify-content-center" xs="auto">
-            <BundleButton submitHandler={handleSubmit} setState={setIsAdding} />
+            <BundleButton
+              disabled={notSubAble}
+              submitHandler={handleSubmit}
+              setState={setIsAdding}
+            />
           </Row>
         </Form>
       )}

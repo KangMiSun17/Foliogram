@@ -6,14 +6,23 @@ import AwardEditForm from "./AwardEditForm";
  *
  * @returns AwardEditForm or AwardCard
  */
-function Award() {
+function Award({ award, setAwards }) {
   const [isEditing, setIsEditing] = useState(false);
+
   return (
     <>
       {isEditing ? (
-        <AwardEditForm setIsEditing={setIsEditing} />
+        <AwardEditForm
+          setIsEditing={setIsEditing}
+          award={award}
+          setAwards={setAwards}
+        />
       ) : (
-        <AwardCard setIsEditing={setIsEditing} />
+        <AwardCard
+          setIsEditing={setIsEditing}
+          award={award}
+          setAwards={setAwards}
+        />
       )}
     </>
   );

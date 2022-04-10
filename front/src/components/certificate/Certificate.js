@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { DeleteButton, EditButton } from "../common/Button";
-import { EditTableContext } from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**
@@ -9,11 +9,10 @@ import CertificateEditForm from "./CertificateEditForm";
  * @param {Object} props
  * @param {object} props.certificate Item in the Certification List
  * @param {number} props.index Index in the Certification List
- * @param {function} props.setCertificateList function to change the state of a list of certificates
  * @returns {component} Certificate information or EditForm
  */
-function Certificate({ certificate, index, setCertificateList }) {
-  const isEditable = useContext(EditTableContext);
+function Certificate({ certificate, setCertificateList }) {
+  const { isEditable } = useContext(OwnerContext);
   const [isEditing, setIsEditing] = useState(false);
   const { id, title, description, when_date } = certificate;
 
@@ -22,16 +21,15 @@ function Certificate({ certificate, index, setCertificateList }) {
    * @description isEditable {type: boolean} if isEditable true and isEditing false show EditButton
    */
   return (
-    <Row className="align-items-center row">
+    <Row className="align-items-center">
       {isEditing ? (
         <CertificateEditForm
           certificate={certificate}
-          setIsEdit={setIsEditing}
           setCertificateList={setCertificateList}
-          index={index}
+          setIsEdit={setIsEditing}
         />
       ) : (
-        <Col className="mb-3">
+        <Col>
           <span>{title}</span>
           <br />
           <span style={{ color: "gray" }}>{description}</span>
@@ -49,7 +47,7 @@ function Certificate({ certificate, index, setCertificateList }) {
               endpoint={"certificates"}
               id={id}
               setState={setCertificateList}
-              index={index}
+              index={certificate.index}
             />
           </Col>
         </>

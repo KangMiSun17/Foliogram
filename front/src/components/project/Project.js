@@ -6,15 +6,23 @@ import ProjectEditForm from "./ProjectEditForm";
  *
  * @returns ProjectEditForm or ProjectCard
  */
-function Project() {
+function Project({ project, setProjectList }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
       {isEditing ? (
-        <ProjectEditForm setIsEditing={setIsEditing} />
+        <ProjectEditForm
+          setIsEditing={setIsEditing}
+          project={project}
+          setProjectList={setProjectList}
+        />
       ) : (
-        <ProjectCard setIsEditing={setIsEditing} />
+        <ProjectCard
+          setIsEditing={setIsEditing}
+          project={project}
+          setProjectList={setProjectList}
+        />
       )}
     </div>
   );

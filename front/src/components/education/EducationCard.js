@@ -1,21 +1,17 @@
 import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditButton, DeleteButton } from "../common/Button";
-import {
-  EditTableContext,
-  EducationContext,
-  EducationFetchContext,
-} from "../common/context/Context";
+import { OwnerContext } from "../common/context/Context";
 
 /** 학력 목록 컴포넌트입니다.
  *
  * @param {boolean} setIsEditing - 편집중 상태 변경 state
  * @returns EducationList and edit button
  */
-function EducationCard({ setIsEditing }) {
-  const { setReFetching } = useContext(EducationFetchContext);
-  const isEditable = useContext(EditTableContext);
-  const { id, school, major, position } = useContext(EducationContext);
+function EducationCard({ setIsEditing, education, setEducationList }) {
+  const { isEditable } = useContext(OwnerContext);
+  const { id, school, major, position } = education.data;
+
   return (
     <Row className="align-items-center">
       <Col className="mb-3">
@@ -34,7 +30,8 @@ function EducationCard({ setIsEditing }) {
             <DeleteButton
               endpoint={"educations"}
               id={id}
-              setState={setReFetching}
+              setState={setEducationList}
+              index={education.index}
             />
           </Col>
         </>
