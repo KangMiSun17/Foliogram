@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
 import ProfileImage from "./ProfileImage";
+import { Card, Row, Button, Col } from "react-bootstrap";
+import Follow from "./Follow";
+import { linkStyle } from "../common/Style";
 import * as Api from "../../api";
 import { OwnerContext } from "../common/context/Context";
 import { UserContext } from "../common/context/UserContext";
@@ -37,6 +40,7 @@ function User() {
           setUser={setUser}
         />
       )}
+
       {profileImage && (
         <ProfileImage
           user={user}
@@ -44,14 +48,39 @@ function User() {
           setUser={setUser}
         />
       )}
-      {!isEditing && !profileImage && (
-        <UserCard
-          user={user}
-          setIsEditing={setIsEditing}
-          setProfileImage={setProfileImage}
-          isEditable={isEditable}
-          isMypage
-        />
+
+      {!isEditing && !profileImage && !isEditable && (
+        <UserCard user={user}>
+          <Card.Text style={linkStyle}>
+            <Follow user={user} />
+            <span>{user?.follower.length}</span>
+          </Card.Text>
+        </UserCard>
+      )}
+
+      {isEditable && (
+        <UserCard user={user}>
+          <Row className="mt-4 text-center text-info">
+            <Col sm={{ span: 20 }}>
+              <Button
+                className="mb-3"
+                variant="outline-primary"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+              >
+                정보 편집
+              </Button>
+              <Button
+                className="ms-3 mb-3"
+                variant="outline-primary"
+                size="sm"
+                onClick={() => setProfileImage(true)}
+              >
+                프로필사진 편집
+              </Button>
+            </Col>
+          </Row>
+        </UserCard>
       )}
     </>
   );

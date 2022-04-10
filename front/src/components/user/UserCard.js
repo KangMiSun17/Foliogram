@@ -1,20 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Row, Button, Col } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import { linkStyle } from "../common/Style";
 import Follow from "./Follow";
 
-function UserCard({
-  isEditable,
-  user,
-  setIsEditing,
-  isNetwork,
-  isFollows,
-  setProfileImage,
-  isMypage,
-}) {
+function UserCard({ user, children, isNetwork, isFollows }) {
   const navigate = useNavigate();
   const [hoverStyle, setHoverStyle] = useState(linkStyle);
+
   const toggleHover = () =>
     setHoverStyle((cur) => {
       if (cur.textDecoration !== "none") {
@@ -59,37 +52,8 @@ function UserCard({
         >
           {user?.description}
         </Card.Text>
-
-        {isEditable && (
-          <Row className="mt-4 text-center text-info">
-            <Col sm={{ span: 20 }}>
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-              >
-                정보 편집
-              </Button>
-              <Button
-                className="ms-3"
-                variant="outline-primary"
-                size="sm"
-                onClick={() => setProfileImage(true)}
-              >
-                프로필사진 편집
-              </Button>
-            </Col>
-          </Row>
-        )}
       </Card.Body>
-      <Card.Text style={hoverStyle}>
-        {!isEditable && isMypage && (
-          <>
-            <Follow user={user} />
-            <span>{user?.follower.length}</span>
-          </>
-        )}
-      </Card.Text>
+      {children}
       {(isNetwork || isFollows) && (
         <>
           <div style={{ textAlign: "center" }}>
