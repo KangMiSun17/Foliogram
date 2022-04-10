@@ -1,11 +1,10 @@
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { MainDiv, StyledLogo } from "./common/Style";
 import { UserContext } from "./common/context/UserContext";
 
 function Main() {
   const navigate = useNavigate();
-  // const userState = useContext(UserStateContext);
   const { userState } = useContext(UserContext);
 
   useEffect(() => {
@@ -45,39 +44,4 @@ function Main() {
   );
 }
 
-export const MainDiv = styled.div`
-  display: flex;
-  align-items: center;
-  flex-flow: column;
-
-  height: 80vh;
-
-  background-image: url(/MainBackGround.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-`;
-
-const StyledLogo = styled.div`
-  // display: absolute;
-
-  // justify-content: center;
-  // align-items: center;
-  // flex-flow: column;
-
-  height: 10vh;
-  margin-top: -10vh;
-
-  // display: block
-  // height: 100px;
-  top: 50%;
-  left: 50%;
-  transform: "translate(-50%, -50%)";
-  background-image: url(/MainSubTitle.png);
-  background-size: 10%;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-`;
 export default Main;

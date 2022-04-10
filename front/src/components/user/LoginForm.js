@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
-import styled from "styled-components";
+import { LoginStyleDiv } from "../common/Style";
 import { validateEmail, validatePassword } from "../common/validateUtil";
 import * as Api from "../../api";
 import { UserContext } from "../common/context/UserContext";
@@ -52,7 +52,7 @@ function LoginForm() {
   };
 
   return (
-    <StyleDiv>
+    <LoginStyleDiv>
       <Container>
         <Row className="justify-content-md-center">
           <Col lg={8}>
@@ -107,22 +107,8 @@ function LoginForm() {
           </Col>
         </Row>
       </Container>
-    </StyleDiv>
+    </LoginStyleDiv>
   );
 }
-
-export const StyleDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 80vh;
-
-  background-image: url(./dogpaw.svg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-`;
 
 export default LoginForm;

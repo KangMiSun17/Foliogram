@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { validateEmail, validatePassword } from "../common/validateUtil";
-import { StyleDiv } from "./LoginForm";
+import { LoginStyleDiv } from "../common/Style";
 import * as Api from "../../api";
 
 function RegisterForm() {
@@ -54,7 +54,7 @@ function RegisterForm() {
   };
 
   return (
-    <StyleDiv>
+    <LoginStyleDiv>
       <Container>
         <Row className="justify-content-md-center mt-5">
           <Col lg={8}>
@@ -149,7 +149,7 @@ function RegisterForm() {
           </Col>
         </Row>
       </Container>
-    </StyleDiv>
+    </LoginStyleDiv>
   );
 }
 

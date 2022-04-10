@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
+import { linkStyle } from "../common/Style";
 import Follow from "./Follow";
 
 function UserCard({
@@ -13,32 +14,14 @@ function UserCard({
   isMypage,
 }) {
   const navigate = useNavigate();
-  const [hover, setHover] = useState(false);
-  const toggleHover = () => {
-    setHover((cur) => !cur);
-  };
-  let linkStyle = {};
-
-  if (hover) {
-    linkStyle = {
-      color: "black",
-      display: "block",
-      textAlign: "center",
-      width: "100px",
-      margin: "10px auto",
-      cursor: "pointer",
-    };
-  } else {
-    linkStyle = {
-      color: "black",
-      display: "block",
-      textAlign: "center",
-      width: "100px",
-      margin: "10px auto",
-      textDecoration: "none",
-      cursor: "pointer",
-    };
-  }
+  const [hoverStyle, setHoverStyle] = useState(linkStyle);
+  const toggleHover = () =>
+    setHoverStyle((cur) => {
+      if (cur.textDecoration !== "none") {
+        return { ...cur, textDecoration: "none" };
+      }
+      return { ...cur, textDecoration: "" };
+    });
 
   return (
     <Card className="mb-3 mt-1" style={{ height: "23rem" }}>
@@ -99,7 +82,7 @@ function UserCard({
           </Row>
         )}
       </Card.Body>
-      <Card.Text style={linkStyle}>
+      <Card.Text style={hoverStyle}>
         {!isEditable && isMypage && (
           <>
             <Follow user={user} />
@@ -116,7 +99,7 @@ function UserCard({
           <div>
             <Card.Link
               onClick={() => navigate(`/users/${user.id}`)}
-              style={linkStyle}
+              style={hoverStyle}
               onMouseEnter={toggleHover}
               onMouseLeave={toggleHover}
             >

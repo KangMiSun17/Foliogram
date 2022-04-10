@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
-import styled from "styled-components";
+import { StyleDiv, alignVertical, logoPosition } from "./common/Style";
 import { UserContext } from "./common/context/UserContext";
 
 function Header() {
@@ -80,29 +80,5 @@ function Header() {
     </StyleDiv>
   );
 }
-
-//style
-const StyleDiv = styled.div`
-  border-bottom: 1px solid #c4c4c4;
-  padding: 10px 30px;
-  margin: 0 10px 30px;
-  // background-image: url(./Logo1.png);
-  // background-size: 220px;
-  // background-repeat: no-repeat;
-  // background-position-x: center;
-  // background-position-y: center;
-`;
-
-const alignVertical = {
-  paddingTop: "20px",
-  paddingBottom: "20px",
-};
-
-const logoPosition = {
-  position: "absolute",
-  top: "14px",
-  left: "50%",
-  transform: "translateX(-43%)",
-};
 
 export default Header;
