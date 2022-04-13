@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
-import { BundleButton, PlusButton } from "../common/Button";
-import { toStringDate } from "../common/DateUtil";
-import * as Api from "../../api";
+import { BundleButton, PlusButton } from "../../common/Button";
+import { toStringDate } from "../../common/DateUtil";
+import * as Api from "../../../api";
 import DatePicker from "react-datepicker";
-import { UserContext } from "../common/context/UserContext";
+import { UserContext } from "../../common/context/UserContext";
 
 /**
  * This component can add certification item

@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import { OwnerContext } from "../common/context/Context";
+import { OwnerContext } from "../../common/context/Context";
 import CertificateAddForm from "./CertificateAddForm";
 import CertificateCard from "./CertificateCard";
-import * as Api from "../../api";
+import * as Api from "../../../api";
 
 /**
  * root component related to certification

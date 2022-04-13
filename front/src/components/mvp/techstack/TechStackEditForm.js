@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Row, Alert } from "react-bootstrap";
-import { BundleButton } from "../common/Button";
-import * as Api from "../../api";
+import { BundleButton } from "../../common/Button";
+import * as Api from "../../../api";
 
 /** 선택된 Tech stack 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state

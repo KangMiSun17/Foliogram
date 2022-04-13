@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
-import { DeleteButton, EditButton } from "../common/Button";
-import { OwnerContext } from "../common/context/Context";
+import { DeleteButton, EditButton } from "../../common/Button";
+import { OwnerContext } from "../../common/context/Context";
 
 /** Award list component
  *

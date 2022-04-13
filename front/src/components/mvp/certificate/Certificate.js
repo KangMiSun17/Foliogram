@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { DeleteButton, EditButton } from "../common/Button";
-import { OwnerContext } from "../common/context/Context";
+import { DeleteButton, EditButton } from "../../common/Button";
+import { OwnerContext } from "../../common/context/Context";
 import CertificateEditForm from "./CertificateEditForm";
 
 /**

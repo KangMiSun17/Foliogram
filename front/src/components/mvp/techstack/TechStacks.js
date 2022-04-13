@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import TechStackAddForm from "./TechStackAddForm";
 import TechStack from "./TechStack";
-import { OwnerContext } from "../common/context/Context";
-import * as Api from "../../api";
+import { OwnerContext } from "../../common/context/Context";
+import * as Api from "../../../api";
 
 function Projects() {
   const { isEditable, portfolioOwnerId } = useContext(OwnerContext);

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import CareerAddForm from "./CareerAddForm";
 import Career from "./Career";
-import { OwnerContext } from "../common/context/Context";
-import * as Api from "../../api";
+import { OwnerContext } from "../../common/context/Context";
+import * as Api from "../../../api";
 
 function Careers() {
   const { isEditable, portfolioOwnerId } = useContext(OwnerContext);

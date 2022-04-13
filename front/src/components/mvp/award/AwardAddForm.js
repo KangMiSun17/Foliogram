@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
-import { PlusButton, BundleButton } from "../common/Button";
-import { OwnerContext } from "../common/context/Context";
-import { FormTextField } from "../common/Form";
-import * as Api from "../../api";
+import { PlusButton, BundleButton } from "../../common/Button";
+import { OwnerContext } from "../../common/context/Context";
+import { FormTextField } from "../../common/Form";
+import * as Api from "../../../api";
 
 /** Award add component
  *

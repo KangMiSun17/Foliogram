@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Alert } from "react-bootstrap";
-import { BundleButton } from "../common/Button";
-import { toStringDate, toObjectDate } from "../common/DateUtil";
+import { BundleButton } from "../../common/Button";
+import { toStringDate, toObjectDate } from "../../common/DateUtil";
 import DatePicker from "react-datepicker";
-import * as Api from "../../api";
+import * as Api from "../../../api";
 
 /** 선택된 career 편집하는 컴포넌트입니다.
  * @param {boolean} setIsEditing - 편집중 유무 변화시키는 state

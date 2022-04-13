@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import AwardAddForm from "./AwardAddForm";
 import Award from "./Award";
-import { OwnerContext } from "../common/context/Context";
-import * as Api from "../../api";
+import { OwnerContext } from "../../common/context/Context";
+import * as Api from "../../../api";
 
 /** Award list and award add component
  *

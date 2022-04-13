@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import EducationAddForm from "./EducationAddForm";
 import Education from "./Education";
-import { OwnerContext } from "../common/context/Context";
-import * as Api from "../../api";
+import { OwnerContext } from "../../common/context/Context";
+import * as Api from "../../../api";
 
 /** Education list and Education add component
  *

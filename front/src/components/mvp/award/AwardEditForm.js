@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Alert, Form, Row } from "react-bootstrap";
-import * as Api from "../../api";
-import { BundleButton } from "../common/Button";
-import { FormTextField } from "../common/Form";
+import * as Api from "../../../api";
+import { BundleButton } from "../../common/Button";
+import { FormTextField } from "../../common/Form";
 
 /** Edit award component
  *
