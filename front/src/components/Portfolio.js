@@ -42,7 +42,6 @@ function Portfolio() {
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
-    // setNavFromBack(navData);
     let fromBack = res.data.user_mvp;
     // 컴포넌트 배열(NavBar)
     const compo = [

@@ -3,7 +3,7 @@ import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
 import ProfileImage from "./ProfileImage";
 import { Card, Row, Button, Col } from "react-bootstrap";
-import Follow from "./Follow";
+import Follow from "../follow/Follow";
 import { linkStyle } from "../common/Style";
 import * as Api from "../../api";
 import { OwnerContext } from "../common/context/Context";

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import UserCard from "./UserCard";
+import UserCard from "../user/UserCard";
 import { UserContext } from "../common/context/UserContext";
 
 function Follows() {

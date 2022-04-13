@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Row } from "react-bootstrap";
 import { linkStyle } from "../common/Style";
-import Follow from "./Follow";
+import Follow from "../follow/Follow";
 
 function UserCard({ user, children, isNetwork, isFollows }) {
   const navigate = useNavigate();
