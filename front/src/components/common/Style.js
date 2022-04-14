@@ -91,7 +91,7 @@ export const linkStyle = {
   display: "block",
   textAlign: "center",
   width: "100px",
-  margin: "10px auto",
   textDecoration: "none",
+  margin: "10px auto",
   cursor: "pointer",
 };

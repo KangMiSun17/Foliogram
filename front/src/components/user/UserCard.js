@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Row } from "react-bootstrap";
 import { linkStyle } from "../common/Style";
@@ -6,15 +5,6 @@ import Follow from "../follow/Follow";
 
 function UserCard({ user, children, isNetwork, isFollows }) {
   const navigate = useNavigate();
-  const [hoverStyle, setHoverStyle] = useState(linkStyle);
-
-  const toggleHover = () =>
-    setHoverStyle((cur) => {
-      if (cur.textDecoration !== "none") {
-        return { ...cur, textDecoration: "none" };
-      }
-      return { ...cur, textDecoration: "" };
-    });
 
   return (
     <Card className="mb-3 mt-1" style={{ height: "23rem" }}>
@@ -63,9 +53,9 @@ function UserCard({ user, children, isNetwork, isFollows }) {
           <div>
             <Card.Link
               onClick={() => navigate(`/users/${user.id}`)}
-              style={hoverStyle}
-              onMouseEnter={toggleHover}
-              onMouseLeave={toggleHover}
+              style={linkStyle}
+              onMouseOver={(e) => (e.target.style.textDecoration = "")}
+              onMouseOut={(e) => (e.target.style.textDecoration = "none")}
             >
               포트폴리오
             </Card.Link>
