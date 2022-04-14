@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
 import { OwnerContext } from "./common/context/Context";
@@ -31,49 +31,49 @@ function Portfolio() {
   let count = 0;
   let count2 = 0;
 
-  const newAr = [];
+  const newAr = useMemo(() => [], []);
   const [navList, setNavList] = useState(newAr);
 
   ///@ toggle between showing components which have true state and showing only one component when navBar button is clicked(not the add or del button on the right side.)
   const [togglePage, setTogglePage] = useState(true);
 
-  const fetchPorfolioOwner = async (ownerId) => {
-    // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
-    const res = await Api.get("users", ownerId);
-    // 사용자 정보는 response의 data임.
-    const ownerData = res.data;
-    let fromBack = res.data.user_mvp;
-    // 컴포넌트 배열(NavBar)
-    const compo = [
-      { compo: <Educations />, show: false },
-      { compo: <Awards />, show: false },
-      { compo: <Projects />, show: false },
-      { compo: <Certificates />, show: false },
-      { compo: <Career />, show: false },
-      { compo: <TechStacks />, show: false },
-    ];
-    // compo 배열과 res.data.user_mvp를 합쳐서 navBar의 상태로 쓸 수 있게 만듦
-    for (let i = 0; i < compo.length; i++) {
-      newAr.push({ ...compo[i], ...fromBack[i] });
-    }
-    setNavList(newAr);
-    // portfolioOwner을 해당 사용자 정보로 세팅함.
-    setUserContext((prev) => ({
-      ...prev,
-      isEditable: ownerData.id === userState.user?.id,
-      portfolioOwnerId: ownerData.id,
-      user_id: userState.user?.id,
-    }));
-    // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
-    setIsFetchCompleted(true);
-  };
-
   useEffect(() => {
     // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
-    if (!userState.user) {
+    if (!userState.user?.id) {
       navigate("/", { replace: true });
       return;
     }
+
+    const fetchPorfolioOwner = async (ownerId) => {
+      // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
+      const res = await Api.get("users", ownerId);
+      // 사용자 정보는 response의 data임.
+      const ownerData = res.data;
+      let fromBack = res.data.user_mvp;
+      // 컴포넌트 배열(NavBar)
+      const compo = [
+        { compo: <Educations />, show: false },
+        { compo: <Awards />, show: false },
+        { compo: <Projects />, show: false },
+        { compo: <Certificates />, show: false },
+        { compo: <Career />, show: false },
+        { compo: <TechStacks />, show: false },
+      ];
+      // compo 배열과 res.data.user_mvp를 합쳐서 navBar의 상태로 쓸 수 있게 만듦
+      for (let i = 0; i < compo.length; i++) {
+        newAr.push({ ...compo[i], ...fromBack[i] });
+      }
+      setNavList(newAr);
+      // portfolioOwner을 해당 사용자 정보로 세팅함.
+      setUserContext((prev) => ({
+        ...prev,
+        isEditable: ownerData.id === userState.user?.id,
+        portfolioOwnerId: ownerData.id,
+        user_id: userState.user?.id,
+      }));
+      // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
+      setIsFetchCompleted(true);
+    };
 
     if (params.userId) {
       // 만약 현재 URL이 "/users/:userId" 라면, 이 userId를 유저 id로 설정함.
@@ -86,7 +86,7 @@ function Portfolio() {
       // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
       fetchPorfolioOwner(ownerId);
     }
-  }, [params, userState, navigate]);
+  }, [params, userState.user?.id, navigate, newAr]);
 
   if (!isFetchCompleted) {
     return "loading...";

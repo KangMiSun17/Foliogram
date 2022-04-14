@@ -11,7 +11,7 @@ function CommentDate({ comment }) {
     if (24 <= hour) {
       return setHour((cur) => "0" + String(cur - 24));
     }
-  }, []);
+  }, [hour]);
   const minute = comment.createdAt.split("T")[1].split(".")[0].split(":")[1];
 
   return (

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 function CommentCard({ comment, index }) {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+
   const asOnPage = () => {
     navigate(`/users/${comment.user_id.id}`);
     window.scrollTo(0, 0);

@@ -11,6 +11,7 @@ function CommentAddForm() {
   const { portfolioOwnerId, user_id } = useContext(OwnerContext);
   const setComments = useContext(CommentFetchContext);
   const [content, setContent] = useState("");
+
   const addComment = async () => {
     try {
       const res = await Api.post(`comments/create`, {

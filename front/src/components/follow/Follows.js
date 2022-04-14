@@ -9,11 +9,11 @@ function Follows() {
   const { users, userState } = useContext(UserContext);
 
   useEffect(() => {
-    if (!userState.user) {
+    if (!userState.user?.id) {
       navigate("/");
       return;
     }
-  }, [userState.user, navigate]);
+  }, [userState.user?.id, navigate]);
 
   const filterFollowUsers = users
     .filter((user) => userState.user.following.includes(user.id))

@@ -10,21 +10,20 @@ function Follow({ user }) {
   const [isFollow, setIsFollow] = useState(null);
   const { userState, dispatch, setReFetching } = useContext(UserContext);
   const loginedUser = userState.user;
+  const targetId = loginedUser.following.filter((id) => id === user?.id)[0];
 
   useEffect(() => {
-    if (!loginedUser) {
+    if (!loginedUser?.id) {
       return;
     }
 
-    const targetId = loginedUser.following.filter((id) => id === user?.id);
-
-    if (targetId[0] === user?.id) {
+    if (targetId === user?.id) {
       setIsFollow(true);
       return;
     }
 
     setIsFollow(false);
-  }, [loginedUser, user?.id]);
+  }, [loginedUser?.id, user?.id, targetId]);
 
   const onClickHandler = async (e) => {
     e.preventDefault();
