@@ -52,8 +52,7 @@ yarn start
  ┃ ┃ ┃ ┣ 📜AwardAddForm.js
  ┃ ┃ ┃ ┣ 📜AwardCard.js
  ┃ ┃ ┃ ┣ 📜AwardEditForm.js
- ┃ ┃ ┃ ┣ 📜Awards.js
- ┃ ┃ ┃ ┗ 📜README.md
+ ┃ ┃ ┃ ┗ 📜Awards.js
  ┃ ┃ ┣ 📂career
  ┃ ┃ ┃ ┣ 📜Career.js
  ┃ ┃ ┃ ┣ 📜CareerAddForm.js
