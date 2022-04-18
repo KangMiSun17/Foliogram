@@ -6,7 +6,7 @@ import LoginForm from "./components/user/LoginForm";
 import Network from "./components/user/Network";
 import RegisterForm from "./components/user/RegisterForm";
 import Portfolio from "./components/Portfolio";
-import Follows from "./components/user/Follows";
+import Follows from "./components/follow/Follows";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import { UserContext } from "./components/common/context/UserContext";

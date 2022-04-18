@@ -52,8 +52,8 @@
 | [강미선](https://github.com/KangMiSun17) | 프론트엔드 |
 |  [손정웅](https://github.com/Handwoong)  | 프론트엔드 |
 |  [윤여건](https://github.com/kunnyCode)  | 프론트엔드 |
-|                  서정현                  |   백엔드   |
-|                  윤성준                  |   백엔드   |
+|   [서정현](https://github.com/Nliker)    |   백엔드   |
+|   [윤성준](https://github.com/movomo)    |   백엔드   |
 
 ---
 

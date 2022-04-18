@@ -19,6 +19,7 @@ function Comments() {
         const res = await Api.get(`commentlist`, portfolioOwnerId);
         setComments(res.data);
       };
+
       getCommentList();
     } catch (err) {
       console.log("Error: comment list get request fail", err);

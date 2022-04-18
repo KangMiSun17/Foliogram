@@ -27,25 +27,6 @@ yarn start
 ```bash
 📦src
  ┣ 📂components
- ┃ ┣ 📂award
- ┃ ┃ ┣ 📜Award.js
- ┃ ┃ ┣ 📜AwardAddForm.js
- ┃ ┃ ┣ 📜AwardCard.js
- ┃ ┃ ┣ 📜AwardEditForm.js
- ┃ ┃ ┣ 📜Awards.js
- ┃ ┃ ┗ 📜README.md
- ┃ ┣ 📂career
- ┃ ┃ ┣ 📜Career.js
- ┃ ┃ ┣ 📜CareerAddForm.js
- ┃ ┃ ┣ 📜CareerCard.js
- ┃ ┃ ┣ 📜CareerEditForm.js
- ┃ ┃ ┗ 📜Careers.js
- ┃ ┣ 📂certificate
- ┃ ┃ ┣ 📜Certificate.js
- ┃ ┃ ┣ 📜CertificateAddForm.js
- ┃ ┃ ┣ 📜CertificateCard.js
- ┃ ┃ ┣ 📜CertificateEditForm.js
- ┃ ┃ ┗ 📜Certificates.js
  ┃ ┣ 📂comment
  ┃ ┃ ┣ 📜CommentAddForm.js
  ┃ ┃ ┣ 📜CommentCard.js
@@ -60,33 +41,54 @@ yarn start
  ┃ ┃ ┣ 📜Button.js
  ┃ ┃ ┣ 📜DateUtil.js
  ┃ ┃ ┣ 📜Form.js
+ ┃ ┃ ┣ 📜Style.js
  ┃ ┃ ┗ 📜validateUtil.js
- ┃ ┣ 📂education
- ┃ ┃ ┣ 📜Education.js
- ┃ ┃ ┣ 📜EducationAddForm.js
- ┃ ┃ ┣ 📜EducationCard.js
- ┃ ┃ ┣ 📜EducationEditForm.js
- ┃ ┃ ┗ 📜Educations.js
+ ┃ ┣ 📂follow
+ ┃ ┃ ┣ 📜Follow.js
+ ┃ ┃ ┗ 📜Follows.js
+ ┃ ┣ 📂mvp
+ ┃ ┃ ┣ 📂award
+ ┃ ┃ ┃ ┣ 📜Award.js
+ ┃ ┃ ┃ ┣ 📜AwardAddForm.js
+ ┃ ┃ ┃ ┣ 📜AwardCard.js
+ ┃ ┃ ┃ ┣ 📜AwardEditForm.js
+ ┃ ┃ ┃ ┗ 📜Awards.js
+ ┃ ┃ ┣ 📂career
+ ┃ ┃ ┃ ┣ 📜Career.js
+ ┃ ┃ ┃ ┣ 📜CareerAddForm.js
+ ┃ ┃ ┃ ┣ 📜CareerCard.js
+ ┃ ┃ ┃ ┣ 📜CareerEditForm.js
+ ┃ ┃ ┃ ┗ 📜Careers.js
+ ┃ ┃ ┣ 📂certificate
+ ┃ ┃ ┃ ┣ 📜Certificate.js
+ ┃ ┃ ┃ ┣ 📜CertificateAddForm.js
+ ┃ ┃ ┃ ┣ 📜CertificateCard.js
+ ┃ ┃ ┃ ┣ 📜CertificateEditForm.js
+ ┃ ┃ ┃ ┗ 📜Certificates.js
+ ┃ ┃ ┣ 📂education
+ ┃ ┃ ┃ ┣ 📜Education.js
+ ┃ ┃ ┃ ┣ 📜EducationAddForm.js
+ ┃ ┃ ┃ ┣ 📜EducationCard.js
+ ┃ ┃ ┃ ┣ 📜EducationEditForm.js
+ ┃ ┃ ┃ ┗ 📜Educations.js
+ ┃ ┃ ┣ 📂project
+ ┃ ┃ ┃ ┣ 📜Project.js
+ ┃ ┃ ┃ ┣ 📜ProjectAddForm.js
+ ┃ ┃ ┃ ┣ 📜ProjectCard.js
+ ┃ ┃ ┃ ┣ 📜ProjectEditForm.js
+ ┃ ┃ ┃ ┗ 📜Projects.js
+ ┃ ┃ ┗ 📂techstack
+ ┃ ┃ ┃ ┣ 📜TechStack.js
+ ┃ ┃ ┃ ┣ 📜TechStackAddForm.js
+ ┃ ┃ ┃ ┣ 📜TechStackCard.js
+ ┃ ┃ ┃ ┣ 📜TechStackEditForm.js
+ ┃ ┃ ┃ ┗ 📜TechStacks.js
  ┃ ┣ 📂nav
  ┃ ┃ ┣ 📜Empty.js
  ┃ ┃ ┣ 📜NavBar.js
  ┃ ┃ ┗ 📜NoneClick.js
- ┃ ┣ 📂project
- ┃ ┃ ┣ 📜Project.js
- ┃ ┃ ┣ 📜ProjectAddForm.js
- ┃ ┃ ┣ 📜ProjectCard.js
- ┃ ┃ ┣ 📜ProjectEditForm.js
- ┃ ┃ ┗ 📜Projects.js
- ┃ ┣ 📂techstack
- ┃ ┃ ┣ 📜TechStack.js
- ┃ ┃ ┣ 📜TechStackAddForm.js
- ┃ ┃ ┣ 📜TechStackCard.js
- ┃ ┃ ┣ 📜TechStackEditForm.js
- ┃ ┃ ┗ 📜TechStacks.js
  ┃ ┣ 📂user
  ┃ ┃ ┣ 📜Category.js
- ┃ ┃ ┣ 📜Follow.js
- ┃ ┃ ┣ 📜Follows.js
  ┃ ┃ ┣ 📜LoginForm.js
  ┃ ┃ ┣ 📜Network.js
  ┃ ┃ ┣ 📜ProfileImage.js

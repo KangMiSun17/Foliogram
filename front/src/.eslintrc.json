@@ -1,0 +1,9 @@
+{
+  "plugins": ["testing-library", "jest-dom"],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:testing-library/react", // testing-library에는 vue, react 등등 여러가지가 있는데 그중 react만 사용
+    "plugin:jest-dom/recommended" // jest-dom의 추천되는것들만
+  ]
+}
